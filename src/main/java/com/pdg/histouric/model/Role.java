@@ -21,6 +21,7 @@ public class Role {
 
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull(message = "Role id cannot be null")
     @Column(name = "role_id", nullable = false, unique = true)
     private UUID id;

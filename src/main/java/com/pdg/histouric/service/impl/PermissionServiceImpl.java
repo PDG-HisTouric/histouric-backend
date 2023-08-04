@@ -20,7 +20,6 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public CRUDPermission createPermission(CRUDPermission permission) {
-        permission.setId(UUID.randomUUID());
         return (CRUDPermission) permissionRepository.findByName(permission.getName())
                 .map(permissionFound -> {
                     throw new PermissionException(

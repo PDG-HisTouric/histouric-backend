@@ -8,6 +8,7 @@ import com.pdg.histouric.dto.RoleDTO;
 
 @RequestMapping("/api/v1/roles")
 public interface RoleApi {
+    String ROOT_PATH = "/api/v1/roles";
     @PostMapping
     RoleDTO createRole(@RequestBody RoleDTO roleDTO);
 

@@ -39,27 +39,27 @@ public class HistouricApplication {
 				.build();
 
 		ArrayList<CRUDPermission> permissions = new ArrayList<>();
-		permissions.add(permission1);
 		Role role1 = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
-				.name("Gestor de turismo cultural")
+				.name("GESTOR")
 				.description("Encargado de administrar las rutas")
 				.permissions(permissions)
 				.build();
 
-		ArrayList<Role> roles = new ArrayList<>();
-		roles.add(role1);
+		ArrayList<Role> userRoles = new ArrayList<>();
 		HistouricUser histouricUser = HistouricUser.builder()
 				.id(UUID.fromString("a7f042d7-618d-4723-be88-b799314063e7"))
 				.username("Pepito")
 				.email("pepito@gmail.com")
 				.password(encoder.encode("password"))
-				.roles(roles)
+				.roles(userRoles)
 				.build();
 
 		return args -> {
-			permissionRepository.save(permission1);
-			roleRepository.save(role1);
+			CRUDPermission permission1Created = permissionRepository.save(permission1);
+			role1.getPermissions().add(permission1Created);
+			Role roleCreated = roleRepository.save(role1);
+			userRoles.add(roleCreated);
 			userRepository.save(histouricUser);
 		};
 	}

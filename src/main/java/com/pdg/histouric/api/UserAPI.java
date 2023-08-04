@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @RequestMapping("/api/v1/users")
 public interface UserAPI {
+    String ROOT_PATH = "/api/v1/users";
 
     @PostMapping
     UserDTO createUser(@RequestBody UserDTO userDTO);

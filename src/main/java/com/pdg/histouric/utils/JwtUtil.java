@@ -1,13 +1,12 @@
-package com.pdg.histouric.service.impl;
+package com.pdg.histouric.utils;
 
-import com.pdg.histouric.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.Instant;
@@ -18,16 +17,16 @@ import java.util.Map;
 import java.util.function.Function;
 
 //Adapted from https://github.com/irojascorsico/spring-boot-jwt-authentication/tree/v1.0
-@Service
-public class JwtServiceImpl implements JwtService {
+@Component
+public class JwtUtil {
 
     private static final String SECRET_KEY = "586E327235756B59703373F43272B4B679223685792970337359792336B597033797033734";
-    @Override
+
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
     }
 
-    @Override
+
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -45,7 +44,6 @@ public class JwtServiceImpl implements JwtService {
         return claimsResolver.apply(claims);
     }
 
-    @Override
     public boolean isTheTokenValid(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);

@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/v1/auth")
 public interface AuthApi {
 
+    String ROOT_PATH = "/api/v1/auth";
+
     @PostMapping("/login")
-    TokenDTO login(@Valid @RequestBody UserForLoginDTO userForLoginDTO);
+    TokenDTO login(@RequestBody UserForLoginDTO userForLoginDTO);
 
 
 }

@@ -6,7 +6,10 @@ import com.pdg.histouric.dto.UserDTO;
 import com.pdg.histouric.dto.UserForLoginDTO;
 import com.pdg.histouric.service.AuthService;
 import com.pdg.histouric.service.impl.AuthServiceImpl;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,12 +23,8 @@ public class AuthController implements AuthApi {
     private final AuthServiceImpl pruebaSer;
 
     @Override
-    public TokenDTO login(UserForLoginDTO userForLoginDTO) {
+    public TokenDTO login(@Valid UserForLoginDTO userForLoginDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authService.login(userForLoginDTO);
-    }
-
-    @PostMapping("/prueba")
-    public TokenDTO prueba(@RequestBody UserDTO userDTO) {
-        return pruebaSer.register(userDTO);
     }
 }

@@ -19,7 +19,6 @@ public class RoleServiceImpl implements RoleService {
     final RoleRepository roleRepository;
     @Override
     public Role createRole(Role role) {
-        role.setId(UUID.randomUUID());
         return (Role) roleRepository.findByName(role.getName())
                 .map(roleFound -> {
                     throw new RoleException(
