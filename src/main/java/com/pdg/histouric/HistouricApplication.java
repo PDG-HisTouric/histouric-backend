@@ -29,7 +29,13 @@ public class HistouricApplication {
 		Role gestorRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
 				.name("GESTOR")
-				.description("Encargado de administrar las rutas")
+				.description("In charge of managing the routes")
+				.build();
+
+		Role adminRole = Role.builder()
+				.id(UUID.fromString("a10ca735-d50f-4685-943b-7b621f0e544d"))
+				.name("ADMIN")
+				.description("In charge of managing the users")
 				.build();
 
 		ArrayList<Role> userRoles = new ArrayList<>();
@@ -42,8 +48,10 @@ public class HistouricApplication {
 				.build();
 
 		return args -> {
-			Role roleCreated = roleRepository.save(gestorRole);
-			userRoles.add(roleCreated);
+			Role gestorRoleCreated = roleRepository.save(gestorRole);
+			userRoles.add(gestorRoleCreated);
+			Role adminRoleCreated = roleRepository.save(adminRole);
+			userRoles.add(adminRoleCreated);
 			userRepository.save(histouricUser);
 		};
 	}

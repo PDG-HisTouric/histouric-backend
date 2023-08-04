@@ -1,6 +1,7 @@
 package com.pdg.histouric.config;
 
 import com.pdg.histouric.api.AuthApi;
+import com.pdg.histouric.api.UserAPI;
 import com.pdg.histouric.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -66,6 +67,10 @@ public class SecurityConfig {
         MvcRequestMatcher prueba = new MvcRequestMatcher(introspector, "/prueba/prueba2");
         prueba.setMethod(HttpMethod.GET);
         managerBuilder.add(prueba, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
+
+        MvcRequestMatcher prueba1 = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH);
+        prueba1.setMethod(HttpMethod.GET);
+        managerBuilder.add(prueba1, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
 
 
         AuthorizationManager<HttpServletRequest> manager = managerBuilder.build();
