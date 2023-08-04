@@ -14,15 +14,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
-
-    private UUID id;
-
-    @NotNull(message = "Username cannot be null")
-    @NotEmpty(message = "Username cannot be empty")
-    @NotBlank(message = "Username cannot be blank")
-    @Length(max = 50, message = "Username must be 50 characters long")
-    private String username;
+public class UserForLoginDTO {
 
     @NotNull(message = "User email cannot be null")
     @NotEmpty(message = "User email cannot be empty")
@@ -36,5 +28,4 @@ public class UserDTO {
     @Length(max = 255, message = "User password must be 255 characters long")
     private String password;
 
-    private List<RoleDTO> roles;
 }
