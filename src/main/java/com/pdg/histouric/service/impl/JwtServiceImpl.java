@@ -1,6 +1,7 @@
 package com.pdg.histouric.service.impl;
 
 import com.pdg.histouric.service.JwtService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -14,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 //Adapted from https://github.com/irojascorsico/spring-boot-jwt-authentication/tree/v1.0
 @Service
@@ -23,6 +25,38 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
+    }
+
+    @Override
+    public String getUsernameFromToken(String token) {
+        return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    private Claims getAllClaims(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = getAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    @Override
+    public boolean isTheTokenValid(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    private Date getExpirationDateFromToken(String token){
+        return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+    private boolean isTokenExpired(String token){
+        return getExpirationDateFromToken(token).before(new Date());
     }
 
     private String getToken(Map<String, Object> claims, UserDetails user) {

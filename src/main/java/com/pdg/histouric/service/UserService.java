@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    HistouricUser createUser(@RequestBody HistouricUser user);
+    HistouricUser createUser(HistouricUser user);
     List<HistouricUser> getUsers();
-    HistouricUser getUserByUsername(@PathVariable String username);
-    HistouricUser updateUser(@PathVariable UUID userId, @RequestBody HistouricUser user);
-    void deleteUser(@PathVariable UUID userId);
+    HistouricUser getUserByUsername(String username);
+    HistouricUser updateUser(UUID userId, HistouricUser user);
+    void deleteUser(UUID userId);
 }

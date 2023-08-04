@@ -29,6 +29,4 @@ public class RoleDTO {
     private String description;
 
     private List<PermissionDTO> permissions;
-
-    private List<UserDTO> users;
 }
