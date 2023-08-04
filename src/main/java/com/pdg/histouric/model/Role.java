@@ -41,14 +41,6 @@ public class Role {
 
     @ManyToMany
     @JoinTable(
-            name = "role_crudpermissions",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private List<CRUDPermission> permissions;
-
-    @ManyToMany
-    @JoinTable(
             name = "histouric_user_role",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "histouric_user_id")

@@ -27,6 +27,4 @@ public class RoleDTO {
     @NotBlank(message = "Role description cannot be blank")
     @Length(max = 255, message = "Role description must be 255 characters long")
     private String description;
-
-    private List<PermissionDTO> permissions;
 }

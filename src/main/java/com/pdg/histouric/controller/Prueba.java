@@ -12,4 +12,8 @@ public class Prueba {
     public String prueba(){
         return "Llegue";
     }
+    @GetMapping("/prueba2")
+    public String prueba2(){
+        return "Llegue";
+    }
 }

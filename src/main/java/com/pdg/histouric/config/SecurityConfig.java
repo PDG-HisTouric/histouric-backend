@@ -48,28 +48,24 @@ public class SecurityConfig {
 
     @Bean
     public AuthorizationManager<RequestAuthorizationContext> requestMatcherAuthorizationManager
-            (HandlerMappingIntrospector introspector){
+            (HandlerMappingIntrospector introspector) {
 
-        MvcRequestMatcher login = new MvcRequestMatcher(introspector, AuthApi.ROOT_PATH+"/login");
+        MvcRequestMatcher login = new MvcRequestMatcher(introspector, AuthApi.ROOT_PATH + "/login");
         login.setMethod(HttpMethod.POST);
 
         RequestMatcher permitAll = new AndRequestMatcher(login);
         RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder =
                 RequestMatcherDelegatingAuthorizationManager.builder()
-                        .add(permitAll,(context,other)->new AuthorizationDecision(true));
+                        .add(permitAll, (context, other) -> new AuthorizationDecision(true));
 
 
         MvcRequestMatcher assignRole = new MvcRequestMatcher(introspector, "/prueba");
         assignRole.setMethod(HttpMethod.GET);
         managerBuilder.add(assignRole, AuthorityAuthorizationManager.hasAnyAuthority("GESTOR"));
 
-
-//        MvcRequestMatcher assignRole = new MvcRequestMatcher(introspector, EShopUserAPI.ROOT_PATH+"/{eShopUserId}/role/{roleName}");
-//        assignRole.setMethod(HttpMethod.PATCH);
-//        managerBuilder.add(assignRole, AuthorityAuthorizationManager.hasAnyAuthority("SCOPE_ADMIN"));
-
-
-
+        MvcRequestMatcher prueba = new MvcRequestMatcher(introspector, "/prueba/prueba2");
+        prueba.setMethod(HttpMethod.GET);
+        managerBuilder.add(prueba, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
 
 
         AuthorizationManager<HttpServletRequest> manager = managerBuilder.build();

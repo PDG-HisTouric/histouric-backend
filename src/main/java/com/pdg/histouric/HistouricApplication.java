@@ -1,9 +1,7 @@
 package com.pdg.histouric;
 
-import com.pdg.histouric.model.CRUDPermission;
 import com.pdg.histouric.model.HistouricUser;
 import com.pdg.histouric.model.Role;
-import com.pdg.histouric.repository.PermissionRepository;
 import com.pdg.histouric.repository.RoleRepository;
 import com.pdg.histouric.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -25,25 +23,13 @@ public class HistouricApplication {
 
 	@Bean
 	@Profile("!test")
-	CommandLineRunner commandLineRunner(PermissionRepository permissionRepository,
-										RoleRepository roleRepository,
+	CommandLineRunner commandLineRunner(RoleRepository roleRepository,
 										UserRepository userRepository,
 										PasswordEncoder encoder) {
-		CRUDPermission permission1 = CRUDPermission.builder()
-				.id(UUID.fromString("f218a75c-c6af-4f1e-a2c6-b2b47f1a0678"))
-				.name("CRU BIC")
-				.create(false)
-				.read(true)
-				.update(false)
-				.delete(false)
-				.build();
-
-		ArrayList<CRUDPermission> permissions = new ArrayList<>();
-		Role role1 = Role.builder()
+		Role gestorRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
 				.name("GESTOR")
 				.description("Encargado de administrar las rutas")
-				.permissions(permissions)
 				.build();
 
 		ArrayList<Role> userRoles = new ArrayList<>();
@@ -56,9 +42,7 @@ public class HistouricApplication {
 				.build();
 
 		return args -> {
-			CRUDPermission permission1Created = permissionRepository.save(permission1);
-			role1.getPermissions().add(permission1Created);
-			Role roleCreated = roleRepository.save(role1);
+			Role roleCreated = roleRepository.save(gestorRole);
 			userRoles.add(roleCreated);
 			userRepository.save(histouricUser);
 		};
