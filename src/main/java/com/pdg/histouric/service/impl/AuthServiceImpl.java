@@ -8,6 +8,10 @@ import com.pdg.histouric.repository.UserRepository;
 import com.pdg.histouric.service.AuthService;
 import com.pdg.histouric.service.JwtService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,9 +22,16 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     @Override
     public TokenDTO login(UserForLoginDTO userForLoginDTO) {
-        return null;
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userForLoginDTO.getEmail(), userForLoginDTO.getPassword()));
+        UserDetails user = userRepository.findByEmail(userForLoginDTO.getEmail()).orElseThrow();
+        String token = jwtService.getToken(user);
+        return TokenDTO.builder()
+            .token(token)
+            .build();
     }
 
     public TokenDTO register(UserDTO userDTO) {
@@ -28,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
             .id(UUID.randomUUID())
             .username(userDTO.getUsername())
             .email(userDTO.getEmail())
-            .password(userDTO.getPassword())
+            .password(passwordEncoder.encode(userDTO.getPassword()))
             .roles(null)
             .build();
 
