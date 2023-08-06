@@ -27,27 +27,16 @@ public class HistouricUser implements UserDetails {
 
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
-    @NotNull(message = "User id cannot be null")
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id", nullable = false, unique = true)
     private UUID id;
 
-    @NotNull(message = "Username cannot be null")
-    @NotEmpty(message = "Username cannot be empty")
-    @NotBlank(message = "Username cannot be blank")
     @Column(name = "user_name", nullable = false, unique = true)
     private String username;
 
-    @NotNull(message = "User email cannot be null")
-    @NotEmpty(message = "User email cannot be empty")
-    @NotBlank(message = "User email cannot be blank")
-    @Email(regexp = "\\w+\\.?\\w+@\\w+\\.\\w+", message = "User email must be a valid email address")
     @Column(name = "user_email", nullable = false, unique = true)
     private String email;
 
-    @NotNull(message = "User password cannot be null")
-    @NotEmpty(message = "User password cannot be empty")
-    @NotBlank(message = "User password cannot be blank")
     @Column(name = "user_password", nullable = false)
     private String password;
 

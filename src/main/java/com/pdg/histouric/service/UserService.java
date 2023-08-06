@@ -1,5 +1,6 @@
 package com.pdg.histouric.service;
 
+import com.pdg.histouric.dto.UpdateUserDTO;
 import com.pdg.histouric.model.HistouricUser;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

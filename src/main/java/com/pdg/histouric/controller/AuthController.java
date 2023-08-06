@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController implements AuthAPI {
 
     private final AuthService authService;
-    private final AuthServiceImpl pruebaSer;
 
     @Override
     public TokenDTO login(@Valid UserForLoginDTO userForLoginDTO) {

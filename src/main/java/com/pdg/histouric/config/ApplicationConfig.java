@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //Adapted from https://github.com/irojascorsico/spring-boot-jwt-authentication/tree/v1.0
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
 
     @Bean

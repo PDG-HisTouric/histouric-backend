@@ -2,6 +2,7 @@ package com.pdg.histouric.service.impl;
 
 import com.pdg.histouric.constant.RoleErrorCode;
 import com.pdg.histouric.constant.UserErrorCode;
+import com.pdg.histouric.dto.UpdateUserDTO;
 import com.pdg.histouric.error.exception.RoleError;
 import com.pdg.histouric.error.exception.RoleException;
 import com.pdg.histouric.error.exception.UserError;
@@ -13,6 +14,7 @@ import com.pdg.histouric.repository.UserRepository;
 import com.pdg.histouric.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,38 +29,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
-    private boolean theCurrentUserIsNotAnAdmin(){
-        return !getCurrentUserRoles().contains("ADMIN");
-    }
-
-    private boolean isTheCurrentUserTheSameUser(UUID userId){
-        return getCurrentUserId().equals(userId);
-    }
-
-    private void checkPermission(HistouricUser histouricUser){
-        if(theCurrentUserIsNotAnAdmin() && !isTheCurrentUserTheSameUser(histouricUser.getId())){
-            throw new UserException(
-                    HttpStatus.FORBIDDEN,
-                    new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage())
-            );
-        }
-    }
-
-    private HistouricUser getUserByUUID(UUID userId){
-        return userRepository.findById(userId).orElseThrow(() -> new UserException(
-                HttpStatus.NOT_FOUND,
-                new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
-        ));
-    }
-
-    private void checkPermission(UUID userId){
-        checkPermission(getUserByUUID(userId));
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public HistouricUser createUser(HistouricUser user) {
-        if (theCurrentUserIsNotAnAdmin()) {
+        if (!isAdmin()) {
             user.setRoles(getTourismManagerRole());
         }
         return (HistouricUser) userRepository.findByUsername(user.getUsername())
@@ -69,6 +44,10 @@ public class UserServiceImpl implements UserService {
                     );
                 })
                 .orElseGet(() -> userRepository.save(user));
+    }
+
+    private boolean isAdmin(){
+        return getCurrentUserRoles().contains("ADMIN");
     }
 
     private List<Role> getTourismManagerRole(){
@@ -96,21 +75,56 @@ public class UserServiceImpl implements UserService {
         return histouricUser;
     }
 
-    @Override
-    public HistouricUser updateUser(UUID userId, HistouricUser user) {
-        HistouricUser histouricUser = getUserByUUID(userId);
-        checkPermission(histouricUser);
-        histouricUser.setUsername(user.getUsername());
-        histouricUser.setEmail(user.getEmail());
-        histouricUser.setPassword(user.getPassword());
-        histouricUser.setRoles(user.getRoles());
+    private void checkPermission(HistouricUser histouricUser){
+        if(!isAdmin() && !verifyUserIdentity(histouricUser.getId())){
+            throw new UserException(
+                    HttpStatus.FORBIDDEN,
+                    new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage())
+            );
+        }
+    }
 
-        return userRepository.save(histouricUser);
+    private boolean verifyUserIdentity(UUID userId){
+        UUID currentUserId = getCurrentUserId().orElseThrow(
+                () -> new UserException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        new UserError(UserErrorCode.CODE_04, UserErrorCode.CODE_04.getMessage())
+                )
+        );
+        return currentUserId.equals(userId);
+    }
+
+    @Override
+    public HistouricUser updateUser(UUID userId, HistouricUser histouricUser) {
+
+        if(!isAdmin() && histouricUser.getRoles() != null){
+            throw new UserException(
+                    HttpStatus.FORBIDDEN,
+                    new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage()+" You can't change roles")
+            );
+        }
+
+        HistouricUser histouricUserInDB = getUserByUUID(userId);
+        checkPermission(histouricUserInDB);
+        if (histouricUser.getUsername() != null) histouricUserInDB.setUsername(histouricUser.getUsername());
+        if (histouricUser.getEmail() != null) histouricUserInDB.setEmail(histouricUser.getEmail());
+        if (histouricUser.getPassword() != null) histouricUserInDB.setPassword(passwordEncoder.encode(histouricUser.getPassword()));
+
+        if (isAdmin() && histouricUser.getRoles() != null) histouricUserInDB.setRoles(histouricUser.getRoles());
+
+        return userRepository.save(histouricUserInDB);
+    }
+
+    private HistouricUser getUserByUUID(UUID userId){
+        return userRepository.findById(userId).orElseThrow(() -> new UserException(
+                HttpStatus.NOT_FOUND,
+                new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
+        ));
     }
 
     @Override
     public void deleteUser(UUID userId) {
-        checkPermission(userId);
+        checkPermission(getUserByUUID(userId));
         userRepository.deleteById(userId);
     }
 }
