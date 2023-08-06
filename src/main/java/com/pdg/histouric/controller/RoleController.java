@@ -1,6 +1,6 @@
 package com.pdg.histouric.controller;
 
-import com.pdg.histouric.api.RoleApi;
+import com.pdg.histouric.api.RoleAPI;
 import com.pdg.histouric.dto.RoleDTO;
 import com.pdg.histouric.mapper.RoleMapper;
 import com.pdg.histouric.service.RoleService;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-public class RoleController implements RoleApi {
+public class RoleController implements RoleAPI {
 
     private final RoleService roleService;
     private final RoleMapper roleMapper;

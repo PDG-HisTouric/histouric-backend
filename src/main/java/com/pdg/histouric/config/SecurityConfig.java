@@ -1,6 +1,6 @@
 package com.pdg.histouric.config;
 
-import com.pdg.histouric.api.AuthApi;
+import com.pdg.histouric.api.AuthAPI;
 import com.pdg.histouric.api.UserAPI;
 import com.pdg.histouric.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,7 +63,7 @@ public class SecurityConfig {
     }
 
     private RequestMatcher getUnlockedEndpoints(HandlerMappingIntrospector introspector){
-        MvcRequestMatcher login = new MvcRequestMatcher(introspector, AuthApi.ROOT_PATH + "/login");
+        MvcRequestMatcher login = new MvcRequestMatcher(introspector, AuthAPI.ROOT_PATH + "/login");
         login.setMethod(HttpMethod.POST);
 
         MvcRequestMatcher createUser = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH);
