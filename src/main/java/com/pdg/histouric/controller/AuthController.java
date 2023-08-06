@@ -24,7 +24,6 @@ public class AuthController implements AuthApi {
 
     @Override
     public TokenDTO login(@Valid UserForLoginDTO userForLoginDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authService.login(userForLoginDTO);
     }
 }

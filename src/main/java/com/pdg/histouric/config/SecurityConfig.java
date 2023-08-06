@@ -51,29 +51,43 @@ public class SecurityConfig {
     public AuthorizationManager<RequestAuthorizationContext> requestMatcherAuthorizationManager
             (HandlerMappingIntrospector introspector) {
 
-        MvcRequestMatcher login = new MvcRequestMatcher(introspector, AuthApi.ROOT_PATH + "/login");
-        login.setMethod(HttpMethod.POST);
-
-        RequestMatcher permitAll = new AndRequestMatcher(login);
+        RequestMatcher permitAll = getUnlockedEndpoints(introspector);
         RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder =
                 RequestMatcherDelegatingAuthorizationManager.builder()
                         .add(permitAll, (context, other) -> new AuthorizationDecision(true));
 
-
-        MvcRequestMatcher assignRole = new MvcRequestMatcher(introspector, "/prueba");
-        assignRole.setMethod(HttpMethod.GET);
-        managerBuilder.add(assignRole, AuthorityAuthorizationManager.hasAnyAuthority("GESTOR"));
-
-        MvcRequestMatcher prueba = new MvcRequestMatcher(introspector, "/prueba/prueba2");
-        prueba.setMethod(HttpMethod.GET);
-        managerBuilder.add(prueba, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
-
-        MvcRequestMatcher prueba1 = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH);
-        prueba1.setMethod(HttpMethod.GET);
-        managerBuilder.add(prueba1, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
-
+        configureEndpointsForUserApi(introspector, managerBuilder);
 
         AuthorizationManager<HttpServletRequest> manager = managerBuilder.build();
         return (authentication, object) -> manager.check(authentication,object.getRequest());
+    }
+
+    private RequestMatcher getUnlockedEndpoints(HandlerMappingIntrospector introspector){
+        MvcRequestMatcher login = new MvcRequestMatcher(introspector, AuthApi.ROOT_PATH + "/login");
+        login.setMethod(HttpMethod.POST);
+
+        MvcRequestMatcher createUser = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH);
+        createUser.setMethod(HttpMethod.POST);
+
+        return new AndRequestMatcher(login, createUser);
+    }
+
+    private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
+                                              RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder){
+        MvcRequestMatcher getUsers = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH);
+        getUsers.setMethod(HttpMethod.GET);
+        managerBuilder.add(getUsers, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
+
+        MvcRequestMatcher getUserByUsername = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{username}");
+        getUserByUsername.setMethod(HttpMethod.GET);
+        managerBuilder.add(getUserByUsername, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));
+
+        MvcRequestMatcher updateUserById = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{userId}");
+        updateUserById.setMethod(HttpMethod.POST);
+        managerBuilder.add(updateUserById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));
+
+        MvcRequestMatcher deleteUserById = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{userId}");
+        deleteUserById.setMethod(HttpMethod.DELETE);
+        managerBuilder.add(deleteUserById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));
     }
 }

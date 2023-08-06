@@ -26,9 +26,9 @@ public class HistouricApplication {
 	CommandLineRunner commandLineRunner(RoleRepository roleRepository,
 										UserRepository userRepository,
 										PasswordEncoder encoder) {
-		Role gestorRole = Role.builder()
+		Role tourismManagerRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
-				.name("GESTOR")
+				.name("TOURISM_MANAGER")
 				.description("In charge of managing the routes")
 				.build();
 
@@ -38,21 +38,51 @@ public class HistouricApplication {
 				.description("In charge of managing the users")
 				.build();
 
-		ArrayList<Role> userRoles = new ArrayList<>();
-		HistouricUser histouricUser = HistouricUser.builder()
+		Role researcher = Role.builder()
+				.id(UUID.fromString("1dd9a1e1-2531-49ae-b53e-a3b9e778b3cd"))
+				.name("RESEARCHER")
+				.description("In charge of managing the routes")
+				.build();
+
+		ArrayList<Role> adminUserRoles = new ArrayList<>();
+		HistouricUser adminUser = HistouricUser.builder()
 				.id(UUID.fromString("a7f042d7-618d-4723-be88-b799314063e7"))
-				.username("Pepito")
-				.email("pepito@gmail.com")
+				.username("Admin")
+				.email("admin@gmail.com")
 				.password(encoder.encode("password"))
-				.roles(userRoles)
+				.roles(adminUserRoles)
+				.build();
+
+		ArrayList<Role> tourismManagerUserRoles = new ArrayList<>();
+		HistouricUser tourismManagerUser = HistouricUser.builder()
+				.id(UUID.fromString("d052bbc3-4cf8-4add-977a-aee0734e353b"))
+				.username("Tourism Manager")
+				.email("tourism_manager@gmail.com")
+				.password(encoder.encode("password"))
+				.roles(tourismManagerUserRoles)
+				.build();
+
+		ArrayList<Role> researcherUserRoles = new ArrayList<>();
+		HistouricUser reasearcherUser = HistouricUser.builder()
+				.id(UUID.fromString("20ffef18-7d49-40f2-97f1-98bc6cb199a2"))
+				.username("Researcher")
+				.email("researcher@gmail.com")
+				.password(encoder.encode("password"))
+				.roles(researcherUserRoles)
 				.build();
 
 		return args -> {
-			Role gestorRoleCreated = roleRepository.save(gestorRole);
-			userRoles.add(gestorRoleCreated);
+			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
+			tourismManagerUserRoles.add(tourismManagerRoleCreated);
+			userRepository.save(tourismManagerUser);
+
 			Role adminRoleCreated = roleRepository.save(adminRole);
-			userRoles.add(adminRoleCreated);
-			userRepository.save(histouricUser);
+			adminUserRoles.add(adminRoleCreated);
+			userRepository.save(adminUser);
+
+			Role researcherRoleCreated = roleRepository.save(researcher);
+			researcherUserRoles.add(researcherRoleCreated);
+			userRepository.save(reasearcherUser);
 		};
 	}
 

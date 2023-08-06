@@ -15,7 +15,7 @@ public class HistouricSecurityContext {
         return histouricUser.getId();
     }
 
-    public static List<String> getCurrentUserRole() {
+    public static List<String> getCurrentUserRoles() {
         UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken)(SecurityContextHolder.getContext().getAuthentication());
         return authenticationToken.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
