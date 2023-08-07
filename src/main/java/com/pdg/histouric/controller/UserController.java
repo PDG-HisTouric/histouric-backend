@@ -1,11 +1,17 @@
 package com.pdg.histouric.controller;
 
 import com.pdg.histouric.api.UserAPI;
-import com.pdg.histouric.dto.UserDTO;
+import com.pdg.histouric.dto.CreateUserDTO;
+import com.pdg.histouric.dto.ResponseUserDTO;
+import com.pdg.histouric.dto.UpdateUserDTO;
+import com.pdg.histouric.dto.validation_groups.EmailNotNullGroup;
+import com.pdg.histouric.dto.validation_groups.UsernameNotNullGroup;
 import com.pdg.histouric.mapper.UserMapper;
 import com.pdg.histouric.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,23 +26,24 @@ public class UserController implements UserAPI {
     private final UserMapper userMapper;
 
     @Override
-    public UserDTO createUser(@Valid UserDTO userDTO) {
-        return userMapper.fromUser(userService.createUser(userMapper.fromDTO(userDTO)));
+    public ResponseUserDTO createUser(@Valid CreateUserDTO createUserDTO) {
+        return userMapper.fromUserToResponseDTO(userService.createUser(userMapper.fromDTO(createUserDTO)));
     }
 
     @Override
-    public List<UserDTO> getUsers() {
-        return userService.getUsers().stream().map(userMapper::fromUser).collect(Collectors.toList());
+    public List<ResponseUserDTO> getUsers() {
+        return userService.getUsers().stream().map(userMapper::fromUserToResponseDTO).collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO getUserByUsername(String username) {
-        return userMapper.fromUser(userService.getUserByUsername(username));
+    public ResponseUserDTO getUserByNickname(String nickname) {
+        return userMapper.fromUserToResponseDTO(userService.getUserByNickname(nickname));
     }
 
     @Override
-    public UserDTO updateUser(UUID userId, @Valid UserDTO userDTO) {
-        return userMapper.fromUser(userService.updateUser(userId, userMapper.fromDTO(userDTO)));
+    public ResponseUserDTO updateUser(UUID userId, UpdateUserDTO updateUserDTO) {
+        updateUserDTO.validate();
+        return userMapper.fromUserToResponseDTO(userService.updateUser(userId, userMapper.fromUpdateDTO(updateUserDTO)));
     }
 
     @Override

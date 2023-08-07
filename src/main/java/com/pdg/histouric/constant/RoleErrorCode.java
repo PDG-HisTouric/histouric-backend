@@ -5,12 +5,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum UserErrorCode {
+public enum RoleErrorCode {
 
-    CODE_01("User not found"),
-    CODE_02("User already exists."),
-    CODE_03("Not enough permissions."),
-    CODE_04("Internal Server Error"),
+    CODE_01("Role not found"),
+    CODE_02("Role already exists."),
 
     UNIVERSAL_ANNOTATION_CODE("Method argument not valid.");
 

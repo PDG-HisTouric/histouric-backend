@@ -1,8 +1,10 @@
 package com.pdg.histouric.error;
 
 import com.pdg.histouric.constant.UserErrorCode;
-import com.pdg.histouric.error.exception.UserError;
-import com.pdg.histouric.error.exception.UserException;
+import com.pdg.histouric.error.exception.*;
+import io.jsonwebtoken.ClaimJwtException;
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.persistence.PersistenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,5 +28,16 @@ public class GlobalExceptionHandler {
                 Objects.requireNonNull(methodArgumentNotValidException.getFieldError()).getDefaultMessage())
         );
         return new ResponseEntity<>(userException.getError(), userException.getHttpStatus());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<RoleError> handleRoleException(RoleException roleException) {
+        return new ResponseEntity<>(roleException.getError(), roleException.getHttpStatus());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<JPAError> handlePlaceException(PersistenceException persistenceException) {
+        JPAError jpaError = new JPAError(HttpStatus.BAD_REQUEST, persistenceException.getMessage());
+        return new ResponseEntity<>(jpaError, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,24 +1,27 @@
 package com.pdg.histouric.api;
 
-import com.pdg.histouric.dto.UserDTO;
+import com.pdg.histouric.dto.CreateUserDTO;
+import com.pdg.histouric.dto.ResponseUserDTO;
+import com.pdg.histouric.dto.UpdateUserDTO;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/users")
 public interface UserAPI {
+    String ROOT_PATH = "/api/v1/users";
 
     @PostMapping
-    UserDTO createUser(@RequestBody UserDTO userDTO);
+    ResponseUserDTO createUser(@RequestBody CreateUserDTO createUserDTO);
 
     @GetMapping
-    List<UserDTO> getUsers();
+    List<ResponseUserDTO> getUsers();
 
-    @GetMapping("/{username}")
-    UserDTO getUserByUsername(@PathVariable String username);
+    @GetMapping("/{nickname}")
+    ResponseUserDTO getUserByNickname(@PathVariable String nickname);
 
     @PutMapping("/{userId}")
-    UserDTO updateUser(@PathVariable UUID userId, @RequestBody UserDTO userDTO);
+    ResponseUserDTO updateUser(@PathVariable UUID userId, @RequestBody UpdateUserDTO updateUserDTO);
 
     @DeleteMapping("/{userId}")
     void deleteUser(@PathVariable UUID userId);
