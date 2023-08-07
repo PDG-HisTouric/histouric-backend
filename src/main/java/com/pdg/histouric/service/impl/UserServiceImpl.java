@@ -2,7 +2,6 @@ package com.pdg.histouric.service.impl;
 
 import com.pdg.histouric.constant.RoleErrorCode;
 import com.pdg.histouric.constant.UserErrorCode;
-import com.pdg.histouric.dto.UpdateUserDTO;
 import com.pdg.histouric.error.exception.RoleError;
 import com.pdg.histouric.error.exception.RoleException;
 import com.pdg.histouric.error.exception.UserError;
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public HistouricUser createUser(HistouricUser user) {
-        if (!isAdmin()) {
+        if (!isTheCurrentUserAdmin()) {
             user.setRoles(getTourismManagerRole());
         }
         return (HistouricUser) userRepository.findByNickname(user.getNickname())
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
                 .orElseGet(() -> userRepository.save(user));
     }
 
-    private boolean isAdmin() {
+    private boolean isTheCurrentUserAdmin() {
         return getCurrentUserRoles().contains("ADMIN");
     }
 
@@ -76,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkPermission(HistouricUser histouricUser) {
-        if (!isAdmin() && !verifyUserIdentity(histouricUser.getId())) {
+        if (!isTheCurrentUserAdmin() && !verifyUserIdentity(histouricUser.getId())) {
             throw new UserException(
                     HttpStatus.FORBIDDEN,
                     new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage())
@@ -97,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public HistouricUser updateUser(UUID userId, HistouricUser histouricUser) {
 
-        if (!isAdmin() && histouricUser.getRoles() != null) {
+        if (!isTheCurrentUserAdmin() && histouricUser.getRoles() != null) {
             throw new UserException(
                     HttpStatus.FORBIDDEN,
                     new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage() + " You can't change roles")
@@ -110,7 +109,16 @@ public class UserServiceImpl implements UserService {
         if (histouricUser.getEmail() != null) histouricUserInDB.setEmail(histouricUser.getEmail());
         if (histouricUser.getPassword() != null) histouricUserInDB.setPassword(passwordEncoder.encode(histouricUser.getPassword()));
 
-        if (isAdmin() && histouricUser.getRoles() != null) histouricUserInDB.setRoles(histouricUser.getRoles());
+        if (isTheCurrentUserAdmin() && histouricUser.getRoles() != null) {
+            if (isTheLastAdmin(histouricUserInDB) && !userContainsAdminRole(histouricUser)){
+                throw new UserException(
+                        HttpStatus.FORBIDDEN,
+                        new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage() + " You can't remove the last admin role")
+                );
+            } else {
+                histouricUserInDB.setRoles(histouricUser.getRoles());
+            }
+        }
 
         return userRepository.save(histouricUserInDB);
     }
@@ -124,7 +132,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(UUID userId) {
-        checkPermission(getUserByUUID(userId));
+        HistouricUser histouricUser = getUserByUUID(userId);
+        checkPermission(histouricUser);
+        if (isTheLastAdmin(histouricUser)) {
+            throw new UserException(
+                    HttpStatus.FORBIDDEN,
+                    new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage() + " You can't delete the last admin")
+            );
+        }
         userRepository.deleteById(userId);
+    }
+
+    private boolean isTheLastAdmin(HistouricUser histouricUser) {
+        if (!userContainsAdminRole(histouricUser)) return false;
+        List<HistouricUser> histouricUsers = userRepository.getHistouricUserByRolesContains(getAdminRole()).orElseThrow(
+                () -> new UserException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        new UserError(UserErrorCode.CODE_04, UserErrorCode.CODE_04.getMessage())
+                )
+        );
+        return histouricUsers.size() == 1;
+    }
+
+    private Role getAdminRole() {
+        return roleRepository.findByName("ADMIN").orElseThrow(() -> new RoleException(
+                HttpStatus.NOT_FOUND,
+                new RoleError(RoleErrorCode.CODE_01, RoleErrorCode.CODE_01.getMessage())
+        ));
+    }
+
+    private boolean userContainsAdminRole(HistouricUser histouricUser) {
+        UUID adminRoleId = getAdminRole().getId();
+        return histouricUser.getRoles().stream().anyMatch(role -> role.getId().equals(adminRoleId));
     }
 }

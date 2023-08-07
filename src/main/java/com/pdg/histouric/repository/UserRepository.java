@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<HistouricUser, UUID> {
 
     @Query(value = "SELECT histouric_user.roles FROM HistouricUser histouric_user WHERE histouric_user.id = :userId")
     Optional<List<Role>> getRolesByUserId(@Param("userId") UUID userId);
+
+    Optional<List<HistouricUser>> getHistouricUserByRolesContains(Role role);
 }
