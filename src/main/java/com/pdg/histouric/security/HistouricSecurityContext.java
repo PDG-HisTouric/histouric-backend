@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class HistouricSecurityContext {
-    public static Optional<UUID> getCurrentUserId(){
+    public static Optional<UUID> getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) return Optional.empty();
 

@@ -61,7 +61,7 @@ public class SecurityConfig {
         return (authentication, object) -> manager.check(authentication, object.getRequest());
     }
 
-    private void configureUnlockedEndpoints(HandlerMappingIntrospector introspector, RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder){
+    private void configureUnlockedEndpoints(HandlerMappingIntrospector introspector, RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
         MvcRequestMatcher login = new MvcRequestMatcher(introspector, AuthAPI.ROOT_PATH + "/login");
         login.setMethod(HttpMethod.POST);
         managerBuilder.add(login, (authentication, object) -> new AuthorizationDecision(true));
@@ -74,7 +74,7 @@ public class SecurityConfig {
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
-                                              RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder){
+                                              RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
         MvcRequestMatcher getUsers = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH);
         getUsers.setMethod(HttpMethod.GET);
         managerBuilder.add(getUsers, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));

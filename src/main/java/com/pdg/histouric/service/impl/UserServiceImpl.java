@@ -46,11 +46,11 @@ public class UserServiceImpl implements UserService {
                 .orElseGet(() -> userRepository.save(user));
     }
 
-    private boolean isAdmin(){
+    private boolean isAdmin() {
         return getCurrentUserRoles().contains("ADMIN");
     }
 
-    private List<Role> getTourismManagerRole(){
+    private List<Role> getTourismManagerRole() {
         Role tourismManagerRole = roleRepository.findByName("TOURISM_MANAGER").orElseThrow(() -> new RoleException(
                 HttpStatus.NOT_FOUND,
                 new RoleError(RoleErrorCode.CODE_01, RoleErrorCode.CODE_01.getMessage())
@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
         return histouricUser;
     }
 
-    private void checkPermission(HistouricUser histouricUser){
-        if(!isAdmin() && !verifyUserIdentity(histouricUser.getId())){
+    private void checkPermission(HistouricUser histouricUser) {
+        if (!isAdmin() && !verifyUserIdentity(histouricUser.getId())) {
             throw new UserException(
                     HttpStatus.FORBIDDEN,
                     new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage())
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private boolean verifyUserIdentity(UUID userId){
+    private boolean verifyUserIdentity(UUID userId) {
         UUID currentUserId = getCurrentUserId().orElseThrow(
                 () -> new UserException(
                         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -97,10 +97,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public HistouricUser updateUser(UUID userId, HistouricUser histouricUser) {
 
-        if(!isAdmin() && histouricUser.getRoles() != null){
+        if (!isAdmin() && histouricUser.getRoles() != null) {
             throw new UserException(
                     HttpStatus.FORBIDDEN,
-                    new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage()+" You can't change roles")
+                    new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage() + " You can't change roles")
             );
         }
 
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(histouricUserInDB);
     }
 
-    private HistouricUser getUserByUUID(UUID userId){
+    private HistouricUser getUserByUUID(UUID userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserException(
                 HttpStatus.NOT_FOUND,
                 new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())

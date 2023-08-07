@@ -31,7 +31,7 @@ public class JwtUtil {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    private Claims getAllClaims(String token){
+    private Claims getAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
@@ -39,7 +39,7 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver){
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -49,11 +49,11 @@ public class JwtUtil {
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    private Date getExpirationDateFromToken(String token){
+    private Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
-    private boolean isTokenExpired(String token){
+    private boolean isTokenExpired(String token) {
         return getExpirationDateFromToken(token).before(new Date());
     }
 

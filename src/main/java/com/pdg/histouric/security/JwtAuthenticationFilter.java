@@ -31,16 +31,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token = getTokenFromRequest(request);
         final String username;
 
-        if(token == null) {
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         username = jwtUtil.getUsernameFromToken(token);
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if(jwtUtil.isTheTokenValid(token, userDetails)){
+            if (jwtUtil.isTheTokenValid(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getTokenFromRequest(HttpServletRequest request) {
         final String bearerToken = request.getHeader("Authorization");
-        if(bearerToken == null || !bearerToken.startsWith("Bearer ")) return null;
+        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) return null;
 
         return bearerToken.substring(7);
     }
