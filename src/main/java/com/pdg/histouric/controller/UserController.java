@@ -36,8 +36,8 @@ public class UserController implements UserAPI {
     }
 
     @Override
-    public ResponseUserDTO getUserByUsername(String username) {
-        return userMapper.fromUserToResponseDTO(userService.getUserByUsername(username));
+    public ResponseUserDTO getUserByNickname(String nickname) {
+        return userMapper.fromUserToResponseDTO(userService.getUserByNickname(nickname));
     }
 
     @Override

@@ -47,7 +47,7 @@ public class HistouricApplication {
 		ArrayList<Role> adminUserRoles = new ArrayList<>();
 		HistouricUser adminUser = HistouricUser.builder()
 				.id(UUID.fromString("a7f042d7-618d-4723-be88-b799314063e7"))
-				.username("Admin")
+				.nickname("Juan Esteban")
 				.email("admin@gmail.com")
 				.password(encoder.encode("password"))
 				.roles(adminUserRoles)
@@ -56,7 +56,7 @@ public class HistouricApplication {
 		ArrayList<Role> tourismManagerUserRoles = new ArrayList<>();
 		HistouricUser tourismManagerUser = HistouricUser.builder()
 				.id(UUID.fromString("d052bbc3-4cf8-4add-977a-aee0734e353b"))
-				.username("Tourism Manager")
+				.nickname("Juan Pablo")
 				.email("tourism_manager@gmail.com")
 				.password(encoder.encode("password"))
 				.roles(tourismManagerUserRoles)
@@ -65,7 +65,7 @@ public class HistouricApplication {
 		ArrayList<Role> researcherUserRoles = new ArrayList<>();
 		HistouricUser reasearcherUser = HistouricUser.builder()
 				.id(UUID.fromString("20ffef18-7d49-40f2-97f1-98bc6cb199a2"))
-				.username("Researcher")
+				.nickname("Andres Felipe")
 				.email("researcher@gmail.com")
 				.password(encoder.encode("password"))
 				.roles(researcherUserRoles)

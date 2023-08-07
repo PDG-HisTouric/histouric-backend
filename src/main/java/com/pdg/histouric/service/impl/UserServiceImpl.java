@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         if (!isAdmin()) {
             user.setRoles(getTourismManagerRole());
         }
-        return (HistouricUser) userRepository.findByUsername(user.getUsername())
+        return (HistouricUser) userRepository.findByNickname(user.getNickname())
                 .map(userFound -> {
                     throw new UserException(
                             HttpStatus.BAD_REQUEST,
@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public HistouricUser getUserByUsername(String username) {
-        HistouricUser histouricUser = userRepository.findByUsername(username).orElseThrow(() -> new UserException(
+    public HistouricUser getUserByNickname(String nickname) {
+        HistouricUser histouricUser = userRepository.findByNickname(nickname).orElseThrow(() -> new UserException(
                 HttpStatus.NOT_FOUND,
                 new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
         ));
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
         HistouricUser histouricUserInDB = getUserByUUID(userId);
         checkPermission(histouricUserInDB);
-        if (histouricUser.getUsername() != null) histouricUserInDB.setUsername(histouricUser.getUsername());
+        if (histouricUser.getNickname() != null) histouricUserInDB.setNickname(histouricUser.getNickname());
         if (histouricUser.getEmail() != null) histouricUserInDB.setEmail(histouricUser.getEmail());
         if (histouricUser.getPassword() != null) histouricUserInDB.setPassword(passwordEncoder.encode(histouricUser.getPassword()));
 

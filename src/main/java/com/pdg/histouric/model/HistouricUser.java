@@ -31,8 +31,8 @@ public class HistouricUser implements UserDetails {
     @Column(name = "user_id", nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "user_name", nullable = false, unique = true)
-    private String username;
+    @Column(name = "user_nickname", nullable = false, unique = true)
+    private String nickname;
 
     @Column(name = "user_email", nullable = false, unique = true)
     private String email;

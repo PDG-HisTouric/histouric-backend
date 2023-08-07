@@ -79,9 +79,9 @@ public class SecurityConfig {
         getUsers.setMethod(HttpMethod.GET);
         managerBuilder.add(getUsers, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
 
-        MvcRequestMatcher getUserByUsername = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{username}");
-        getUserByUsername.setMethod(HttpMethod.GET);
-        managerBuilder.add(getUserByUsername, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));
+        MvcRequestMatcher getUserByNickname = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{nickname}");
+        getUserByNickname.setMethod(HttpMethod.GET);
+        managerBuilder.add(getUserByNickname, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));
 
         MvcRequestMatcher updateUserById = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{userId}");
         updateUserById.setMethod(HttpMethod.PUT);

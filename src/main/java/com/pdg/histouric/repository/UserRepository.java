@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<HistouricUser, UUID> {
-    Optional<HistouricUser> findByUsername(String username);
+    Optional<HistouricUser> findByNickname(String nickname);
     Optional<HistouricUser> findByEmail(String email);
 
     @Query(value = "SELECT histouric_user.roles FROM HistouricUser histouric_user WHERE histouric_user.id = :userId")

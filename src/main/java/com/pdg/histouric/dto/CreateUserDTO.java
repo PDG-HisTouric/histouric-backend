@@ -18,11 +18,11 @@ public class CreateUserDTO {
 
     private UUID id;
 
-    @NotNull(message = "Username cannot be null")
-    @NotEmpty(message = "Username cannot be empty")
-    @NotBlank(message = "Username cannot be blank")
-    @Length(max = 50, message = "Username must be 50 characters long")
-    private String username;
+    @NotNull(message = "Nickname cannot be null")
+    @NotEmpty(message = "Nickname cannot be empty")
+    @NotBlank(message = "Nickname cannot be blank")
+    @Length(max = 50, message = "Nickname must be 50 characters long")
+    private String nickname;
 
     @NotNull(message = "User email cannot be null")
     @NotEmpty(message = "User email cannot be empty")

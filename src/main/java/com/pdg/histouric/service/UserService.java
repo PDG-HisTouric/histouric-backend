@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface UserService {
     HistouricUser createUser(HistouricUser user);
     List<HistouricUser> getUsers();
-    HistouricUser getUserByUsername(String username);
+    HistouricUser getUserByNickname(String nickname);
     HistouricUser updateUser(UUID userId, HistouricUser user);
     void deleteUser(UUID userId);
 }
