@@ -2,6 +2,7 @@ package com.pdg.histouric.service.impl;
 
 import com.pdg.histouric.dto.TokenDTO;
 import com.pdg.histouric.dto.UserForLoginDTO;
+import com.pdg.histouric.model.HistouricUser;
 import com.pdg.histouric.repository.UserRepository;
 import com.pdg.histouric.service.AuthService;
 import com.pdg.histouric.utils.JwtUtil;
@@ -22,12 +23,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public TokenDTO login(UserForLoginDTO userForLoginDTO) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userForLoginDTO.getEmail(), userForLoginDTO.getPassword()));
-        UserDetails user = userRepository.findByEmail(userForLoginDTO.getEmail()).orElseThrow();
+        HistouricUser user = userRepository.findByEmail(userForLoginDTO.getEmail()).orElseThrow();
         String token = jwtUtil.getToken(user);
         return TokenDTO.builder()
             .token(token)
-            .userId(user.getUsername())
-            .roles(user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
+            .nickname(user.getNickname())
             .build();
     }
 }
