@@ -13,6 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class TokenDTO {
     private String token;
-    private List<String> roles;
-    private String userId;
+    private String nickname;
 }
