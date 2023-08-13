@@ -42,7 +42,7 @@ public class UpdateUserDTO {
     @Length(max = 255, message = "User password must be 255 characters long")
     private String password;
 
-    private List<RoleDTO> roles;
+    private List<String> roles;
 
     public void validate() {
         Validator validator = buildDefaultValidatorFactory().getValidator();

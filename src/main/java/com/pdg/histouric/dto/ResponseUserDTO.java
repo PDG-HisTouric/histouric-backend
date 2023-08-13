@@ -20,6 +20,8 @@ import java.util.UUID;
 public class ResponseUserDTO {
     private UUID id;
 
+    private String token;
+
     @NotNull(message = "Nickname cannot be null")
     @NotEmpty(message = "Nickname cannot be empty")
     @NotBlank(message = "Nickname cannot be blank")
