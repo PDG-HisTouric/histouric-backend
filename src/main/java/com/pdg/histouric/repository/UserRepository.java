@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<HistouricUser, UUID> {
     Optional<List<Role>> getRolesByUserId(@Param("userId") UUID userId);
 
     Optional<List<HistouricUser>> getHistouricUserByRolesContains(Role role);
+
+    Optional<List<HistouricUser>> getHistouricUserByNicknameContainsIgnoreCase(String nickname);
 }

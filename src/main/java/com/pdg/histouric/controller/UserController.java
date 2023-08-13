@@ -40,6 +40,11 @@ public class UserController implements UserAPI {
     }
 
     @Override
+    public List<ResponseUserDTO> getUsersByNickname(String nickname) {
+        return userMapper.fromUsersToResponseDTOs(userService.getUsersByNickname(nickname));
+    }
+
+    @Override
     public ResponseUserDTO updateUser(UUID userId, UpdateUserDTO updateUserDTO) {
         updateUserDTO.validate();
         HistouricUser histouricUser = userService.updateUser(userId, userMapper.fromUpdateDTO(updateUserDTO));

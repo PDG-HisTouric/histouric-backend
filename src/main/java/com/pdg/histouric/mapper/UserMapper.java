@@ -16,6 +16,7 @@ public interface UserMapper {
     CreateUserDTO fromUserToCreateDTO(HistouricUser user);
     ResponseUserDTO fromUserToResponseDTO(HistouricUser user);
     HistouricUser fromUpdateDTO(UpdateUserDTO updateUserDTO);
+    List<ResponseUserDTO> fromUsersToResponseDTOs(List<HistouricUser> users);
     List<Role> mapRoles(List<String> value);
     @Mapping(target = "name", source = "value")
     Role mapRole(String value);

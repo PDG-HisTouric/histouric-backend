@@ -74,6 +74,11 @@ public class UserServiceImpl implements UserService {
         return histouricUser;
     }
 
+    @Override
+    public List<HistouricUser> getUsersByNickname(String nickname) {
+        return userRepository.getHistouricUserByNicknameContainsIgnoreCase(nickname).orElseGet(ArrayList::new);
+    }
+
     private void checkPermission(HistouricUser histouricUser) {
         if (!isTheCurrentUserAdmin() && !verifyUserIdentity(histouricUser.getId())) {
             throw new UserException(
