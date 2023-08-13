@@ -110,6 +110,7 @@ public class UserServiceImpl implements UserService {
         if (histouricUser.getPassword() != null) histouricUserInDB.setPassword(passwordEncoder.encode(histouricUser.getPassword()));
 
         if (isTheCurrentUserAdmin() && histouricUser.getRoles() != null) {
+            histouricUser.setRoles(getRolesFromNames(histouricUser.getRoles()));
             if (isTheLastAdmin(histouricUserInDB) && !userContainsAdminRole(histouricUser)){
                 throw new UserException(
                         HttpStatus.FORBIDDEN,
@@ -121,6 +122,18 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.save(histouricUserInDB);
+    }
+
+    private List<Role> getRolesFromNames(List<Role> rolesOnlyWithNames) {
+        List<Role> roles = new ArrayList<>();
+        for (Role roleOnlyWithName : rolesOnlyWithNames) {
+            Role roleFound = roleRepository.findByName(roleOnlyWithName.getName()).orElseThrow(() -> new RoleException(
+                    HttpStatus.NOT_FOUND,
+                    new RoleError(RoleErrorCode.CODE_01, RoleErrorCode.CODE_01.getMessage())
+            ));
+            roles.add(roleFound);
+        }
+        return roles;
     }
 
     private HistouricUser getUserByUUID(UUID userId) {

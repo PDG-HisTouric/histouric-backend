@@ -4,14 +4,12 @@ import com.pdg.histouric.api.UserAPI;
 import com.pdg.histouric.dto.CreateUserDTO;
 import com.pdg.histouric.dto.ResponseUserDTO;
 import com.pdg.histouric.dto.UpdateUserDTO;
-import com.pdg.histouric.dto.validation_groups.EmailNotNullGroup;
-import com.pdg.histouric.dto.validation_groups.UsernameNotNullGroup;
 import com.pdg.histouric.mapper.UserMapper;
+import com.pdg.histouric.model.HistouricUser;
 import com.pdg.histouric.service.UserService;
+import com.pdg.histouric.utils.JwtUtil;
 import jakarta.validation.Valid;
-import jakarta.validation.groups.Default;
 import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,6 +22,7 @@ public class UserController implements UserAPI {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final JwtUtil jwtUtil;
 
     @Override
     public ResponseUserDTO createUser(@Valid CreateUserDTO createUserDTO) {
@@ -43,7 +42,11 @@ public class UserController implements UserAPI {
     @Override
     public ResponseUserDTO updateUser(UUID userId, UpdateUserDTO updateUserDTO) {
         updateUserDTO.validate();
-        return userMapper.fromUserToResponseDTO(userService.updateUser(userId, userMapper.fromUpdateDTO(updateUserDTO)));
+        HistouricUser histouricUser = userService.updateUser(userId, userMapper.fromUpdateDTO(updateUserDTO));
+        String token = jwtUtil.getToken(histouricUser);
+        ResponseUserDTO responseUserDTO = userMapper.fromUserToResponseDTO(histouricUser);
+        responseUserDTO.setToken(token);
+        return responseUserDTO;
     }
 
     @Override
