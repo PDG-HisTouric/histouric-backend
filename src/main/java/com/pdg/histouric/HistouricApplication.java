@@ -53,6 +53,14 @@ public class HistouricApplication {
 				.roles(adminUserRoles)
 				.build();
 
+		HistouricUser adminUser1 = HistouricUser.builder()
+				.id(UUID.fromString("b7f042d7-618d-4723-be88-b799314063e7"))
+				.nickname("Juan Camilo")
+				.email("admin1@gmail.com")
+				.password(encoder.encode("password1"))
+				.roles(adminUserRoles)
+				.build();
+
 		ArrayList<Role> tourismManagerUserRoles = new ArrayList<>();
 		HistouricUser tourismManagerUser = HistouricUser.builder()
 				.id(UUID.fromString("d052bbc3-4cf8-4add-977a-aee0734e353b"))
@@ -79,6 +87,7 @@ public class HistouricApplication {
 			Role adminRoleCreated = roleRepository.save(adminRole);
 			adminUserRoles.add(adminRoleCreated);
 			userRepository.save(adminUser);
+			userRepository.save(adminUser1);
 
 			Role researcherRoleCreated = roleRepository.save(researcher);
 			researcherUserRoles.add(researcherRoleCreated);
