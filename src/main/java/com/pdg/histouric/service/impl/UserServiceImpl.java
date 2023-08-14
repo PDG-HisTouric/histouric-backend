@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkPermission(HistouricUser histouricUser) {
-        if (!isTheCurrentUserAdmin() && !verifyUserIdentity(histouricUser.getId())) {
+        if (userContainsAdminRole(histouricUser) && (!isTheCurrentUserAdmin() || !verifyUserIdentity(histouricUser.getId()))) {
             throw new UserException(
                     HttpStatus.FORBIDDEN,
                     new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage())
