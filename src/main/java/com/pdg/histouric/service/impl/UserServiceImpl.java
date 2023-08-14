@@ -32,6 +32,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public HistouricUser createUser(HistouricUser user) {
+        if (isTheCurrentUserAdmin() && user.getRoles().isEmpty()){
+            throw new UserException(
+                    HttpStatus.BAD_REQUEST,
+                    new UserError(UserErrorCode.CODE_02, UserErrorCode.CODE_02.getMessage())
+            );
+        }
         if (!isTheCurrentUserAdmin()) {
             user.setRoles(getTourismManagerRole());
         }
@@ -124,7 +130,7 @@ public class UserServiceImpl implements UserService {
                         new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage() + " You can't remove the last admin role")
                 );
             } else {
-                histouricUserInDB.setRoles(histouricUser.getRoles());
+                if (!histouricUser.getRoles().isEmpty()) histouricUserInDB.setRoles(histouricUser.getRoles());
             }
         }
 
