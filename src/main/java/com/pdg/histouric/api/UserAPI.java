@@ -20,6 +20,9 @@ public interface UserAPI {
     @GetMapping("/{nickname}")
     ResponseUserDTO getUserByNickname(@PathVariable String nickname);
 
+    @GetMapping("/all/{nickname}")
+    List<ResponseUserDTO> getUsersByNickname(@PathVariable String nickname);
+
     @PutMapping("/{userId}")
     ResponseUserDTO updateUser(@PathVariable UUID userId, @RequestBody UpdateUserDTO updateUserDTO);
 

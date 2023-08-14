@@ -89,6 +89,10 @@ public class SecurityConfig {
         getUserByNickname.setMethod(HttpMethod.GET);
         managerBuilder.add(getUserByNickname, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));
 
+        MvcRequestMatcher getUsersThatContainsNickname = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/all/{nickname}");
+        getUsersThatContainsNickname.setMethod(HttpMethod.GET);
+        managerBuilder.add(getUsersThatContainsNickname, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN"));
+
         MvcRequestMatcher updateUserById = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{userId}");
         updateUserById.setMethod(HttpMethod.PUT);
         managerBuilder.add(updateUserById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));

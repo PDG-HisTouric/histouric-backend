@@ -61,7 +61,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<HistouricUser> getUsers() {
-        return new ArrayList<>(userRepository.findAll());
+        return new ArrayList<>(userRepository.findAll().stream()
+                .filter(histouricUser -> !userContainsAdminRole(histouricUser)).toList());
     }
 
     @Override
@@ -72,6 +73,12 @@ public class UserServiceImpl implements UserService {
         ));
         checkPermission(histouricUser);
         return histouricUser;
+    }
+
+    @Override
+    public List<HistouricUser> getUsersByNickname(String nickname) {
+        List<HistouricUser> histouricUsers = userRepository.getHistouricUserByNicknameContainsIgnoreCase(nickname).orElseGet(ArrayList::new);
+        return histouricUsers.stream().filter(histouricUser -> !userContainsAdminRole(histouricUser)).toList();
     }
 
     private void checkPermission(HistouricUser histouricUser) {
