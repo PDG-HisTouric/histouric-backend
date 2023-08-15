@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public HistouricUser createUser(HistouricUser user) {
-        if (isTheCurrentUserAdmin() && user.getRoles().isEmpty()){
+        if (isTheCurrentUserAdmin() && user.getRoles().isEmpty()) {
             throw new UserException(
                     HttpStatus.BAD_REQUEST,
                     new UserError(UserErrorCode.CODE_02, UserErrorCode.CODE_02.getMessage())
@@ -48,7 +48,11 @@ public class UserServiceImpl implements UserService {
                             new UserError(UserErrorCode.CODE_02, UserErrorCode.CODE_02.getMessage())
                     );
                 })
-                .orElseGet(() -> userRepository.save(user));
+                .orElseGet(() -> {
+                    user.setPassword(passwordEncoder.encode(user.getPassword()));
+                    user.setRoles(getRolesFromNames(user.getRoles()));
+                    return userRepository.save(user);
+                });
     }
 
     private boolean isTheCurrentUserAdmin() {

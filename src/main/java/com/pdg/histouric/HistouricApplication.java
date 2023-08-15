@@ -48,7 +48,7 @@ public class HistouricApplication {
 		HistouricUser adminUser = HistouricUser.builder()
 				.id(UUID.fromString("a7f042d7-618d-4723-be88-b799314063e7"))
 				.nickname("Juan Esteban")
-				.email("admin@gmail.com")
+				.email("admin1@gmail.com")
 				.password(encoder.encode("password"))
 				.roles(adminUserRoles)
 				.build();
@@ -56,8 +56,8 @@ public class HistouricApplication {
 		HistouricUser adminUser1 = HistouricUser.builder()
 				.id(UUID.fromString("b7f042d7-618d-4723-be88-b799314063e7"))
 				.nickname("Juan Camilo")
-				.email("admin1@gmail.com")
-				.password(encoder.encode("password1"))
+				.email("admin2@gmail.com")
+				.password(encoder.encode("password"))
 				.roles(adminUserRoles)
 				.build();
 

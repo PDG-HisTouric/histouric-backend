@@ -13,12 +13,10 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     HistouricUser fromDTO(CreateUserDTO createUserDTO);
-    CreateUserDTO fromUserToCreateDTO(HistouricUser user);
     ResponseUserDTO fromUserToResponseDTO(HistouricUser user);
     HistouricUser fromUpdateDTO(UpdateUserDTO updateUserDTO);
     List<ResponseUserDTO> fromUsersToResponseDTOs(List<HistouricUser> users);
     List<Role> mapRoles(List<String> value);
     @Mapping(target = "name", source = "value")
     Role mapRole(String value);
-
 }
