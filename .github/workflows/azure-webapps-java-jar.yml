@@ -21,7 +21,8 @@ name: Build and deploy JAR app to Azure Web App
 
 env:
   AZURE_WEBAPP_NAME: histouric-backend    # set this to the name of your Azure Web App
-  JAVA_VERSION: '17'                  # set this to the Java version to use                # set this to the Java distribution
+  JAVA_VERSION: '17'                  # set this to the Java version to use
+  DISTRIBUTION: zulu                  # set this to the Java distribution
 
 on:
   push:
@@ -42,7 +43,6 @@ jobs:
         uses: actions/setup-java@v3.0.0
         with:
           java-version: ${{ env.JAVA_VERSION }}
-          distribution: ${{ env.DISTRIBUTION }}
           cache: 'maven'
 
       - name: Build with Maven
