@@ -11,7 +11,7 @@ env:
 
 on:
   push:
-    branches: [ "update-application-properties" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
