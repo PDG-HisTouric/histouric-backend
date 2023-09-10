@@ -1,6 +1,7 @@
 package com.pdg.histouric.config;
 
 import com.pdg.histouric.api.AuthAPI;
+import com.pdg.histouric.api.BicAPI;
 import com.pdg.histouric.api.UserAPI;
 import com.pdg.histouric.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,6 +63,7 @@ public class SecurityConfig {
 
         configureUnlockedEndpoints(introspector, managerBuilder);
         configureEndpointsForUserApi(introspector, managerBuilder);
+        configureEndpointsForBicApi(introspector, managerBuilder);
 
         AuthorizationManager<HttpServletRequest> manager = managerBuilder.build();
         return (authentication, object) -> manager.check(authentication, object.getRequest());
@@ -76,7 +78,13 @@ public class SecurityConfig {
         createUser.setMethod(HttpMethod.POST);
         managerBuilder.add(createUser, (authentication, object) -> new AuthorizationDecision(true));
 
+        MvcRequestMatcher getBics = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH);
+        getBics.setMethod(HttpMethod.GET);
+        managerBuilder.add(getBics, (authentication, object) -> new AuthorizationDecision(true));
 
+        MvcRequestMatcher getBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{id}");
+        getBicById.setMethod(HttpMethod.GET);
+        managerBuilder.add(getBicById, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
@@ -100,6 +108,25 @@ public class SecurityConfig {
         MvcRequestMatcher deleteUserById = new MvcRequestMatcher(introspector, UserAPI.ROOT_PATH + "/{userId}");
         deleteUserById.setMethod(HttpMethod.DELETE);
         managerBuilder.add(deleteUserById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER", "RESEARCHER"));
+    }
+
+    private void configureEndpointsForBicApi(HandlerMappingIntrospector introspector,
+                                            RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
+        MvcRequestMatcher createBic = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH);
+        createBic.setMethod(HttpMethod.POST);
+        managerBuilder.add(createBic, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+        MvcRequestMatcher updateBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{bicId}");
+        updateBicById.setMethod(HttpMethod.PUT);
+        managerBuilder.add(updateBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+        MvcRequestMatcher patchBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{bicId}");
+        patchBicById.setMethod(HttpMethod.PATCH);
+        managerBuilder.add(patchBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+        MvcRequestMatcher deleteBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{bicId}");
+        deleteBicById.setMethod(HttpMethod.DELETE);
+        managerBuilder.add(deleteBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
     }
 
     @Bean

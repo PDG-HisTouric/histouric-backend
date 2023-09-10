@@ -36,7 +36,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<JPAError> handlePlaceException(PersistenceException persistenceException) {
+    public ResponseEntity<BicError> handleBicException(BicException bicException) {
+        return new ResponseEntity<>(bicException.getError(), bicException.getHttpStatus());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<JPAError> handlePersistenceException(PersistenceException persistenceException) {
         JPAError jpaError = new JPAError(HttpStatus.BAD_REQUEST, persistenceException.getMessage());
         return new ResponseEntity<>(jpaError, HttpStatus.BAD_REQUEST);
     }

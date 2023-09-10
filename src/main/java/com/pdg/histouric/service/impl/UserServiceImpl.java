@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
 
         if (isTheCurrentUserAdmin() && histouricUser.getRoles() != null) {
             histouricUser.setRoles(getRolesFromNames(histouricUser.getRoles()));
-            if (isTheLastAdmin(histouricUserInDB) && !userContainsAdminRole(histouricUser)){
+            if (isTheLastAdmin(histouricUserInDB) && !userContainsAdminRole(histouricUser)) {
                 throw new UserException(
                         HttpStatus.FORBIDDEN,
                         new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage() + " You can't remove the last admin role")
