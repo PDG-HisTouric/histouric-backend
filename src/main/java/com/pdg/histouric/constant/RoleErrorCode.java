@@ -3,8 +3,8 @@ package com.pdg.histouric.constant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum RoleErrorCode {
 
     CODE_01("Role not found"),
