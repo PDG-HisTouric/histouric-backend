@@ -120,6 +120,10 @@ public class SecurityConfig {
         updateBicById.setMethod(HttpMethod.PUT);
         managerBuilder.add(updateBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
 
+        MvcRequestMatcher patchBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{bicId}");
+        patchBicById.setMethod(HttpMethod.PATCH);
+        managerBuilder.add(patchBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
         MvcRequestMatcher deleteBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{bicId}");
         deleteBicById.setMethod(HttpMethod.DELETE);
         managerBuilder.add(deleteBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
