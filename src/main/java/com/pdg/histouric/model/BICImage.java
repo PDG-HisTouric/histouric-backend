@@ -11,6 +11,7 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Getter
 @Setter
+@Table(name="bic_image")
 public class BICImage {
 
     @Id

@@ -25,7 +25,7 @@ public class BIC {
     @Column(name = "bic_name", nullable = false)
     private String name;
 
-    @Column(name = "bic_description", nullable = false)
+    @Column(name = "bic_description", nullable = false, length = 1000)
     private String description;
 
     @Column(name = "bic_latitude", nullable = false)

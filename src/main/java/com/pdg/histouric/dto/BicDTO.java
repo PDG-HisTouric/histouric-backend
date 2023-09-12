@@ -30,11 +30,11 @@ public class BicDTO {
     private String description;
 
     @NotNull(message = "Latitude cannot be null")
-    @Digits(integer = 3, fraction = 6, message = "Latitude must be a valid latitude")
+    @Digits(integer = 3, fraction = 16, message = "Latitude must be a valid latitude")
     private double latitude;
 
     @NotNull(message = "Longitude cannot be null")
-    @Digits(integer = 3, fraction = 6, message = "Longitude must be a valid longitude")
+    @Digits(integer = 3, fraction = 16, message = "Longitude must be a valid longitude")
     private double longitude;
 
     @NotNull(message = "Existence specification cannot be null")
