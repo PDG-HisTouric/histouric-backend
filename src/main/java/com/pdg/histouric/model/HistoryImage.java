@@ -11,7 +11,7 @@ import org.hibernate.type.SqlTypes;
 @Entity
 @Getter
 @Setter
-public class HistouricImage {
+public class HistoryImage {
 
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
@@ -24,8 +24,4 @@ public class HistouricImage {
 
     @Column(name = "start_time", nullable = false)
     private String startTime;
-
-    @ManyToOne
-    @JoinColumn(name = "bic_id")
-    private BIC bic;
 }

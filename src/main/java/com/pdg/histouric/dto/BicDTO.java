@@ -40,7 +40,7 @@ public class BicDTO {
     @NotNull(message = "Existence specification cannot be null")
     private boolean existss;
 
-    private List<NicknameDTO> nicknamesDTO;
+    private List<NicknameDTO> nicknames;
 
-    private List<HistouricImageDTO> imagesDTO;
+    private List<BICImageDTO> imagesUris;
 }

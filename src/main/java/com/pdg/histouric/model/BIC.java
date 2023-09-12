@@ -37,19 +37,9 @@ public class BIC {
     @Column(name = "bic_exists", nullable = false)
     private boolean existss;
 
-    @OneToMany
-    @JoinTable(
-            name = "bic_nickname",
-            joinColumns = @JoinColumn(name = "bic_id"),
-            inverseJoinColumns = @JoinColumn(name = "nickname_id")
-    )
+    @OneToMany(mappedBy = "bic")
     private List<Nickname> nicknames;
 
-    @OneToMany
-    @JoinTable(
-            name = "bic_image",
-            joinColumns = @JoinColumn(name = "bic_id"),
-            inverseJoinColumns = @JoinColumn(name = "image_id")
-    )
-    private List<HistouricImage> images;
+    @OneToMany(mappedBy = "bic")
+    private List<BICImage> images;
 }
