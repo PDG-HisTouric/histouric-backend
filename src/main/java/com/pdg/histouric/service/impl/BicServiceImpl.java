@@ -7,7 +7,9 @@ import com.pdg.histouric.error.exception.BicException;
 import com.pdg.histouric.error.exception.UserError;
 import com.pdg.histouric.error.exception.UserException;
 import com.pdg.histouric.model.BIC;
+import com.pdg.histouric.repository.BICImageRepository;
 import com.pdg.histouric.repository.BicRepository;
+import com.pdg.histouric.repository.NicknameRepository;
 import com.pdg.histouric.service.BicService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import static com.pdg.histouric.security.HistouricSecurityContext.getCurrentUser
 public class BicServiceImpl implements BicService {
 
     private final BicRepository bicRepository;
+    private final BICImageRepository bicImageRepository;
+    private final NicknameRepository nicknameRepository;
 
     @Override
     public BIC createBIC(BIC bic) {
@@ -30,7 +34,20 @@ public class BicServiceImpl implements BicService {
             if (verifyBicExists(bic)) {
                 throw new BicException(HttpStatus.BAD_REQUEST, new BicError(BicErrorCode.CODE_02, BicErrorCode.CODE_02.getMessage()));
             }
-            return bicRepository.save(bic);
+            BIC createdBIC = bicRepository.save(bic);
+            if (bic.getImages() != null) {
+                bic.getImages().forEach(image -> {
+                    image.setBic(createdBIC);
+                    bicImageRepository.save(image);
+                });
+            }
+            if (bic.getNicknames() != null) {
+                bic.getNicknames().forEach(nickname -> {
+                    nickname.setBic(createdBIC);
+                    nicknameRepository.save(nickname);
+                });
+            }
+            return createdBIC;
         }
         throw new UserException(HttpStatus.FORBIDDEN, new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage()));
     }
