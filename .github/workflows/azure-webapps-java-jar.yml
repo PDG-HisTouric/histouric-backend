@@ -11,7 +11,7 @@ env:
 
 on:
   push:
-    branches: [ "create-bic" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
