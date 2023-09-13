@@ -25,7 +25,7 @@ public class BIC {
     @Column(name = "bic_name", nullable = false)
     private String name;
 
-    @Column(name = "bic_description", nullable = false)
+    @Column(name = "bic_description", nullable = false, length = 1000)
     private String description;
 
     @Column(name = "bic_latitude", nullable = false)
@@ -37,19 +37,9 @@ public class BIC {
     @Column(name = "bic_exists", nullable = false)
     private boolean existss;
 
-    @OneToMany
-    @JoinTable(
-            name = "bic_nickname",
-            joinColumns = @JoinColumn(name = "bic_id"),
-            inverseJoinColumns = @JoinColumn(name = "nickname_id")
-    )
+    @OneToMany(mappedBy = "bic")
     private List<Nickname> nicknames;
 
-    @OneToMany
-    @JoinTable(
-            name = "bic_image",
-            joinColumns = @JoinColumn(name = "bic_id"),
-            inverseJoinColumns = @JoinColumn(name = "image_id")
-    )
-    private List<HistouricImage> images;
+    @OneToMany(mappedBy = "bic")
+    private List<BICImage> images;
 }

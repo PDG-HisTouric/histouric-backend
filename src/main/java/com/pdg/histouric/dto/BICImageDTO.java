@@ -15,12 +15,12 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NicknameDTO {
+public class BICImageDTO {
 
-    @NotNull(message = "Nickname cannot be null")
-    @NotEmpty(message = "Nickname cannot be empty")
-    @NotBlank(message = "Nickname cannot be blank")
-    @Length(max = 255, message = "Nickname must be 255 characters long")
-    private String nickname;
+    @NotNull(message = "The image uri cannot be null")
+    @NotEmpty(message = "The image uri cannot be empty")
+    @NotBlank(message = "The image uri cannot be blank")
+    @Length(max = 255, message = "The image uri must have a maximum of 255 characters")
+    private String imageUri;
 
 }

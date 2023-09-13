@@ -1,7 +1,11 @@
 package com.pdg.histouric;
 
+import com.pdg.histouric.model.BIC;
 import com.pdg.histouric.model.HistouricUser;
+import com.pdg.histouric.model.Nickname;
 import com.pdg.histouric.model.Role;
+import com.pdg.histouric.repository.BicRepository;
+import com.pdg.histouric.repository.NicknameRepository;
 import com.pdg.histouric.repository.RoleRepository;
 import com.pdg.histouric.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -25,6 +29,8 @@ public class HistouricApplication {
 	@Profile("!test")
 	CommandLineRunner commandLineRunner(RoleRepository roleRepository,
 										UserRepository userRepository,
+										BicRepository bicRepository,
+										NicknameRepository nicknameRepository,
 										PasswordEncoder encoder) {
 		Role tourismManagerRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
@@ -79,6 +85,62 @@ public class HistouricApplication {
 				.roles(researcherUserRoles)
 				.build();
 
+		BIC ermita = BIC.builder()
+				.name("La Ermita")
+				.latitude(3.4578385679577623)
+				.longitude(-76.53064306373778)
+				.description("La iglesia La Ermita es un templo católico ubicada en Santiago de Cali, Colombia. Originalmente fue una construcción pajiza de comienzos del siglo XVII, establecida en las cercanías del río Cali y dedicada a Nuestra Señora de la Soledad y al Señor de la Caña.")
+				.existss(true)
+				.build();
+		Nickname nicknameErmita = Nickname.builder()
+				.nickname("La Ermita")
+				.build();
+
+		BIC antiguoMatadero = BIC.builder()
+				.name("Antiguo Matadero de Calí")
+				.latitude(3.4415465517324257)
+				.longitude(-76.52977456110938)
+				.description("El antiguo matadero de Cali es un edificio de estilo neoclásico ubicado en el centro de la ciudad de Cali, Colombia. Fue construido en 1920 y funcionó como matadero hasta 1979. En 1982 fue declarado Monumento Nacional de Colombia.")
+				.existss(false)
+				.build();
+		Nickname nicknameAntiguoMatadero = Nickname.builder()
+				.nickname("Antiguo Matadero")
+				.build();
+
+		BIC edifioOtero = BIC.builder()
+				.name("Edificio Otero")
+				.latitude(3.451929471542798)
+				.longitude(-76.5319398863662)
+				.description("El Edificio Otero es un edificio de estilo neoclásico ubicado en el centro de la ciudad de Cali, Colombia. Fue construido en 1920 y funcionó como matadero hasta 1979. En 1982 fue declarado Monumento Nacional de Colombia.")
+				.existss(true)
+				.build();
+		Nickname nicknameEdificioOtero = Nickname.builder()
+				.nickname("Edificio Otero")
+				.build();
+
+		BIC iglesiaSanFrancisco = BIC.builder()
+				.name("Iglesia San Francisco")
+				.latitude(3.4505256236841015)
+				.longitude(-76.53364473071245)
+				.description("La iglesia de San Francisco es un templo católico ubicado en Santiago de Cali, Colombia. Fue construida en 1747 y es la iglesia más antigua de la ciudad. En 1982 fue declarada Monumento Nacional de Colombia.")
+				.existss(true)
+				.build();
+		Nickname nicknameIglesiaSanFrancisco = Nickname.builder()
+				.nickname("Iglesia San Francisco")
+				.build();
+
+		BIC plazaCayzedo = BIC.builder()
+				.name("Plaza de Cayzedo")
+				.latitude( 3.451308237454147)
+				.longitude(-76.53219465725122)
+				.description("La plaza de Cayzedo es una plaza ubicada en el centro de la ciudad de Cali, Colombia. Fue construida en 1920 y funcionó como matadero hasta 1979. En 1982 fue declarado Monumento Nacional de Colombia.")
+				.existss(true)
+				.build();
+
+		Nickname nicknamePlazaCayzedo = Nickname.builder()
+				.nickname("Plaza de Cayzedo")
+				.build();
+
 		return args -> {
 			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
 			tourismManagerUserRoles.add(tourismManagerRoleCreated);
@@ -92,6 +154,23 @@ public class HistouricApplication {
 			Role researcherRoleCreated = roleRepository.save(researcher);
 			researcherUserRoles.add(researcherRoleCreated);
 			userRepository.save(reasearcherUser);
+
+			BIC ermitaInDB = bicRepository.save(ermita);
+			BIC antiguoMataderoInDB = bicRepository.save(antiguoMatadero);
+			BIC edifioOteroInDB = bicRepository.save(edifioOtero);
+			BIC iglesiaSanFranciscoInDB = bicRepository.save(iglesiaSanFrancisco);
+			BIC plazaCayzedoInDB = bicRepository.save(plazaCayzedo);
+
+			nicknameErmita.setBic(ermitaInDB);
+			nicknameRepository.save(nicknameErmita);
+			nicknameAntiguoMatadero.setBic(antiguoMataderoInDB);
+			nicknameRepository.save(nicknameAntiguoMatadero);
+			nicknameEdificioOtero.setBic(edifioOteroInDB);
+			nicknameRepository.save(nicknameEdificioOtero);
+			nicknameIglesiaSanFrancisco.setBic(iglesiaSanFranciscoInDB);
+			nicknameRepository.save(nicknameIglesiaSanFrancisco);
+			nicknamePlazaCayzedo.setBic(plazaCayzedoInDB);
+			nicknameRepository.save(nicknamePlazaCayzedo);
 		};
 	}
 
