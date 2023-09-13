@@ -85,6 +85,10 @@ public class SecurityConfig {
         MvcRequestMatcher getBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{id}");
         getBicById.setMethod(HttpMethod.GET);
         managerBuilder.add(getBicById, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getBicsByNameOrNickname = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/name/{nameOrNickname}");
+        getBicsByNameOrNickname.setMethod(HttpMethod.GET);
+        managerBuilder.add(getBicsByNameOrNickname, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,

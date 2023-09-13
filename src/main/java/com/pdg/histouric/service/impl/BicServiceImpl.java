@@ -15,7 +15,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.pdg.histouric.security.HistouricSecurityContext.getCurrentUserRoles;
@@ -90,6 +92,20 @@ public class BicServiceImpl implements BicService {
             return;
         }
         throw new UserException(HttpStatus.FORBIDDEN, new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage()));
+    }
+
+    @Override
+    public List<BIC> getBicByNameOrNickname(String nameOrNickname) {
+        Optional<List<BIC>> bics = bicRepository.findByNameContainsIgnoreCase(nameOrNickname);
+        Optional<List<BIC>> bicsByNickname = nicknameRepository.findByNicknameContainsIgnoreCase(nameOrNickname);
+        List<BIC> bicsFound = new ArrayList<>();
+        if (bics.isPresent()) {
+            bicsFound.addAll(bics.get());
+        }
+        if (bicsByNickname.isPresent()) {
+            bicsFound.addAll(bicsByNickname.get());
+        }
+        return bicsFound;
     }
 
     private boolean isUserResearcher() {

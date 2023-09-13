@@ -20,6 +20,9 @@ public interface BicAPI {
     @GetMapping("/{id}")
     BicDTO getBicById(@PathVariable UUID id);
 
+    @GetMapping("/name/{nameOrNickname}")
+    List<BicDTO> getBicByNameOrNickname(@PathVariable String nameOrNickname);
+
     @PutMapping("/{bicId}")
     BicDTO updateBicById(@PathVariable UUID bicId, @RequestBody BicDTO bicDTO);
 

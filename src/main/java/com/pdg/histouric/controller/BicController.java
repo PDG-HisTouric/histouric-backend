@@ -42,4 +42,9 @@ public class BicController implements BicAPI {
     public void deleteBicById(UUID bicId) {
         bicService.deleteBicById(bicId);
     }
+
+    @Override
+    public List<BicDTO> getBicByNameOrNickname(String nameOrNickname) {
+        return bicService.getBicByNameOrNickname(nameOrNickname).stream().map(bicMapper::fromBIC).collect(java.util.stream.Collectors.toList());
+    }
 }

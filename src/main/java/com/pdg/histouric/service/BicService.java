@@ -11,4 +11,6 @@ public interface BicService {
     BIC getBicById(UUID id);
     BIC updateBicById(UUID bicId, BIC bicDTO);
     void deleteBicById(UUID bicId);
+
+    List<BIC> getBicByNameOrNickname(String nameOrNickname);
 }

@@ -71,7 +71,7 @@ public class HistouricApplication {
 		HistouricUser tourismManagerUser = HistouricUser.builder()
 				.id(UUID.fromString("d052bbc3-4cf8-4add-977a-aee0734e353b"))
 				.nickname("Juan Pablo")
-				.email("tourism_manager@gmail.com")
+				.email("t_manager@gmail.com")
 				.password(encoder.encode("password"))
 				.roles(tourismManagerUserRoles)
 				.build();
@@ -93,7 +93,7 @@ public class HistouricApplication {
 				.existss(true)
 				.build();
 		Nickname nicknameErmita = Nickname.builder()
-				.nickname("La Ermita")
+				.nickname("Ermitita")
 				.build();
 
 		BIC antiguoMatadero = BIC.builder()
