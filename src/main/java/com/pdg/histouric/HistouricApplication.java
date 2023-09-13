@@ -87,8 +87,8 @@ public class HistouricApplication {
 
 		BIC ermita = BIC.builder()
 				.name("La Ermita")
-				.latitude(3.4578385679577623)
-				.longitude(-76.53064306373778)
+				.latitude(3.454214005186966)
+				.longitude(-76.53206008465833)
 				.description("La iglesia La Ermita es un templo católico ubicada en Santiago de Cali, Colombia. Originalmente fue una construcción pajiza de comienzos del siglo XVII, establecida en las cercanías del río Cali y dedicada a Nuestra Señora de la Soledad y al Señor de la Caña.")
 				.existss(true)
 				.build();
