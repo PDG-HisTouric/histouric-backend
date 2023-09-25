@@ -3,6 +3,7 @@ package com.pdg.histouric.config;
 import com.pdg.histouric.api.AuthAPI;
 import com.pdg.histouric.api.BicAPI;
 import com.pdg.histouric.api.UserAPI;
+import com.pdg.histouric.api.HistoryAPI;
 import com.pdg.histouric.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,6 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 import org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -64,6 +63,7 @@ public class SecurityConfig {
         configureUnlockedEndpoints(introspector, managerBuilder);
         configureEndpointsForUserApi(introspector, managerBuilder);
         configureEndpointsForBicApi(introspector, managerBuilder);
+        configureEndpointsForHistoryApi(introspector, managerBuilder);
 
         AuthorizationManager<HttpServletRequest> manager = managerBuilder.build();
         return (authentication, object) -> manager.check(authentication, object.getRequest());
@@ -127,6 +127,13 @@ public class SecurityConfig {
         MvcRequestMatcher deleteBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{bicId}");
         deleteBicById.setMethod(HttpMethod.DELETE);
         managerBuilder.add(deleteBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+    }
+
+    private void configureEndpointsForHistoryApi(HandlerMappingIntrospector introspector,
+                                                 RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
+            MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+            createHistory.setMethod(HttpMethod.POST);
+            managerBuilder.add(createHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
     }
 
     @Bean

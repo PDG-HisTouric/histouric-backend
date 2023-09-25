@@ -1,11 +1,15 @@
 package com.pdg.histouric.dto;
 
+import com.pdg.histouric.model.History;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-public class HistouricImageDTO {
+import java.util.UUID;
+
+public class HistoryImageDTO {
 
     private String imageId;
 
@@ -16,9 +20,7 @@ public class HistouricImageDTO {
     private String imageUri;
 
     @NotNull(message = "Start time cannot be null")
-    @NotEmpty(message = "Start time cannot be empty")
-    @NotBlank(message = "Start time cannot be blank")
+    @Min(value = 0, message = "Start time must be greater than or equal to 0")
     private int startTime;
-
-    private BicDTO bicDTO;
+    private UUID historyId;
 }
