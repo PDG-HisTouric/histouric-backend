@@ -2,8 +2,6 @@ package com.pdg.histouric.error;
 
 import com.pdg.histouric.constant.UserErrorCode;
 import com.pdg.histouric.error.exception.*;
-import io.jsonwebtoken.ClaimJwtException;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.PersistenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -22,20 +22,14 @@ public class Role {
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull(message = "Role id cannot be null")
     @Column(name = "role_id", nullable = false, unique = true)
     private UUID id;
 
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    @NotNull(message = "Role name cannot be null")
-    @NotEmpty(message = "Role name cannot be empty")
-    @NotBlank(message = "Role name cannot be blank")
     @Column(name = "role_name", nullable = false, unique = true)
     private String name;
 
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    @NotEmpty(message = "Role description cannot be empty")
-    @NotBlank(message = "Role description cannot be blank")
     @Column(name = "role_description", nullable = false)
     private String description;
 

@@ -7,27 +7,26 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
+@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Getter
 @Setter
-public class HistoryImage {
-
+public class Text {
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "image_id", nullable = false, unique = true)
-    private UUID imageId;
+    @Column(name = "text_id", nullable = false, unique = true)
+    private UUID id;
 
-    @Column(name = "image_uri", nullable = false, unique = true)
-    private String imageUri;
+    @Column(name = "text", nullable = false)
+    private String text;
 
-    @Column(name = "start_time", nullable = false)
-    private String startTime;
+    @Column(name = "text_start_time", nullable = false)
+    private int startTime;
 
     @ManyToOne
-    @JoinColumn(name = "history_id")
+    @JoinColumn(name = "history_id", nullable = false)
     private History history;
 }
