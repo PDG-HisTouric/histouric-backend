@@ -1,19 +1,21 @@
 package com.pdg.histouric.service.impl;
 
+import com.pdg.histouric.constant.HistoryErrorCode;
 import com.pdg.histouric.constant.UserErrorCode;
+import com.pdg.histouric.error.exception.HistoryError;
+import com.pdg.histouric.error.exception.HistoryException;
 import com.pdg.histouric.error.exception.UserError;
 import com.pdg.histouric.error.exception.UserException;
-import com.pdg.histouric.model.History;
-import com.pdg.histouric.model.HistoryImage;
-import com.pdg.histouric.model.Text;
-import com.pdg.histouric.model.Video;
+import com.pdg.histouric.model.*;
 import com.pdg.histouric.repository.*;
 import com.pdg.histouric.service.HistoryService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +28,7 @@ public class HistoryServiceImpl implements HistoryService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public History createHistory(History history) {
         List<Text> texts = history.getTexts();
         List<Video> videos = history.getVideos();
@@ -44,5 +47,30 @@ public class HistoryServiceImpl implements HistoryService {
         if (images != null) history.setImages(historyImageRepository.saveAll(images.stream().peek(historyImage -> historyImage.setHistory(savedHistory)).toList()));
         history.setTexts(textRepository.saveAll(texts.stream().peek(text -> text.setHistory(savedHistory)).toList()));
         return history;
+    }
+
+    @Override
+    @Transactional
+    public void deleteHistory(UUID historyId) {
+        History history = historyRepository.findById(historyId).orElseThrow(
+                () -> new HistoryException(
+                        HttpStatus.NOT_FOUND,
+                        new HistoryError(HistoryErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
+                )
+        );
+        videoRepository.deleteAll(history.getVideos());
+        historyImageRepository.deleteAll(history.getImages());
+        textRepository.deleteAll(history.getTexts());
+        historyRepository.delete(history);
+    }
+
+    @Override
+    public List<History> getHistoriesByImageUri(String imageUri) {
+        return historyImageRepository.findHistoriesByImageUri(imageUri);
+    }
+
+    @Override
+    public List<History> getHistoriesByVideoUrl(String videoUrl) {
+        return videoRepository.findHistoriesByVideoUrl(videoUrl);
     }
 }

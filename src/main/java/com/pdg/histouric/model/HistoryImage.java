@@ -14,7 +14,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class HistoryImage {
-
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +27,6 @@ public class HistoryImage {
     private String startTime;
 
     @ManyToOne
-    @JoinColumn(name = "history_id")
+    @JoinColumn(name = "history_id", nullable = false)
     private History history;
 }

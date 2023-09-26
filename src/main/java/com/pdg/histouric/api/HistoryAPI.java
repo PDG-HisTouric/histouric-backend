@@ -1,9 +1,11 @@
 package com.pdg.histouric.api;
 
 import com.pdg.histouric.dto.HistoryDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.pdg.histouric.model.History;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/api/v1/histories")
 public interface HistoryAPI {
@@ -11,4 +13,13 @@ public interface HistoryAPI {
 
     @PostMapping
     HistoryDTO createHistory(@RequestBody HistoryDTO historyDTO);
+
+    @DeleteMapping("/{historyId}")
+    void deleteHistory(@PathVariable UUID historyId);
+
+    @GetMapping("/image/{imageUri}")
+    List<HistoryDTO> getHistoriesByImageUri(@PathVariable String imageUri);
+
+    @GetMapping("/video/{videoUrl}")
+    List<HistoryDTO> getHistoriesByVideoUrl(@PathVariable String videoUrl);
 }

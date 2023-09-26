@@ -21,7 +21,7 @@ public class TextDTO {
     @NotNull(message = "Text cannot be null")
     @NotEmpty(message = "Text cannot be empty")
     @NotBlank(message = "Text cannot be blank")
-    private String text;
+    private String content;
 
     @NotNull(message = "Start time cannot be null")
     @Min(value = 0, message = "Start time must be greater than or equal to 0")
