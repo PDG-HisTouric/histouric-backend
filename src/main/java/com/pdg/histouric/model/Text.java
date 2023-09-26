@@ -7,10 +7,10 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Getter
 @Setter
 public class Text {
@@ -20,8 +20,8 @@ public class Text {
     @Column(name = "text_id", nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "text", nullable = false)
-    private String text;
+    @Column(name = "text_content", nullable = false)
+    private String content;
 
     @Column(name = "text_start_time", nullable = false)
     private int startTime;

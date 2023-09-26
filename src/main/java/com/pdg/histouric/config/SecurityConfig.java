@@ -134,6 +134,10 @@ public class SecurityConfig {
             MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
             createHistory.setMethod(HttpMethod.POST);
             managerBuilder.add(createHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+            MvcRequestMatcher deleteHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
+            deleteHistoryById.setMethod(HttpMethod.DELETE);
+            managerBuilder.add(deleteHistoryById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
     }
 
     @Bean

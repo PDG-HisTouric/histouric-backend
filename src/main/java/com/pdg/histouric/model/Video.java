@@ -27,7 +27,6 @@ public class Video {
     private int startTime;
 
     @ManyToOne
-    @JoinColumn(name = "history_id")
+    @JoinColumn(name = "history_id", nullable = false)
     private History history;
-
 }
