@@ -32,9 +32,7 @@ public class HistoryDTO {
     private String audioUrl;
 
     @NotNull(message = "Owner UUID cannot be null")
-    @NotEmpty(message = "Owner UUID cannot be empty")
-    @NotBlank(message = "Owner UUID cannot be blank")
-    private UUID ownerUUID;
+    private UUID owner;
 
     private List<VideoDTO> videos;
 

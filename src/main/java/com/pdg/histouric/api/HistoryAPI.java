@@ -10,5 +10,5 @@ public interface HistoryAPI {
     String ROOT_PATH = "/api/v1/histories";
 
     @PostMapping
-    void createHistory(@RequestBody HistoryDTO historyDTO);
+    HistoryDTO createHistory(@RequestBody HistoryDTO historyDTO);
 }

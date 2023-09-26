@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -29,5 +30,14 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private HistouricUser owner;
+
+    @OneToMany
+    private List<Video> videos;
+
+    @OneToMany
+    private  List<Text> texts;
+
+    @OneToMany
+    private List<HistoryImage> images;
 
 }
