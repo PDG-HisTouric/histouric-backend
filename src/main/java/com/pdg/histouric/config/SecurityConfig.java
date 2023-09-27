@@ -138,6 +138,18 @@ public class SecurityConfig {
             MvcRequestMatcher deleteHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
             deleteHistoryById.setMethod(HttpMethod.DELETE);
             managerBuilder.add(deleteHistoryById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+            MvcRequestMatcher getHistoriesByImageUri = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/image/{imageUri}");
+            getHistoriesByImageUri.setMethod(HttpMethod.GET);
+            managerBuilder.add(getHistoriesByImageUri, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+            MvcRequestMatcher getHistoriesByVideoUrl = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/video/{videoUrl}");
+            getHistoriesByVideoUrl.setMethod(HttpMethod.GET);
+            managerBuilder.add(getHistoriesByVideoUrl, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+            MvcRequestMatcher updateHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+            updateHistory.setMethod(HttpMethod.PUT);
+            managerBuilder.add(updateHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
     }
 
     @Bean

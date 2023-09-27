@@ -38,4 +38,9 @@ public class HistoryController implements HistoryAPI {
     public List<HistoryDTO> getHistoriesByVideoUrl(String videoUrl) {
         return historyService.getHistoriesByVideoUrl(videoUrl).stream().map(historyMapper::fromHistoryToDTO).toList();
     }
+
+    @Override
+    public HistoryDTO updateHistory(HistoryDTO historyDTO) {
+        return historyMapper.fromHistoryToDTO(historyService.updateHistory(historyMapper.fromDTOToHistory(historyDTO)));
+    }
 }

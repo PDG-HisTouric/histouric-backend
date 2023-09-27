@@ -22,4 +22,7 @@ public interface HistoryAPI {
 
     @GetMapping("/video/{videoUrl}")
     List<HistoryDTO> getHistoriesByVideoUrl(@PathVariable String videoUrl);
+
+    @PutMapping
+    HistoryDTO updateHistory(@RequestBody HistoryDTO historyDTO);
 }

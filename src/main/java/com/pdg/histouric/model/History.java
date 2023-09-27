@@ -31,13 +31,12 @@ public class History {
     @JoinColumn(name = "user_id")
     private HistouricUser owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "history")
     private List<Video> videos;
 
-    @OneToMany
+    @OneToMany(mappedBy = "history")
     private  List<Text> texts;
 
-    @OneToMany
+    @OneToMany(mappedBy = "history")
     private List<HistoryImage> images;
-
 }

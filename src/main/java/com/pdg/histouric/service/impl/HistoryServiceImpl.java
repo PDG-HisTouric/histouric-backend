@@ -30,6 +30,48 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     @Transactional
     public History createHistory(History history) {
+        return saveHistory(history);
+    }
+
+    @Override
+    @Transactional
+    public void deleteHistory(UUID historyId) {
+        History history = getHistoryById(historyId);
+        deleteVideosImagesAndTexts(history);
+        historyRepository.delete(history);
+    }
+
+    private History getHistoryById(UUID historyId) {
+        return historyRepository.findById(historyId).orElseThrow(
+                () -> new HistoryException(
+                        HttpStatus.NOT_FOUND,
+                        new HistoryError(HistoryErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
+                )
+        );
+    }
+
+    private void deleteVideosImagesAndTexts(History history) {
+        videoRepository.deleteAll(history.getVideos());
+        historyImageRepository.deleteAll(history.getImages());
+        textRepository.deleteAll(history.getTexts());
+    }
+
+    @Override
+    public List<History> getHistoriesByImageUri(String imageUri) {
+        return historyImageRepository.findHistoriesByImageUri(imageUri);
+    }
+
+    @Override
+    public List<History> getHistoriesByVideoUrl(String videoUrl) {
+        return videoRepository.findHistoriesByVideoUrl(videoUrl);
+    }
+
+    @Override
+    public History updateHistory(History history) {
+        deleteVideosImagesAndTexts(getHistoryById(history.getId()));
+        return saveHistory(history);
+    }
+    private History saveHistory(History history) {
         List<Text> texts = history.getTexts();
         List<Video> videos = history.getVideos();
         List<HistoryImage> images = history.getImages();
@@ -49,28 +91,4 @@ public class HistoryServiceImpl implements HistoryService {
         return history;
     }
 
-    @Override
-    @Transactional
-    public void deleteHistory(UUID historyId) {
-        History history = historyRepository.findById(historyId).orElseThrow(
-                () -> new HistoryException(
-                        HttpStatus.NOT_FOUND,
-                        new HistoryError(HistoryErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
-                )
-        );
-        videoRepository.deleteAll(history.getVideos());
-        historyImageRepository.deleteAll(history.getImages());
-        textRepository.deleteAll(history.getTexts());
-        historyRepository.delete(history);
-    }
-
-    @Override
-    public List<History> getHistoriesByImageUri(String imageUri) {
-        return historyImageRepository.findHistoriesByImageUri(imageUri);
-    }
-
-    @Override
-    public List<History> getHistoriesByVideoUrl(String videoUrl) {
-        return videoRepository.findHistoriesByVideoUrl(videoUrl);
-    }
 }
