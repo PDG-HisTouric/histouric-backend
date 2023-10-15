@@ -153,8 +153,7 @@ public class HistouricApplication {
 
 			Role researcherRoleCreated = roleRepository.save(researcher);
 			researcherUserRoles.add(researcherRoleCreated);
-			HistouricUser researcherUserSaved = userRepository.save(reasearcherUser);
-			System.out.println(researcherUserSaved.getId());
+			userRepository.save(reasearcherUser);
 
 			BIC ermitaInDB = bicRepository.save(ermita);
 			BIC antiguoMataderoInDB = bicRepository.save(antiguoMatadero);

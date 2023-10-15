@@ -85,6 +85,10 @@ public class SecurityConfig {
         MvcRequestMatcher getBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{id}");
         getBicById.setMethod(HttpMethod.GET);
         managerBuilder.add(getBicById, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, "/api/v1/firebase");
+        getHistories.setMethod(HttpMethod.POST);
+        managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
@@ -111,7 +115,7 @@ public class SecurityConfig {
     }
 
     private void configureEndpointsForBicApi(HandlerMappingIntrospector introspector,
-                                            RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
+                                             RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
         MvcRequestMatcher createBic = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH);
         createBic.setMethod(HttpMethod.POST);
         managerBuilder.add(createBic, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
@@ -131,25 +135,13 @@ public class SecurityConfig {
 
     private void configureEndpointsForHistoryApi(HandlerMappingIntrospector introspector,
                                                  RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
-            MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
-            createHistory.setMethod(HttpMethod.POST);
-            managerBuilder.add(createHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+        MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+        createHistory.setMethod(HttpMethod.POST);
+        managerBuilder.add(createHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
 
-            MvcRequestMatcher deleteHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
-            deleteHistoryById.setMethod(HttpMethod.DELETE);
-            managerBuilder.add(deleteHistoryById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
-
-            MvcRequestMatcher getHistoriesByImageUri = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/image/{imageUri}");
-            getHistoriesByImageUri.setMethod(HttpMethod.GET);
-            managerBuilder.add(getHistoriesByImageUri, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
-
-            MvcRequestMatcher getHistoriesByVideoUrl = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/video/{videoUrl}");
-            getHistoriesByVideoUrl.setMethod(HttpMethod.GET);
-            managerBuilder.add(getHistoriesByVideoUrl, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
-
-            MvcRequestMatcher updateHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
-            updateHistory.setMethod(HttpMethod.PUT);
-            managerBuilder.add(updateHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+        MvcRequestMatcher deleteHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
+        deleteHistoryById.setMethod(HttpMethod.DELETE);
+        managerBuilder.add(deleteHistoryById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
     }
 
     @Bean
