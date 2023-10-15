@@ -3,7 +3,6 @@ package com.pdg.histouric.controller;
 import com.pdg.histouric.api.HistoryAPI;
 import com.pdg.histouric.dto.HistoryDTO;
 import com.pdg.histouric.mapper.HistoryMapper;
-import com.pdg.histouric.model.History;
 import com.pdg.histouric.service.HistoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -35,8 +34,8 @@ public class HistoryController implements HistoryAPI {
     }
 
     @Override
-    public List<HistoryDTO> getHistoriesByVideoUrl(String videoUrl) {
-        return historyService.getHistoriesByVideoUrl(videoUrl).stream().map(historyMapper::fromHistoryToDTO).toList();
+    public List<HistoryDTO> getHistoriesByVideoUri(String videoUrl) {
+        return historyService.getHistoriesByVideoUri(videoUrl).stream().map(historyMapper::fromHistoryToDTO).toList();
     }
 
     @Override

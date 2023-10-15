@@ -62,8 +62,8 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public List<History> getHistoriesByVideoUrl(String videoUrl) {
-        return videoRepository.findHistoriesByVideoUrl(videoUrl);
+    public List<History> getHistoriesByVideoUri(String videoUrl) {
+        return videoRepository.findHistoriesByVideoUri(videoUrl);
     }
 
     @Override

@@ -39,4 +39,8 @@ public class History {
 
     @OneToMany(mappedBy = "history")
     private List<HistoryImage> images;
+
+    @OneToOne
+    @JoinColumn(name = "audio_id")
+    private Audio audio;
 }

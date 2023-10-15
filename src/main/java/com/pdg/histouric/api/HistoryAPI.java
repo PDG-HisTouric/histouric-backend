@@ -1,7 +1,6 @@
 package com.pdg.histouric.api;
 
 import com.pdg.histouric.dto.HistoryDTO;
-import com.pdg.histouric.model.History;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public interface HistoryAPI {
     List<HistoryDTO> getHistoriesByImageUri(@PathVariable String imageUri);
 
     @GetMapping("/video/{videoUrl}")
-    List<HistoryDTO> getHistoriesByVideoUrl(@PathVariable String videoUrl);
+    List<HistoryDTO> getHistoriesByVideoUri(@PathVariable String videoUrl);
 
     @PutMapping
     HistoryDTO updateHistory(@RequestBody HistoryDTO historyDTO);
