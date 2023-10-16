@@ -17,15 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class CreateHistoryImageDTO {
 
-    private String imageId;
-
     @NotNull(message = "Image uri cannot be null")
     @NotEmpty(message = "Image uri cannot be empty")
     @NotBlank(message = "Image uri cannot be blank")
     @Length(max = 1000, message = "Image uri characters long must be less than or equal to 1000")
     private String imageUri;
-
-    private MultipartFile imageFile;
 
     @NotNull(message = "Start time cannot be null")
     @Min(value = 0, message = "Start time must be greater than or equal to 0")
@@ -33,19 +29,4 @@ public class CreateHistoryImageDTO {
 
     @NotNull(message = "needsUrlGen cannot be null")
     private boolean needsUrlGen;
-
-    public void validate() {
-        if (needsUrlGen && imageFile == null) {
-            throw new IllegalArgumentException("El archivo de imagen no puede ser nulo si needUrlGen es verdadero");
-        }
-        if (needsUrlGen && imageUri != null) {
-            throw new IllegalArgumentException("El uri de la imagen debe ser nulo si needUrlGen es verdadero");
-        }
-        if (!needsUrlGen && imageUri == null) {
-            throw new IllegalArgumentException("El uri de la imagen no puede ser nulo si needUrlGen es falso");
-        }
-        if (!needsUrlGen && imageFile != null) {
-            throw new IllegalArgumentException("El archivo de imagen debe ser nulo si needUrlGen es falso");
-        }
-    }
 }

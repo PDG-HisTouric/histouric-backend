@@ -18,7 +18,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ResponseHistoryImageDTO {
 
-    private String imageId;
+    @NotNull(message = "Id cannot be null")
+    private String id;
 
     @NotNull(message = "Image uri cannot be null")
     @NotEmpty(message = "Image uri cannot be empty")
@@ -33,5 +34,6 @@ public class ResponseHistoryImageDTO {
     @NotNull(message = "needsUrlGen cannot be null")
     private boolean needsUrlGen;
 
+    @NotNull(message = "History id cannot be null")
     private UUID historyId;
 }

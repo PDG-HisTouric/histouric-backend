@@ -16,7 +16,10 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateHistoryDTO {
+public class ResponseHistoryDTO {
+
+    @NotNull(message = "Id cannot be null")
+    private UUID id;
 
     @NotNull(message = "Title cannot be null")
     @NotEmpty(message = "Title cannot be empty")
@@ -25,16 +28,16 @@ public class CreateHistoryDTO {
     private String title;
 
     @NotNull(message = "Audio cannot be null")
-    private CreateAudioDTO audio;
+    private ResponseAudioDTO audio;
 
     @NotNull(message = "Owner UUID cannot be null")
     private UUID owner;
 
-    private List<CreateVideoDTO> videos;
+    private List<ResponseVideoDTO> videos;
 
     @NotNull(message = "Texts cannot be null")
     @NotEmpty(message = "Texts cannot be empty")
     private List<TextDTO> texts;
 
-    private List<CreateHistoryImageDTO> images;
+    private List<ResponseHistoryImageDTO> images;
 }

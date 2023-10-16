@@ -17,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseVideoDTO {
+    @NotNull(message = "Id cannot be null")
     private UUID id;
 
     @NotNull(message = "Video uri cannot be null")
@@ -24,10 +25,6 @@ public class ResponseVideoDTO {
     @NotBlank(message = "Video uri cannot be blank")
     @Length(max = 1000, message = "Video uri characters long must be less than or equal to 1000")
     private String videoUri;
-
-    @NotNull(message = "Start time cannot be null")
-    @Min(value = 0, message = "Start time must be greater than or equal to 0")
-    private int startTime;
 
     @NotNull(message = "needsUrlGen cannot be null")
     private boolean needsUrlGen;

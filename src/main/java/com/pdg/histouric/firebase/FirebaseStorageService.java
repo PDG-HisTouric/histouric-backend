@@ -4,8 +4,10 @@ import com.pdg.histouric.dto.CreateHistoryDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface FirebaseStorageService {
-    String uploadFile(MultipartFile file) throws IOException;
-    void uploadHistoryData(CreateHistoryDTO createHistoryDTO) throws IOException;
+    List<String> uploadAudioData(MultipartFile[] audios) throws IOException;
+    List<String> uploadVideoData(MultipartFile[] videos) throws IOException;
+    List<String> uploadImageData(MultipartFile[] images) throws IOException;
 }

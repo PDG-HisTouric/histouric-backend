@@ -24,9 +24,6 @@ public class History {
     @Column(name = "history_title", nullable = false)
     private String title;
 
-    @Column(name = "history_audiourl", nullable = false)
-    private String audioUrl;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private HistouricUser owner;

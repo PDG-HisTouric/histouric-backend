@@ -23,9 +23,6 @@ public class Video {
     @Column(name = "video_uri", nullable = false, unique = true, length = 1000)
     private String videoUri;
 
-    @Column(name = "start_time", nullable = false)
-    private int startTime;
-
     @Column(name = "needs_url_gen", nullable = false)
     private boolean needsUrlGen;
 

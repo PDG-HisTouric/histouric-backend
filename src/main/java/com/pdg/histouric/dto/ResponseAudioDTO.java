@@ -15,14 +15,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseAudioDTO {
+    @NotNull(message = "Id cannot be null")
+    private String id;
 
+    @NotNull(message = "Id cannot be null")
     private String audioUri;
-
-    private MultipartFile audioFile;
-
-    @NotNull(message = "Start time cannot be null")
-    @Min(value = 0, message = "Start time must be greater than or equal to 0")
-    private int startTime;
 
     @NotNull(message = "needsUrlGen cannot be null")
     private boolean needsUrlGen;

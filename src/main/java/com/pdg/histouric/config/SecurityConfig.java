@@ -1,9 +1,6 @@
 package com.pdg.histouric.config;
 
-import com.pdg.histouric.api.AuthAPI;
-import com.pdg.histouric.api.BicAPI;
-import com.pdg.histouric.api.UserAPI;
-import com.pdg.histouric.api.HistoryAPI;
+import com.pdg.histouric.api.*;
 import com.pdg.histouric.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -89,6 +86,26 @@ public class SecurityConfig {
         MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, "/api/v1/firebase");
         getHistories.setMethod(HttpMethod.POST);
         managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
+
+        //TODO: REMOVE THIS
+        //*********************************************************************************************************************
+        MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+        createHistory.setMethod(HttpMethod.POST);
+        managerBuilder.add(createHistory, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher uploadImages = new MvcRequestMatcher(introspector, FirebaseStorageAPI.ROOT_PATH + "/images");
+        uploadImages.setMethod(HttpMethod.POST);
+        managerBuilder.add(uploadImages, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher uploadVideos = new MvcRequestMatcher(introspector, FirebaseStorageAPI.ROOT_PATH + "/videos");
+        uploadVideos.setMethod(HttpMethod.POST);
+        managerBuilder.add(uploadVideos, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher uploadAudios = new MvcRequestMatcher(introspector, FirebaseStorageAPI.ROOT_PATH + "/audios");
+        uploadAudios.setMethod(HttpMethod.POST);
+        managerBuilder.add(uploadAudios, (authentication, object) -> new AuthorizationDecision(true));
+        //*********************************************************************************************************************
+        //TODO: REMOVE THIS
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
@@ -135,9 +152,9 @@ public class SecurityConfig {
 
     private void configureEndpointsForHistoryApi(HandlerMappingIntrospector introspector,
                                                  RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
-        MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
-        createHistory.setMethod(HttpMethod.POST);
-        managerBuilder.add(createHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+//        MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+//        createHistory.setMethod(HttpMethod.POST);
+//        managerBuilder.add(createHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
 
         MvcRequestMatcher deleteHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
         deleteHistoryById.setMethod(HttpMethod.DELETE);

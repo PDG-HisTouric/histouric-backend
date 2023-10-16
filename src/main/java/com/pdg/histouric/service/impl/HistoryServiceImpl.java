@@ -26,11 +26,21 @@ public class HistoryServiceImpl implements HistoryService {
     private final TextRepository textRepository;
     private final HistoryImageRepository historyImageRepository;
     private final UserRepository userRepository;
+    private final AudioRepository audioRepository;
 
     @Override
     @Transactional
     public History createHistory(History history) {
         return saveHistory(history);
+    }
+
+    private void setOwnerToHistory (History history) {
+        history.setOwner(userRepository.findById(history.getOwner().getId()).orElseThrow(
+                () -> new UserException(
+                        HttpStatus.NOT_FOUND,
+                        new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
+                )
+        ));
     }
 
     @Override
@@ -78,13 +88,10 @@ public class HistoryServiceImpl implements HistoryService {
         history.setTexts(null);
         history.setVideos(null);
         history.setImages(null);
-        history.setOwner(userRepository.findById(history.getOwner().getId()).orElseThrow(
-                () -> new UserException(
-                        HttpStatus.NOT_FOUND,
-                        new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())
-                )
-        ));
+        setOwnerToHistory(history);
+        audioRepository.save(history.getAudio());
         History savedHistory = historyRepository.save(history);
+        history.getAudio().setHistory(savedHistory);
         if (videos != null) history.setVideos(videoRepository.saveAll(videos.stream().peek(video -> video.setHistory(savedHistory)).toList()));
         if (images != null) history.setImages(historyImageRepository.saveAll(images.stream().peek(historyImage -> historyImage.setHistory(savedHistory)).toList()));
         history.setTexts(textRepository.saveAll(texts.stream().peek(text -> text.setHistory(savedHistory)).toList()));

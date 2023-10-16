@@ -27,6 +27,6 @@ public class Text {
     private int startTime;
 
     @ManyToOne
-    @JoinColumn(name = "history_id", nullable = false)
+    @JoinColumn(name = "history_id")
     private History history;
 }
