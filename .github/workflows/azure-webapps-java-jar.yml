@@ -1,7 +1,7 @@
 name: Build and deploy JAR app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: histouric-backend
+  AZURE_WEBAPP_NAME: histouric-back
   JAVA_VERSION: '17'
   DISTRIBUTION: zulu
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
@@ -60,5 +60,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CCF75BC23D6249CC96E20C868BF78818 }}
           package: '*.jar'
