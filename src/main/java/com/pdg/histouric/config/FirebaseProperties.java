@@ -26,7 +26,7 @@ public class FirebaseProperties {
     private String universeDomain;
     private String bucketName;
 
-    public String saveJson() throws IOException {
+    public File saveJson() throws IOException {
         String json = "{\n" +
                 "  \"type\": \"" + type + "\",\n" +
                 "  \"project_id\": \"" + projectId + "\",\n" +
@@ -44,6 +44,6 @@ public class FirebaseProperties {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(json);
         writer.close();
-        return file.getPath();
+        return file;
     }
 }
