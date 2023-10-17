@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, UUID> {
-    @Query("SELECT video.history FROM Video video WHERE video.videoUrl = ?1")
-    List<History> findHistoriesByVideoUrl(String videoUrl);
+    @Query("SELECT video.history FROM Video video WHERE video.videoUri = ?1")
+    List<History> findHistoriesByVideoUri(String videoUri);
 }

@@ -24,9 +24,6 @@ public class History {
     @Column(name = "history_title", nullable = false)
     private String title;
 
-    @Column(name = "history_audiourl", nullable = false)
-    private String audioUrl;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private HistouricUser owner;
@@ -39,4 +36,8 @@ public class History {
 
     @OneToMany(mappedBy = "history")
     private List<HistoryImage> images;
+
+    @OneToOne
+    @JoinColumn(name = "audio_id")
+    private Audio audio;
 }

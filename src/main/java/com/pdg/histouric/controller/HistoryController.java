@@ -1,14 +1,15 @@
 package com.pdg.histouric.controller;
 
 import com.pdg.histouric.api.HistoryAPI;
-import com.pdg.histouric.dto.HistoryDTO;
+import com.pdg.histouric.dto.CreateHistoryDTO;
+import com.pdg.histouric.dto.ResponseHistoryDTO;
 import com.pdg.histouric.mapper.HistoryMapper;
-import com.pdg.histouric.model.History;
 import com.pdg.histouric.service.HistoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,8 +21,8 @@ public class HistoryController implements HistoryAPI {
     private final HistoryMapper historyMapper;
 
     @Override
-    public HistoryDTO createHistory(@Valid HistoryDTO historyDTO) {
-        return historyMapper.fromHistoryToDTO(historyService.createHistory(historyMapper.fromDTOToHistory(historyDTO)));
+    public ResponseHistoryDTO createHistory(@Valid CreateHistoryDTO createHistoryDTO) throws IOException {
+        return historyMapper.fromHistoryToDTO(historyService.createHistory(historyMapper.fromDTOToHistory(createHistoryDTO)));
     }
 
     @Override
@@ -30,17 +31,17 @@ public class HistoryController implements HistoryAPI {
     }
 
     @Override
-    public List<HistoryDTO> getHistoriesByImageUri(String imageUri) {
+    public List<ResponseHistoryDTO> getHistoriesByImageUri(String imageUri) {
         return historyService.getHistoriesByImageUri(imageUri).stream().map(historyMapper::fromHistoryToDTO).toList();
     }
 
     @Override
-    public List<HistoryDTO> getHistoriesByVideoUrl(String videoUrl) {
-        return historyService.getHistoriesByVideoUrl(videoUrl).stream().map(historyMapper::fromHistoryToDTO).toList();
+    public List<ResponseHistoryDTO> getHistoriesByVideoUri(String videoUrl) {
+        return historyService.getHistoriesByVideoUri(videoUrl).stream().map(historyMapper::fromHistoryToDTO).toList();
     }
 
     @Override
-    public HistoryDTO updateHistory(HistoryDTO historyDTO) {
-        return historyMapper.fromHistoryToDTO(historyService.updateHistory(historyMapper.fromDTOToHistory(historyDTO)));
+    public ResponseHistoryDTO updateHistory(CreateHistoryDTO createHistoryDTO) {
+        return historyMapper.fromHistoryToDTO(historyService.updateHistory(historyMapper.fromDTOToHistory(createHistoryDTO)));
     }
 }

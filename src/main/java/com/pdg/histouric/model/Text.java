@@ -20,13 +20,13 @@ public class Text {
     @Column(name = "text_id", nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "text_content", nullable = false)
+    @Column(name = "text_content", nullable = false, length = 5000)
     private String content;
 
-    @Column(name = "text_start_time", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private int startTime;
 
     @ManyToOne
-    @JoinColumn(name = "history_id", nullable = false)
+    @JoinColumn(name = "history_id")
     private History history;
 }

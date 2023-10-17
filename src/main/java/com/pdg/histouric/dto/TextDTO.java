@@ -26,5 +26,6 @@ public class TextDTO {
     @NotNull(message = "Start time cannot be null")
     @Min(value = 0, message = "Start time must be greater than or equal to 0")
     private int startTime;
-    private String historyId;
+
+    private UUID historyId;
 }
