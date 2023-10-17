@@ -1,10 +1,12 @@
-package com.pdg.histouric.firebase;
+package com.pdg.histouric.service.impl;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
+import com.pdg.histouric.config.FirebaseProperties;
+import com.pdg.histouric.service.FirebaseStorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;

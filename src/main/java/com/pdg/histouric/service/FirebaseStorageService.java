@@ -1,4 +1,4 @@
-package com.pdg.histouric.firebase;
+package com.pdg.histouric.service;
 
 import com.pdg.histouric.dto.CreateHistoryDTO;
 import org.springframework.web.multipart.MultipartFile;

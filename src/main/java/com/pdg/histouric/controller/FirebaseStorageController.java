@@ -1,8 +1,8 @@
-package com.pdg.histouric.firebase;
+package com.pdg.histouric.controller;
 
 import com.pdg.histouric.api.FirebaseStorageAPI;
+import com.pdg.histouric.service.FirebaseStorageService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 

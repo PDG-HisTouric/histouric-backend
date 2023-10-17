@@ -1,4 +1,4 @@
-package com.pdg.histouric.firebase;
+package com.pdg.histouric.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
