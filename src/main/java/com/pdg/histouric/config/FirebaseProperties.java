@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,7 +26,7 @@ public class FirebaseProperties {
     private String universeDomain;
     private String bucketName;
 
-    public void saveJson() throws IOException {
+    public File saveJson() throws IOException {
         String json = "{\n" +
                 "  \"type\": \"" + type + "\",\n" +
                 "  \"project_id\": \"" + projectId + "\",\n" +
@@ -39,8 +40,10 @@ public class FirebaseProperties {
                 "  \"client_x509_cert_url\": \"" + clientX509CertUrl + "\",\n" +
                 "  \"universe_domain\": \"" + universeDomain + "\"\n" +
                 "}";
-        BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/firebase-adminsdk.json"));
+        File file = new File("firebase-adminsdk.json");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(json);
         writer.close();
+        return file;
     }
 }

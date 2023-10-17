@@ -13,6 +13,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -27,15 +29,12 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
 
     @EventListener
     public void init(ApplicationReadyEvent event) throws IOException {
-        firebaseProperties.saveJson();
+        File file = firebaseProperties.saveJson();
 
         InputStream serviceAccount;
-        do {
-            serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-adminsdk.json");
-            Thread.yield();
-        } while (serviceAccount == null);
-
-        FirebaseOptions options = new FirebaseOptions.Builder()
+        serviceAccount = new FileInputStream(file);
+        System.out.println("Firebase json file loaded successfully");
+        FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .setStorageBucket(firebaseProperties.getBucketName())
                 .build();
