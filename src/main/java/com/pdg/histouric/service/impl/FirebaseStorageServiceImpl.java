@@ -27,12 +27,13 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
 
     @EventListener
     public void init(ApplicationReadyEvent event) throws IOException {
-        firebaseProperties.saveJson();
+        String path = firebaseProperties.saveJson();
+        System.out.println(path);
 
         InputStream serviceAccount;
         do {
             Thread.yield();
-            serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-adminsdk.json");
+            serviceAccount = getClass().getClassLoader().getResourceAsStream(path);
         } while (serviceAccount == null);
 
         FirebaseOptions options = FirebaseOptions.builder()
