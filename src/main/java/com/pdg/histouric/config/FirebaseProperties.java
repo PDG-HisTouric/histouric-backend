@@ -39,7 +39,8 @@ public class FirebaseProperties {
                 "  \"client_x509_cert_url\": \"" + clientX509CertUrl + "\",\n" +
                 "  \"universe_domain\": \"" + universeDomain + "\"\n" +
                 "}";
-        BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/firebase-adminsdk.json"));
+        String filePath = FirebaseProperties.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath+"/firebase-adminsdk.json"));
         writer.write(json);
         writer.close();
     }

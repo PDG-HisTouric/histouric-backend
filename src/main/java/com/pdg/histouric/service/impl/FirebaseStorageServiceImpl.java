@@ -31,11 +31,11 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
 
         InputStream serviceAccount;
         do {
-            serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-adminsdk.json");
             Thread.yield();
+            serviceAccount = getClass().getClassLoader().getResourceAsStream("firebase-adminsdk.json");
         } while (serviceAccount == null);
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
+        FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .setStorageBucket(firebaseProperties.getBucketName())
                 .build();
