@@ -51,7 +51,8 @@ public class HistoryServiceImpl implements HistoryService {
         historyRepository.delete(history);
     }
 
-    private History getHistoryById(UUID historyId) {
+    @Override
+    public History getHistoryById(UUID historyId) {
         return historyRepository.findById(historyId).orElseThrow(
                 () -> new HistoryException(
                         HttpStatus.NOT_FOUND,

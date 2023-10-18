@@ -87,6 +87,10 @@ public class SecurityConfig {
         MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, "/api/v1/firebase");
         getHistories.setMethod(HttpMethod.POST);
         managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
+        getHistoryById.setMethod(HttpMethod.GET);
+        managerBuilder.add(getHistoryById, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,

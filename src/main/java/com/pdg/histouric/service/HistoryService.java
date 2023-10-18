@@ -11,4 +11,5 @@ public interface HistoryService {
     List<History> getHistoriesByImageUri(String imageUri);
     List<History> getHistoriesByVideoUri(String videoUrl);
     History updateHistory(History history);
+    History getHistoryById(UUID historyId);
 }

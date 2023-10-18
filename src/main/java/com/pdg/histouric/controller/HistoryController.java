@@ -44,4 +44,9 @@ public class HistoryController implements HistoryAPI {
     public ResponseHistoryDTO updateHistory(CreateHistoryDTO createHistoryDTO) {
         return historyMapper.fromHistoryToDTO(historyService.updateHistory(historyMapper.fromDTOToHistory(createHistoryDTO)));
     }
+
+    @Override
+    public ResponseHistoryDTO getHistoryById(UUID historyId) {
+        return historyMapper.fromHistoryToDTO(historyService.getHistoryById(historyId));
+    }
 }

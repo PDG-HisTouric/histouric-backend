@@ -1,13 +1,7 @@
 package com.pdg.histouric;
 
-import com.pdg.histouric.model.BIC;
-import com.pdg.histouric.model.HistouricUser;
-import com.pdg.histouric.model.Nickname;
-import com.pdg.histouric.model.Role;
-import com.pdg.histouric.repository.BicRepository;
-import com.pdg.histouric.repository.NicknameRepository;
-import com.pdg.histouric.repository.RoleRepository;
-import com.pdg.histouric.repository.UserRepository;
+import com.pdg.histouric.model.*;
+import com.pdg.histouric.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -31,6 +26,11 @@ public class HistouricApplication {
 										UserRepository userRepository,
 										BicRepository bicRepository,
 										NicknameRepository nicknameRepository,
+										HistoryRepository historyRepository,
+										AudioRepository audioRepository,
+										TextRepository textRepository,
+										HistoryImageRepository historyImageRepository,
+										VideoRepository videoRepository,
 										PasswordEncoder encoder) {
 		Role tourismManagerRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
@@ -141,6 +141,80 @@ public class HistouricApplication {
 				.nickname("Plaza de Cayzedo")
 				.build();
 
+		Audio audioForHistory1 = Audio.builder()
+				.needsUrlGen(true)
+				.audioUri("audios/3bd1dfe8-f2c5-4890-8cc1-4004786a6a24_the-best-jazz-club-in-new-orleans-164472.mp3")
+				.build();
+
+		Audio audioForHistory2 = Audio.builder()
+				.needsUrlGen(false)
+				.audioUri("https://drive.google.com/uc?export=view&id=1OEg8XmpVeJVp8OJcQn7kouOfwXopxPF0")
+				.build();
+
+		Text text1ForHistory1 = Text.builder()
+				.content("Primer segmento")
+				.startTime(61)
+				.build();
+
+		Text text2ForHistory1 = Text.builder()
+				.content("Segundo segmento")
+				.startTime(151)
+				.build();
+
+		Text text1ForHistory2 = Text.builder()
+				.content("Segmento 1")
+				.startTime(1)
+				.build();
+
+		Text text2ForHistory2 = Text.builder()
+				.content("Segmento 2")
+				.startTime(61)
+				.build();
+
+		HistoryImage historyImage1ForHistory1 = HistoryImage.builder()
+				.needsUrlGen(true)
+				.startTime(61)
+				.imageUri("images/ba6bdad8-c4d8-4b45-9f6b-99b98f235827_pngwing.com.png")
+				.build();
+
+		HistoryImage historyImage2ForHistory1 = HistoryImage.builder()
+				.needsUrlGen(true)
+				.startTime(23)
+				.imageUri("images/483053aa-64c6-47a6-9025-fcd4f86cbcaa_jeje.jpg")
+				.build();
+
+		HistoryImage historyImage1ForHistory2 = HistoryImage.builder()
+				.needsUrlGen(false)
+				.startTime(23)
+				.imageUri("https://drive.google.com/uc?export=view&id=1LwxitD7axSkdzyNQveVNUIl6j1T8J51t")
+				.build();
+
+		HistoryImage historyImage2ForHistory2 = HistoryImage.builder()
+				.needsUrlGen(false)
+				.startTime(62)
+				.imageUri("https://drive.google.com/uc?export=view&id=1StUKr1hewd3pTv8fg7r7UY_FHPtzZtWW")
+				.build();
+
+		Video videoForHistory1 = Video.builder()
+				.needsUrlGen(true)
+				.videoUri("videos/28ad1e05-efb7-44a4-95a8-b874ef480c68_168787 (1080p).mp4")
+				.build();
+
+		Video videoForHistory2 = Video.builder()
+				.needsUrlGen(false)
+				.videoUri("https://drive.google.com/uc?export=view&id=1XpZ1yK5sRKD2SrQEC_c-1Nw9ZI_XRj8u")
+				.build();
+
+		History history1 = History.builder()
+				.title("Historia de prueba 1")
+				.audio(audioForHistory1)
+				.build();
+
+		History history2 = History.builder()
+				.title("Historia de prueba 2")
+				.audio(audioForHistory2)
+				.build();
+
 		return args -> {
 			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
 			tourismManagerUserRoles.add(tourismManagerRoleCreated);
@@ -153,7 +227,7 @@ public class HistouricApplication {
 
 			Role researcherRoleCreated = roleRepository.save(researcher);
 			researcherUserRoles.add(researcherRoleCreated);
-			userRepository.save(reasearcherUser);
+			HistouricUser researcherInDB = userRepository.save(reasearcherUser);
 
 			BIC ermitaInDB = bicRepository.save(ermita);
 			BIC antiguoMataderoInDB = bicRepository.save(antiguoMatadero);
@@ -171,7 +245,45 @@ public class HistouricApplication {
 			nicknameRepository.save(nicknameIglesiaSanFrancisco);
 			nicknamePlazaCayzedo.setBic(plazaCayzedoInDB);
 			nicknameRepository.save(nicknamePlazaCayzedo);
+
+			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
+					videoRepository, audioForHistory1, text1ForHistory1, text2ForHistory1, historyImage1ForHistory1,
+					historyImage2ForHistory1, videoForHistory1, history1, researcherInDB);
+
+			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
+					videoRepository, audioForHistory2, text1ForHistory2, text2ForHistory2, historyImage1ForHistory2,
+					historyImage2ForHistory2, videoForHistory2, history2, researcherInDB);
 		};
+	}
+
+	private static void saveHistory(HistoryRepository historyRepository, AudioRepository audioRepository, TextRepository textRepository, HistoryImageRepository historyImageRepository, VideoRepository videoRepository, Audio audioForHistory2, Text text1ForHistory2, Text text2ForHistory2, HistoryImage historyImage1ForHistory2, HistoryImage historyImage2ForHistory2, Video videoForHistory2, History history2, HistouricUser researcherInDB) {
+		audioRepository.save(audioForHistory2);
+		history2.setOwner(researcherInDB);
+		History history2InDB = historyRepository.save(history2);
+
+		text1ForHistory2.setHistory(history2InDB);
+		text2ForHistory2.setHistory(history2InDB);
+		Text text1ForHistory2InDB = textRepository.save(text1ForHistory2);
+		Text text2ForHistory2InDB = textRepository.save(text2ForHistory2);
+		List<Text> textsForHistory2 = new ArrayList<>();
+		textsForHistory2.add(text1ForHistory2InDB);
+		textsForHistory2.add(text2ForHistory2InDB);
+		history2.setTexts(textsForHistory2);
+
+		historyImage1ForHistory2.setHistory(history2InDB);
+		historyImage2ForHistory2.setHistory(history2InDB);
+		HistoryImage historyImage1ForHistory2InDB = historyImageRepository.save(historyImage1ForHistory2);
+		HistoryImage historyImage2ForHistory2InDB = historyImageRepository.save(historyImage2ForHistory2);
+		List<HistoryImage> historyImagesForHistory2 = new ArrayList<>();
+		historyImagesForHistory2.add(historyImage1ForHistory2InDB);
+		historyImagesForHistory2.add(historyImage2ForHistory2InDB);
+		history2.setImages(historyImagesForHistory2);
+
+		videoForHistory2.setHistory(history2InDB);
+		Video videoForHistory2InDB = videoRepository.save(videoForHistory2);
+		List<Video> videosForHistory2 = new ArrayList<>();
+		videosForHistory2.add(videoForHistory2InDB);
+		history2.setVideos(videosForHistory2);
 	}
 
 }
