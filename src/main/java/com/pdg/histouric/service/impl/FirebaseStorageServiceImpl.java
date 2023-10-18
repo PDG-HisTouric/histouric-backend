@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @AllArgsConstructor
@@ -79,5 +80,10 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
             bucketNames.add(blobName);
         }
         return bucketNames;
+    }
+
+    @Override
+    public String getSignedUrl(String fileName, TimeUnit timeUnit, long duration) {
+        return StorageClient.getInstance().bucket().get(fileName).signUrl(duration, timeUnit).toString();
     }
 }

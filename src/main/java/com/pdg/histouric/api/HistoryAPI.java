@@ -27,4 +27,7 @@ public interface HistoryAPI {
 
     @PutMapping
     ResponseHistoryDTO updateHistory(@RequestBody CreateHistoryDTO createHistoryDTO);
+
+    @GetMapping("/{historyTitle}")
+    List<ResponseHistoryDTO> getHistoriesByTitle(@PathVariable String historyTitle);
 }

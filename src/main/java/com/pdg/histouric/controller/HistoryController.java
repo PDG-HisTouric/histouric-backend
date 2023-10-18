@@ -4,6 +4,8 @@ import com.pdg.histouric.api.HistoryAPI;
 import com.pdg.histouric.dto.CreateHistoryDTO;
 import com.pdg.histouric.dto.ResponseHistoryDTO;
 import com.pdg.histouric.mapper.HistoryMapper;
+import com.pdg.histouric.model.History;
+import com.pdg.histouric.service.FirebaseStorageService;
 import com.pdg.histouric.service.HistoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -12,12 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @AllArgsConstructor
 public class HistoryController implements HistoryAPI {
 
     private final HistoryService historyService;
+    private final FirebaseStorageService firebaseStorageService;
     private final HistoryMapper historyMapper;
 
     @Override
@@ -43,5 +47,27 @@ public class HistoryController implements HistoryAPI {
     @Override
     public ResponseHistoryDTO updateHistory(CreateHistoryDTO createHistoryDTO) {
         return historyMapper.fromHistoryToDTO(historyService.updateHistory(historyMapper.fromDTOToHistory(createHistoryDTO)));
+    }
+
+    @Override
+    public List<ResponseHistoryDTO> getHistoriesByTitle(String historyTitle) {
+        return historyService.getHistoriesByTitle(historyTitle).stream()
+                .map(this::putUrlToHistory)
+                .map(historyMapper::fromHistoryToDTO).toList();
+    }
+
+    private History putUrlToHistory(History history) {
+        history.getImages().forEach(image -> {
+            if (!image.isNeedsUrlGen()) return;
+            image.setImageUri(firebaseStorageService.getSignedUrl(image.getImageUri(), TimeUnit.DAYS, 1));
+        });
+        history.getVideos().forEach(video -> {
+            if (!video.isNeedsUrlGen()) return;
+            video.setVideoUri(firebaseStorageService.getSignedUrl(video.getVideoUri(), TimeUnit.DAYS, 1));
+        });
+        if (history.getAudio().isNeedsUrlGen()) {
+            history.getAudio().setAudioUri(firebaseStorageService.getSignedUrl(history.getAudio().getAudioUri(), TimeUnit.DAYS, 1));
+        }
+        return history;
     }
 }
