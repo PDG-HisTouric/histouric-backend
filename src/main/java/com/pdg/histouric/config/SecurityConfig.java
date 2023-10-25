@@ -84,7 +84,7 @@ public class SecurityConfig {
         getBicById.setMethod(HttpMethod.GET);
         managerBuilder.add(getBicById, (authentication, object) -> new AuthorizationDecision(true));
 
-        MvcRequestMatcher getHistoriesByTitle = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyTitle}");
+        MvcRequestMatcher getHistoriesByTitle = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/title/{historyTitle}");
         getHistoriesByTitle.setMethod(HttpMethod.GET);
         managerBuilder.add(getHistoriesByTitle, (authentication, object) -> new AuthorizationDecision(true));
     }

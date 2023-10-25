@@ -8,6 +8,8 @@ import com.pdg.histouric.model.History;
 import com.pdg.histouric.service.FirebaseStorageService;
 import com.pdg.histouric.service.HistoryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,7 +52,7 @@ public class HistoryController implements HistoryAPI {
     }
 
     @Override
-    public List<ResponseHistoryDTO> getHistoriesByTitle(String historyTitle) {
+    public List<ResponseHistoryDTO> getHistoriesByTitle(@NotNull @NotEmpty String historyTitle) {
         return historyService.getHistoriesByTitle(historyTitle).stream()
                 .map(this::putUrlToHistory)
                 .map(historyMapper::fromHistoryToDTO).toList();

@@ -28,6 +28,6 @@ public interface HistoryAPI {
     @PutMapping
     ResponseHistoryDTO updateHistory(@RequestBody CreateHistoryDTO createHistoryDTO);
 
-    @GetMapping("/{historyTitle}")
+    @GetMapping("/title/{historyTitle}")
     List<ResponseHistoryDTO> getHistoriesByTitle(@PathVariable String historyTitle);
 }
