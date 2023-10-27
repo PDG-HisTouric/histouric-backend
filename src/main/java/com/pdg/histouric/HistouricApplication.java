@@ -254,7 +254,7 @@ public class HistouricApplication {
 					videoRepository, audioForHistory1, text1ForHistory1, text2ForHistory1, historyImage1ForHistory1,
 					historyImage2ForHistory1, videoForHistory1, history1, researcherInDB);
 
-			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
+			History history2InDB = saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
 					videoRepository, audioForHistory2, text1ForHistory2, text2ForHistory2, historyImage1ForHistory2,
 					historyImage2ForHistory2, videoForHistory2, history2, researcherInDB);
 
@@ -264,10 +264,51 @@ public class HistouricApplication {
 					.build();
 			BICHistory bicHistory1 = BICHistory.builder()
 					.id(bicHistoryPK1)
-					.history(history1InDB)
 					.build();
-			var temp = bicHistoryRepository.save(bicHistory1);
-			ermitaInDB.setBicHistories(List.of(temp));
+			bicHistoryRepository.save(bicHistory1);
+
+			BICHistoryPK bicHistoryPK2 = BICHistoryPK.builder()
+					.bicId(antiguoMataderoInDB.getId())
+					.historyId(history1InDB.getId())
+					.build();
+			BICHistory bicHistory2 = BICHistory.builder()
+					.id(bicHistoryPK2)
+					.build();
+			bicHistoryRepository.save(bicHistory2);
+
+			BICHistoryPK bicHistoryPK3 = BICHistoryPK.builder()
+					.bicId(edifioOteroInDB.getId())
+					.historyId(history1InDB.getId())
+					.build();
+			BICHistoryPK bicHistoryPK4 = BICHistoryPK.builder()
+					.bicId(edifioOteroInDB.getId())
+					.historyId(history2InDB.getId())
+					.build();
+			BICHistory bicHistory3 = BICHistory.builder()
+					.id(bicHistoryPK3)
+					.build();
+			BICHistory bicHistory4 = BICHistory.builder()
+					.id(bicHistoryPK4)
+					.build();
+			bicHistoryRepository.save(bicHistory3);
+			bicHistoryRepository.save(bicHistory4);
+
+			BICHistoryPK bicHistoryPK5 = BICHistoryPK.builder()
+					.bicId(iglesiaSanFranciscoInDB.getId())
+					.historyId(history1InDB.getId())
+					.build();
+			BICHistory bicHistory5 = BICHistory.builder()
+					.id(bicHistoryPK5)
+					.build();
+			BICHistoryPK bicHistoryPK6 = BICHistoryPK.builder()
+					.bicId(iglesiaSanFranciscoInDB.getId())
+					.historyId(history2InDB.getId())
+					.build();
+			BICHistory bicHistory6 = BICHistory.builder()
+					.id(bicHistoryPK6)
+					.build();
+			bicHistoryRepository.save(bicHistory5);
+			bicHistoryRepository.save(bicHistory6);
 
 		};
 	}
