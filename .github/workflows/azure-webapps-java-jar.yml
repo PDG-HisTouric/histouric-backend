@@ -1,13 +1,25 @@
 name: Build and deploy JAR app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: histouric-backend
+  AZURE_WEBAPP_NAME: histouric-back
   JAVA_VERSION: '17'
   DISTRIBUTION: zulu
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   DB_HOST: ${{ secrets.DB_HOST }}
   DB_NAME: ${{ secrets.DB_NAME }}
+  FB_BUCKET_NAME: ${{ secrets.FB_BUCKET_NAME }}
+  FB_SDK_AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.FB_SDK_AUTH_PROVIDER_X509_CERT_URL }}
+  FB_SDK_AUTH_URI: ${{ secrets.FB_SDK_AUTH_URI }}
+  FB_SDK_CLIENT_EMAIL: ${{ secrets.FB_SDK_CLIENT_EMAIL }}
+  FB_SDK_CLIENT_ID: ${{ secrets.FB_SDK_CLIENT_ID }}
+  FB_SDK_CLIENT_X509_CERT_URL: ${{ secrets.FB_SDK_CLIENT_X509_CERT_URL }}
+  FB_SDK_PRIVATE_KEY: ${{ secrets.FB_SDK_PRIVATE_KEY }}
+  FB_SDK_PRIVATE_KEY_ID: ${{ secrets.FB_SDK_PRIVATE_KEY_ID }}
+  FB_SDK_PROJECT_ID: ${{ secrets.FB_SDK_PROJECT_ID }}
+  FB_SDK_TOKEN_URI: ${{ secrets.FB_SDK_TOKEN_URI }}
+  FB_SDK_TYPE: ${{ secrets.FB_SDK_TYPE }}
+  FB_SDK_UNIVERSE_DOMAIN: ${{ secrets.FB_SDK_UNIVERSE_DOMAIN }}
 
 on:
   push:
@@ -60,5 +72,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CCF75BC23D6249CC96E20C868BF78818 }}
           package: '*.jar'

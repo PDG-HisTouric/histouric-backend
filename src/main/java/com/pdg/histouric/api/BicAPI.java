@@ -1,6 +1,7 @@
 package com.pdg.histouric.api;
 
-import com.pdg.histouric.dto.BicDTO;
+import com.pdg.histouric.dto.CreateBicDTO;
+import com.pdg.histouric.dto.ResponseBicDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,19 +13,19 @@ public interface BicAPI {
     String ROOT_PATH = "/api/v1/bics";
 
     @PostMapping
-    BicDTO createBIC(@RequestBody BicDTO bicDTO);
+    ResponseBicDTO createBIC(@RequestBody CreateBicDTO createBicDTO);
 
     @GetMapping
-    List<BicDTO> getBICs();
+    List<ResponseBicDTO> getBICs();
 
     @GetMapping("/{id}")
-    BicDTO getBicById(@PathVariable UUID id);
+    ResponseBicDTO getBicById(@PathVariable UUID id);
 
     @GetMapping("/name/{nameOrNickname}")
-    List<BicDTO> getBicByNameOrNickname(@PathVariable String nameOrNickname);
+    List<ResponseBicDTO> getBicByNameOrNickname(@PathVariable String nameOrNickname);
 
     @PutMapping("/{bicId}")
-    BicDTO updateBicById(@PathVariable UUID bicId, @RequestBody BicDTO bicDTO);
+    ResponseBicDTO updateBicById(@PathVariable UUID bicId, @RequestBody CreateBicDTO createBicDTO);
 
     @DeleteMapping("/{bicId}")
     void deleteBicById(@PathVariable UUID bicId);

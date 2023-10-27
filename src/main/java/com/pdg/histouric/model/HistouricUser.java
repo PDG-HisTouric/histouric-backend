@@ -43,6 +43,9 @@ public class HistouricUser implements UserDetails {
     )
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "owner")
+    private List<History> histories;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()

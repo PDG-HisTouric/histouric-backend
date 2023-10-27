@@ -2,8 +2,6 @@ package com.pdg.histouric.error;
 
 import com.pdg.histouric.constant.UserErrorCode;
 import com.pdg.histouric.error.exception.*;
-import io.jsonwebtoken.ClaimJwtException;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.PersistenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +36,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<BicError> handleBicException(BicException bicException) {
         return new ResponseEntity<>(bicException.getError(), bicException.getHttpStatus());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<HistoryError> handleHistoryException(HistoryException historyException) {
+        return new ResponseEntity<>(historyException.getError(), historyException.getHttpStatus());
     }
 
     @ExceptionHandler

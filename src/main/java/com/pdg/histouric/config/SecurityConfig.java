@@ -1,8 +1,6 @@
 package com.pdg.histouric.config;
 
-import com.pdg.histouric.api.AuthAPI;
-import com.pdg.histouric.api.BicAPI;
-import com.pdg.histouric.api.UserAPI;
+import com.pdg.histouric.api.*;
 import com.pdg.histouric.security.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -21,8 +19,6 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 import org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -64,6 +60,8 @@ public class SecurityConfig {
         configureUnlockedEndpoints(introspector, managerBuilder);
         configureEndpointsForUserApi(introspector, managerBuilder);
         configureEndpointsForBicApi(introspector, managerBuilder);
+        configureEndpointsForHistoryApi(introspector, managerBuilder);
+        configureEndpointsForFirebaseStorageApi(introspector, managerBuilder);
 
         AuthorizationManager<HttpServletRequest> manager = managerBuilder.build();
         return (authentication, object) -> manager.check(authentication, object.getRequest());
@@ -89,6 +87,10 @@ public class SecurityConfig {
         MvcRequestMatcher getBicsByNameOrNickname = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/name/{nameOrNickname}");
         getBicsByNameOrNickname.setMethod(HttpMethod.GET);
         managerBuilder.add(getBicsByNameOrNickname, (authentication, object) -> new AuthorizationDecision(true));
+        
+        MvcRequestMatcher getHistoriesByTitle = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/title/{historyTitle}");
+        getHistoriesByTitle.setMethod(HttpMethod.GET);
+        managerBuilder.add(getHistoriesByTitle, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
@@ -115,7 +117,7 @@ public class SecurityConfig {
     }
 
     private void configureEndpointsForBicApi(HandlerMappingIntrospector introspector,
-                                            RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
+                                             RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
         MvcRequestMatcher createBic = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH);
         createBic.setMethod(HttpMethod.POST);
         managerBuilder.add(createBic, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
@@ -131,6 +133,32 @@ public class SecurityConfig {
         MvcRequestMatcher deleteBicById = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/{bicId}");
         deleteBicById.setMethod(HttpMethod.DELETE);
         managerBuilder.add(deleteBicById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+    }
+
+    private void configureEndpointsForHistoryApi(HandlerMappingIntrospector introspector,
+                                                 RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
+        MvcRequestMatcher createHistory = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+        createHistory.setMethod(HttpMethod.POST);
+        managerBuilder.add(createHistory, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+        MvcRequestMatcher deleteHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
+        deleteHistoryById.setMethod(HttpMethod.DELETE);
+        managerBuilder.add(deleteHistoryById, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+    }
+
+    private void configureEndpointsForFirebaseStorageApi(HandlerMappingIntrospector introspector,
+                                                         RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
+        MvcRequestMatcher uploadImages = new MvcRequestMatcher(introspector, FirebaseStorageAPI.ROOT_PATH + "/images");
+        uploadImages.setMethod(HttpMethod.POST);
+        managerBuilder.add(uploadImages, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+        MvcRequestMatcher uploadVideos = new MvcRequestMatcher(introspector, FirebaseStorageAPI.ROOT_PATH + "/videos");
+        uploadVideos.setMethod(HttpMethod.POST);
+        managerBuilder.add(uploadVideos, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+
+        MvcRequestMatcher uploadAudios = new MvcRequestMatcher(introspector, FirebaseStorageAPI.ROOT_PATH + "/audios");
+        uploadAudios.setMethod(HttpMethod.POST);
+        managerBuilder.add(uploadAudios, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
     }
 
     @Bean
