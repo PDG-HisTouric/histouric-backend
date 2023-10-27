@@ -54,22 +54,7 @@ public class HistoryController implements HistoryAPI {
     @Override
     public List<ResponseHistoryDTO> getHistoriesByTitle(@NotNull @NotEmpty String historyTitle) {
         return historyService.getHistoriesByTitle(historyTitle).stream()
-                .map(this::putUrlToHistory)
+                .map(firebaseStorageService::putUrlsToHistory)
                 .map(historyMapper::fromHistoryToDTO).toList();
-    }
-
-    private History putUrlToHistory(History history) {
-        history.getImages().forEach(image -> {
-            if (!image.isNeedsUrlGen()) return;
-            image.setImageUri(firebaseStorageService.getSignedUrl(image.getImageUri(), TimeUnit.DAYS, 1));
-        });
-        history.getVideos().forEach(video -> {
-            if (!video.isNeedsUrlGen()) return;
-            video.setVideoUri(firebaseStorageService.getSignedUrl(video.getVideoUri(), TimeUnit.DAYS, 1));
-        });
-        if (history.getAudio().isNeedsUrlGen()) {
-            history.getAudio().setAudioUri(firebaseStorageService.getSignedUrl(history.getAudio().getAudioUri(), TimeUnit.DAYS, 1));
-        }
-        return history;
     }
 }

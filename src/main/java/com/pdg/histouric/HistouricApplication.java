@@ -2,6 +2,7 @@ package com.pdg.histouric;
 
 import com.pdg.histouric.model.*;
 import com.pdg.histouric.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +23,7 @@ public class HistouricApplication {
 
 	@Bean
 	@Profile("!test")
+	@Transactional
 	CommandLineRunner commandLineRunner(RoleRepository roleRepository,
 										UserRepository userRepository,
 										BicRepository bicRepository,
@@ -31,6 +33,7 @@ public class HistouricApplication {
 										TextRepository textRepository,
 										HistoryImageRepository historyImageRepository,
 										VideoRepository videoRepository,
+										BICHistoryRepository bicHistoryRepository,
 										PasswordEncoder encoder) {
 		Role tourismManagerRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
@@ -148,7 +151,8 @@ public class HistouricApplication {
 
 		Audio audioForHistory2 = Audio.builder()
 				.needsUrlGen(false)
-				.audioUri("https://drive.google.com/uc?export=view&id=1OEg8XmpVeJVp8OJcQn7kouOfwXopxPF0")
+//				.audioUri("https://drive.google.com/uc?export=view&id=1OEg8XmpVeJVp8OJcQn7kouOfwXopxPF0")
+				.audioUri("https://drive.google.com/uc?export=view&id=1oL4xo9LsMKkGQT7-holZEja1onN6IBxt")
 				.build();
 
 		Text text1ForHistory1 = Text.builder()
@@ -246,44 +250,69 @@ public class HistouricApplication {
 			nicknamePlazaCayzedo.setBic(plazaCayzedoInDB);
 			nicknameRepository.save(nicknamePlazaCayzedo);
 
-			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
+			History history1InDB = saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
 					videoRepository, audioForHistory1, text1ForHistory1, text2ForHistory1, historyImage1ForHistory1,
 					historyImage2ForHistory1, videoForHistory1, history1, researcherInDB);
 
 			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
 					videoRepository, audioForHistory2, text1ForHistory2, text2ForHistory2, historyImage1ForHistory2,
 					historyImage2ForHistory2, videoForHistory2, history2, researcherInDB);
+
+			BICHistoryPK bicHistoryPK1 = BICHistoryPK.builder()
+					.bicId(ermitaInDB.getId())
+					.historyId(history1InDB.getId())
+					.build();
+			BICHistory bicHistory1 = BICHistory.builder()
+					.id(bicHistoryPK1)
+					.history(history1InDB)
+					.build();
+			var temp = bicHistoryRepository.save(bicHistory1);
+			ermitaInDB.setBicHistories(List.of(temp));
+
 		};
 	}
 
-	private static void saveHistory(HistoryRepository historyRepository, AudioRepository audioRepository, TextRepository textRepository, HistoryImageRepository historyImageRepository, VideoRepository videoRepository, Audio audioForHistory2, Text text1ForHistory2, Text text2ForHistory2, HistoryImage historyImage1ForHistory2, HistoryImage historyImage2ForHistory2, Video videoForHistory2, History history2, HistouricUser researcherInDB) {
-		audioRepository.save(audioForHistory2);
-		history2.setOwner(researcherInDB);
-		History history2InDB = historyRepository.save(history2);
+	private static History saveHistory(HistoryRepository historyRepository,
+									   AudioRepository audioRepository,
+									   TextRepository textRepository,
+									   HistoryImageRepository historyImageRepository,
+									   VideoRepository videoRepository,
+									   Audio audioForHistory,
+									   Text text1ForHistory,
+									   Text text2ForHistory,
+									   HistoryImage historyImage1ForHistory,
+									   HistoryImage historyImage2ForHistory,
+									   Video videoForHistory,
+									   History history,
+									   HistouricUser researcherInDB) {
+		audioRepository.save(audioForHistory);
+		history.setOwner(researcherInDB);
+		History historyInDB = historyRepository.save(history);
 
-		text1ForHistory2.setHistory(history2InDB);
-		text2ForHistory2.setHistory(history2InDB);
-		Text text1ForHistory2InDB = textRepository.save(text1ForHistory2);
-		Text text2ForHistory2InDB = textRepository.save(text2ForHistory2);
-		List<Text> textsForHistory2 = new ArrayList<>();
-		textsForHistory2.add(text1ForHistory2InDB);
-		textsForHistory2.add(text2ForHistory2InDB);
-		history2.setTexts(textsForHistory2);
+		text1ForHistory.setHistory(historyInDB);
+		text2ForHistory.setHistory(historyInDB);
+		Text text1ForHistory2InDB = textRepository.save(text1ForHistory);
+		Text text2ForHistory2InDB = textRepository.save(text2ForHistory);
+		List<Text> textsForHistory = new ArrayList<>();
+		textsForHistory.add(text1ForHistory2InDB);
+		textsForHistory.add(text2ForHistory2InDB);
+		history.setTexts(textsForHistory);
 
-		historyImage1ForHistory2.setHistory(history2InDB);
-		historyImage2ForHistory2.setHistory(history2InDB);
-		HistoryImage historyImage1ForHistory2InDB = historyImageRepository.save(historyImage1ForHistory2);
-		HistoryImage historyImage2ForHistory2InDB = historyImageRepository.save(historyImage2ForHistory2);
+		historyImage1ForHistory.setHistory(historyInDB);
+		historyImage2ForHistory.setHistory(historyInDB);
+		HistoryImage historyImage1ForHistory2InDB = historyImageRepository.save(historyImage1ForHistory);
+		HistoryImage historyImage2ForHistory2InDB = historyImageRepository.save(historyImage2ForHistory);
 		List<HistoryImage> historyImagesForHistory2 = new ArrayList<>();
 		historyImagesForHistory2.add(historyImage1ForHistory2InDB);
 		historyImagesForHistory2.add(historyImage2ForHistory2InDB);
-		history2.setImages(historyImagesForHistory2);
+		history.setImages(historyImagesForHistory2);
 
-		videoForHistory2.setHistory(history2InDB);
-		Video videoForHistory2InDB = videoRepository.save(videoForHistory2);
+		videoForHistory.setHistory(historyInDB);
+		Video videoForHistory2InDB = videoRepository.save(videoForHistory);
 		List<Video> videosForHistory2 = new ArrayList<>();
 		videosForHistory2.add(videoForHistory2InDB);
-		history2.setVideos(videosForHistory2);
+		history.setVideos(videosForHistory2);
+		return historyInDB;
 	}
 
 }

@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
 import com.pdg.histouric.config.FirebaseProperties;
+import com.pdg.histouric.model.History;
 import com.pdg.histouric.service.FirebaseStorageService;
 import com.pdg.histouric.utils.FirebaseUrl;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -101,5 +102,21 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
                 .build();
         urlMap.put(fileName, firebaseUrl);
         return url;
+    }
+
+    @Override
+    public History putUrlsToHistory(History history) {
+        history.getImages().forEach(image -> {
+            if (!image.isNeedsUrlGen()) return;
+            image.setImageUri(getSignedUrl(image.getImageUri(), TimeUnit.DAYS, 1));
+        });
+        history.getVideos().forEach(video -> {
+            if (!video.isNeedsUrlGen()) return;
+            video.setVideoUri(getSignedUrl(video.getVideoUri(), TimeUnit.DAYS, 1));
+        });
+        if (history.getAudio().isNeedsUrlGen()) {
+            history.getAudio().setAudioUri(getSignedUrl(history.getAudio().getAudioUri(), TimeUnit.DAYS, 1));
+        }
+        return history;
     }
 }
