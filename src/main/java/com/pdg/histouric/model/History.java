@@ -40,4 +40,7 @@ public class History {
     @OneToOne
     @JoinColumn(name = "audio_id")
     private Audio audio;
+
+    @OneToMany(mappedBy = "history")
+    private List<BICHistory> bicHistories;
 }

@@ -84,9 +84,9 @@ public class SecurityConfig {
         getBicById.setMethod(HttpMethod.GET);
         managerBuilder.add(getBicById, (authentication, object) -> new AuthorizationDecision(true));
 
-        MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, "/api/v1/firebase");
-        getHistories.setMethod(HttpMethod.POST);
-        managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
+        MvcRequestMatcher getHistoriesByTitle = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/title/{historyTitle}");
+        getHistoriesByTitle.setMethod(HttpMethod.GET);
+        managerBuilder.add(getHistoriesByTitle, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,

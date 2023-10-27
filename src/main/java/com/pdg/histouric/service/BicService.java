@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BicService {
-    BIC createBIC(BIC createBicDTO);
+    BIC createBIC(BIC bic);
     List<BIC> getBICs();
     BIC getBicById(UUID id);
     BIC updateBicById(UUID bicId, BIC bicDTO);
