@@ -14,10 +14,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class BICHistoryPK implements Serializable {
+public class RouteBICHistoryPK implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    @Column(name = "route_id", nullable = false)
+    private UUID routeId;
 
     @Column(name = "bic_id", nullable = false)
     private UUID bicId;
