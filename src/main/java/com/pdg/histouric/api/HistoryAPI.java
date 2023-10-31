@@ -14,7 +14,6 @@ public interface HistoryAPI {
 
     @PostMapping
     ResponseHistoryDTO createHistory(@RequestBody CreateHistoryDTO createHistoryDTO) throws IOException;
-//    ResponseHistoryDTO createHistory() throws IOException;
 
     @DeleteMapping("/{historyId}")
     void deleteHistory(@PathVariable UUID historyId);
@@ -28,6 +27,9 @@ public interface HistoryAPI {
     @PutMapping
     ResponseHistoryDTO updateHistory(@RequestBody CreateHistoryDTO createHistoryDTO);
 
+    @GetMapping("/{historyId}")
+    ResponseHistoryDTO getHistoryById(@PathVariable UUID historyId);
+    
     @GetMapping("/title/{historyTitle}")
     List<ResponseHistoryDTO> getHistoriesByTitle(@PathVariable String historyTitle);
 }

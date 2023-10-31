@@ -52,6 +52,12 @@ public class HistoryController implements HistoryAPI {
     }
 
     @Override
+    public ResponseHistoryDTO getHistoryById(UUID historyId) {
+        History history = historyService.getHistoryById(historyId);
+        return historyMapper.fromHistoryToDTO(firebaseStorageService.putUrlsToHistory(history));
+    }
+
+    @Override
     public List<ResponseHistoryDTO> getHistoriesByTitle(@NotNull @NotEmpty String historyTitle) {
         return historyService.getHistoriesByTitle(historyTitle).stream()
                 .map(firebaseStorageService::putUrlsToHistory)
