@@ -21,7 +21,7 @@ public class RouteTheme {
     @Column(name = "route_theme_id", nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "route_theme_name", nullable = false)
+    @Column(name = "route_theme_name", nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "theme")

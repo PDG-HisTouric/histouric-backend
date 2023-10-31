@@ -46,6 +46,4 @@ public class BIC {
     @OneToMany(mappedBy = "bic")
     private List<BICHistory> bicHistories;
 
-    @OneToMany(mappedBy = "bic")
-    private List<RouteBICHistory> routeBICHistories;
 }

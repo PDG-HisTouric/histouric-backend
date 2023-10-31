@@ -60,6 +60,15 @@ public class BicController implements BicAPI {
 
     @Override
     public List<ResponseBicDTO> getBicByNameOrNickname(String nameOrNickname) {
-        return bicService.getBicByNameOrNickname(nameOrNickname).stream().map(bicMapper::fromBIC).collect(java.util.stream.Collectors.toList());
+        List<BIC> bics = bicService.getBicByNameOrNickname(nameOrNickname);
+        List<ResponseBicDTO> responseBicDTOS = bics.stream().map(bicMapper::fromBIC).toList();
+        for (int i = 0; i < bics.size(); i++) {
+            List<ResponseHistoryDTO> responseHistoryDTOS = bics.get(i).getBicHistories().stream()
+                    .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
+                    .map(historyMapper::fromHistoryToDTO)
+                    .toList();
+            responseBicDTOS.get(i).setHistories(responseHistoryDTOS);
+        }
+        return responseBicDTOS;
     }
 }

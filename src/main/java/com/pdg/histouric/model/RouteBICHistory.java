@@ -19,12 +19,12 @@ public class RouteBICHistory {
     @JoinColumn(name = "route_id", insertable = false, updatable = false)
     private Route route;
 
-    @ManyToOne
-    @JoinColumn(name = "bic_id", insertable = false, updatable = false)
-    private BIC bic;
+    @Column(name = "bic_order")
+    private int bicOrder;
 
     @ManyToOne
+    @JoinColumn(name = "bic_id", insertable = false, updatable = false)
     @JoinColumn(name = "history_id", insertable = false, updatable = false)
-    private History history;
+    private BICHistory bicHistory;
 
 }

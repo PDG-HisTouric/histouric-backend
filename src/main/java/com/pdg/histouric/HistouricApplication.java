@@ -34,6 +34,7 @@ public class HistouricApplication {
 										HistoryImageRepository historyImageRepository,
 										VideoRepository videoRepository,
 										BICHistoryRepository bicHistoryRepository,
+										RouteThemeRepository routeThemeRepository,
 										PasswordEncoder encoder) {
 		Role tourismManagerRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
@@ -80,7 +81,7 @@ public class HistouricApplication {
 				.build();
 
 		ArrayList<Role> researcherUserRoles = new ArrayList<>();
-		HistouricUser reasearcherUser = HistouricUser.builder()
+		HistouricUser researcherUser = HistouricUser.builder()
 				.id(UUID.fromString("20ffef18-7d49-40f2-97f1-98bc6cb199a2"))
 				.nickname("Andres Felipe")
 				.email("researcher@gmail.com")
@@ -219,6 +220,10 @@ public class HistouricApplication {
 				.audio(audioForHistory2)
 				.build();
 
+		RouteTheme routeThemeOfMiedo = RouteTheme.builder()
+				.name("Miedo")
+				.build();
+
 		return args -> {
 			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
 			tourismManagerUserRoles.add(tourismManagerRoleCreated);
@@ -231,7 +236,7 @@ public class HistouricApplication {
 
 			Role researcherRoleCreated = roleRepository.save(researcher);
 			researcherUserRoles.add(researcherRoleCreated);
-			HistouricUser researcherInDB = userRepository.save(reasearcherUser);
+			HistouricUser researcherInDB = userRepository.save(researcherUser);
 
 			BIC ermitaInDB = bicRepository.save(ermita);
 			BIC antiguoMataderoInDB = bicRepository.save(antiguoMatadero);
@@ -310,6 +315,7 @@ public class HistouricApplication {
 			bicHistoryRepository.save(bicHistory5);
 			bicHistoryRepository.save(bicHistory6);
 
+			routeThemeRepository.save(routeThemeOfMiedo);
 		};
 	}
 

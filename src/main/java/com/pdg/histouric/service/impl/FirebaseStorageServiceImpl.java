@@ -106,17 +106,19 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
 
     @Override
     public History putUrlsToHistory(History history) {
-        history.getImages().forEach(image -> {
+        History historyWithUrls = history.cloneHistory();
+
+        historyWithUrls.getImages().forEach(image -> {
             if (!image.isNeedsUrlGen()) return;
             image.setImageUri(getSignedUrl(image.getImageUri(), TimeUnit.DAYS, 1));
         });
-        history.getVideos().forEach(video -> {
+        historyWithUrls.getVideos().forEach(video -> {
             if (!video.isNeedsUrlGen()) return;
             video.setVideoUri(getSignedUrl(video.getVideoUri(), TimeUnit.DAYS, 1));
         });
-        if (history.getAudio().isNeedsUrlGen()) {
-            history.getAudio().setAudioUri(getSignedUrl(history.getAudio().getAudioUri(), TimeUnit.DAYS, 1));
+        if (historyWithUrls.getAudio().isNeedsUrlGen()) {
+            historyWithUrls.getAudio().setAudioUri(getSignedUrl(historyWithUrls.getAudio().getAudioUri(), TimeUnit.DAYS, 1));
         }
-        return history;
+        return historyWithUrls;
     }
 }

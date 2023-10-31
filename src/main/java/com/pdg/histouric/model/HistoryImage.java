@@ -32,4 +32,14 @@ public class HistoryImage {
     @ManyToOne
     @JoinColumn(name = "history_id", nullable = false)
     private History history;
+
+    public HistoryImage cloneHistoryImage() {
+        return HistoryImage.builder()
+                .id(this.id)
+                .imageUri(this.imageUri)
+                .startTime(this.startTime)
+                .needsUrlGen(this.needsUrlGen)
+                .history(this.history)
+                .build();
+    }
 }

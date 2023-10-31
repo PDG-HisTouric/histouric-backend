@@ -43,4 +43,5 @@ public class CreateBicDTO {
     private List<BICImageDTO> imagesUris;
 
     private List<String> historiesIds;
+    
 }

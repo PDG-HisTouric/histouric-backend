@@ -1,6 +1,5 @@
 package com.pdg.histouric.dto;
 
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -17,37 +16,28 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseBicDTO {
-
-    private UUID id;
+public class CreateRouteDTO {
 
     @NotNull(message = "Name cannot be null")
     @NotEmpty(message = "Name cannot be empty")
     @NotBlank(message = "Name cannot be blank")
-    @Length(max = 255, message = "Name must be 255 characters long")
+    @Length(max = 255, message = "Name must have a maximum of 255 characters")
     private String name;
 
     @NotNull(message = "Description cannot be null")
     @NotEmpty(message = "Description cannot be empty")
     @NotBlank(message = "Description cannot be blank")
-    @Length(max = 255, message = "Description must be 255 characters long")
+    @Length(max = 3000, message = "Description must have a maximum of 3000 characters")
     private String description;
 
-    @NotNull(message = "Latitude cannot be null")
-    @Digits(integer = 3, fraction = 16, message = "Latitude must be a valid latitude")
-    private double latitude;
+    @NotNull(message = "Owner id cannot be null")
+    private UUID ownerId;
 
-    @NotNull(message = "Longitude cannot be null")
-    @Digits(integer = 3, fraction = 16, message = "Longitude must be a valid longitude")
-    private double longitude;
+    @NotNull(message = "Theme name cannot be null")
+    private String themeName;
 
-    @NotNull(message = "Existence specification cannot be null")
-    private boolean existss;
-
-    private List<NicknameDTO> nicknames;
-
-    private List<BICImageDTO> imagesUris;
-
-    private List<ResponseHistoryDTO> histories;
+    @NotNull(message = "BIC list cannot be null")
+    @NotEmpty(message = "BIC list cannot be empty")
+    private List<CreateBICForRouteDTO> bicList;
 
 }

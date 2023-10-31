@@ -44,6 +44,22 @@ public class History {
     @OneToMany(mappedBy = "history")
     private List<BICHistory> bicHistories;
 
-    @OneToMany(mappedBy = "history")
-    private List<RouteBICHistory> routeBICHistories;
+    public History cloneHistory() {
+        List<Video> videos = this.videos.stream()
+                .map(Video::cloneVideo)
+                .toList();
+        List<HistoryImage> images = this.images.stream()
+                .map(HistoryImage::cloneHistoryImage)
+                .toList();
+        return History.builder()
+                .id(this.id)
+                .title(this.title)
+                .owner(this.owner)
+                .videos(videos)
+                .texts(this.texts)
+                .images(images)
+                .audio(this.audio.cloneAudio())
+                .bicHistories(this.bicHistories)
+                .build();
+    }
 }

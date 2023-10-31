@@ -2,6 +2,7 @@ package com.pdg.histouric.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import lombok.*;
 
 import java.io.Serial;
@@ -22,10 +23,7 @@ public class RouteBICHistoryPK implements Serializable {
     @Column(name = "route_id", nullable = false)
     private UUID routeId;
 
-    @Column(name = "bic_id", nullable = false)
-    private UUID bicId;
-
-    @Column(name = "history_id", nullable = false)
-    private UUID historyId;
+    @Embedded
+    private BICHistoryPK bicHistoryPK;
 
 }

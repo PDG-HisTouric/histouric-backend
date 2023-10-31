@@ -3,6 +3,8 @@ package com.pdg.histouric.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +23,7 @@ public class BICHistory {
     @ManyToOne
     @JoinColumn(name = "history_id", insertable = false, updatable = false)
     private History history;
+
+    @OneToMany(mappedBy = "bicHistory")
+    private List<RouteBICHistory> routeBICHistories;
 }

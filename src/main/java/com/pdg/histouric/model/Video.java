@@ -29,4 +29,13 @@ public class Video {
     @ManyToOne
     @JoinColumn(name = "history_id", nullable = false)
     private History history;
+
+    public Video cloneVideo() {
+        return Video.builder()
+                .id(this.id)
+                .videoUri(this.videoUri)
+                .needsUrlGen(this.needsUrlGen)
+                .history(this.history)
+                .build();
+    }
 }
