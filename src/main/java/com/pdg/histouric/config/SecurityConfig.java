@@ -96,6 +96,14 @@ public class SecurityConfig {
         MvcRequestMatcher getHistoriesByTitle = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/title/{historyTitle}");
         getHistoriesByTitle.setMethod(HttpMethod.GET);
         managerBuilder.add(getHistoriesByTitle, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getAllRouteThemes = new MvcRequestMatcher(introspector, RouteThemeAPI.ROOT_PATH);
+        getAllRouteThemes.setMethod(HttpMethod.GET);
+        managerBuilder.add(getAllRouteThemes, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getRouteThemeById = new MvcRequestMatcher(introspector, RouteThemeAPI.ROOT_PATH + "/{id}");
+        getRouteThemeById.setMethod(HttpMethod.GET);
+        managerBuilder.add(getRouteThemeById, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,

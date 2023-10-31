@@ -140,9 +140,19 @@ public class HistouricApplication {
 				.description("La plaza de Cayzedo es una plaza ubicada en el centro de la ciudad de Cali, Colombia. Fue construida en 1920 y funcionó como matadero hasta 1979. En 1982 fue declarado Monumento Nacional de Colombia.")
 				.existss(true)
 				.build();
-
 		Nickname nicknamePlazaCayzedo = Nickname.builder()
 				.nickname("Plaza de Cayzedo")
+				.build();
+
+		BIC testBIC = BIC.builder()
+				.name("Test BIC")
+				.latitude(3.451929471542790)
+				.longitude(-76.5319398863672)
+				.description("Test BIC")
+				.existss(true)
+				.build();
+		Nickname nicknameTestBIC = Nickname.builder()
+				.nickname("Test BIC")
 				.build();
 
 		Audio audioForHistory1 = Audio.builder()
@@ -243,6 +253,7 @@ public class HistouricApplication {
 			BIC edifioOteroInDB = bicRepository.save(edifioOtero);
 			BIC iglesiaSanFranciscoInDB = bicRepository.save(iglesiaSanFrancisco);
 			BIC plazaCayzedoInDB = bicRepository.save(plazaCayzedo);
+			BIC testBICInDB = bicRepository.save(testBIC);
 
 			nicknameErmita.setBic(ermitaInDB);
 			nicknameRepository.save(nicknameErmita);
@@ -254,6 +265,8 @@ public class HistouricApplication {
 			nicknameRepository.save(nicknameIglesiaSanFrancisco);
 			nicknamePlazaCayzedo.setBic(plazaCayzedoInDB);
 			nicknameRepository.save(nicknamePlazaCayzedo);
+			nicknameTestBIC.setBic(testBICInDB);
+			nicknameRepository.save(nicknameTestBIC);
 
 			History history1InDB = saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
 					videoRepository, audioForHistory1, text1ForHistory1, text2ForHistory1, historyImage1ForHistory1,

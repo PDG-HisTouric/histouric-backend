@@ -40,7 +40,7 @@ public class BicController implements BicAPI {
 
     @Override
     public List<ResponseBicDTO> getBICs() {
-        return bicService.getBICs().stream().map(bicMapper::fromBIC).collect(java.util.stream.Collectors.toList());
+        return bicService.getBICs().stream().map(bicMapper::fromBIC).toList();
     }
 
     @Override
