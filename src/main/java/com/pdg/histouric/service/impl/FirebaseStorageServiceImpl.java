@@ -6,8 +6,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
 import com.pdg.histouric.config.FirebaseProperties;
+import com.pdg.histouric.model.History;
 import com.pdg.histouric.service.FirebaseStorageService;
-import lombok.AllArgsConstructor;
+import com.pdg.histouric.utils.FirebaseUrl;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
-@AllArgsConstructor
 public class FirebaseStorageServiceImpl implements FirebaseStorageService {
 
     FirebaseProperties firebaseProperties;
+    Map<String, FirebaseUrl> urlMap;
+
+    public FirebaseStorageServiceImpl(FirebaseProperties firebaseProperties) {
+        this.firebaseProperties = firebaseProperties;
+        urlMap = new HashMap<>();
+    }
 
     @EventListener
     public void init(ApplicationReadyEvent event) throws IOException {
@@ -79,5 +84,41 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
             bucketNames.add(blobName);
         }
         return bucketNames;
+    }
+
+    @Override
+    public String getSignedUrl(String fileName, TimeUnit timeUnit, long duration) {
+        if (urlMap.containsKey(fileName)) {
+            return urlMap.get(fileName).getUrl().orElseGet(() -> generateSignedUrl(fileName, timeUnit, duration));
+        }
+        return generateSignedUrl(fileName, timeUnit, duration);
+    }
+
+    private String generateSignedUrl(String fileName, TimeUnit timeUnit, long duration) {
+        String url = StorageClient.getInstance().bucket().get(fileName).signUrl(duration, timeUnit).toString();
+        FirebaseUrl firebaseUrl = FirebaseUrl.builder()
+                .expiration(new Date(System.currentTimeMillis() + timeUnit.toMillis(duration)))
+                .url(url)
+                .build();
+        urlMap.put(fileName, firebaseUrl);
+        return url;
+    }
+
+    @Override
+    public History putUrlsToHistory(History history) {
+        History historyWithUrls = history.cloneHistory();
+
+        historyWithUrls.getImages().forEach(image -> {
+            if (!image.isNeedsUrlGen()) return;
+            image.setImageUri(getSignedUrl(image.getImageUri(), TimeUnit.DAYS, 1));
+        });
+        historyWithUrls.getVideos().forEach(video -> {
+            if (!video.isNeedsUrlGen()) return;
+            video.setVideoUri(getSignedUrl(video.getVideoUri(), TimeUnit.DAYS, 1));
+        });
+        if (historyWithUrls.getAudio().isNeedsUrlGen()) {
+            historyWithUrls.getAudio().setAudioUri(getSignedUrl(historyWithUrls.getAudio().getAudioUri(), TimeUnit.DAYS, 1));
+        }
+        return historyWithUrls;
     }
 }

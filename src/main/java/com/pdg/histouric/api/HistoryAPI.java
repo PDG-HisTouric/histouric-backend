@@ -30,4 +30,7 @@ public interface HistoryAPI {
 
     @GetMapping("/{historyId}")
     ResponseHistoryDTO getHistoryById(@PathVariable UUID historyId);
+    
+    @GetMapping("/title/{historyTitle}")
+    List<ResponseHistoryDTO> getHistoriesByTitle(@PathVariable String historyTitle);
 }

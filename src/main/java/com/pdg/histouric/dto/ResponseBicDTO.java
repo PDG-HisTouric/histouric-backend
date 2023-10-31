@@ -1,11 +1,15 @@
 package com.pdg.histouric.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +17,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BicDTO {
+public class ResponseBicDTO {
 
     private UUID id;
 
@@ -43,4 +47,7 @@ public class BicDTO {
     private List<NicknameDTO> nicknames;
 
     private List<BICImageDTO> imagesUris;
+
+    private List<ResponseHistoryDTO> histories;
+
 }

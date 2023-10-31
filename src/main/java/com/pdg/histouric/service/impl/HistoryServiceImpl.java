@@ -82,6 +82,12 @@ public class HistoryServiceImpl implements HistoryService {
         deleteVideosImagesAndTexts(getHistoryById(history.getId()));
         return saveHistory(history);
     }
+
+    @Override
+    public List<History> getHistoriesByTitle(String historyTitle) {
+        return historyRepository.findAllByTitleContainsIgnoreCase(historyTitle);
+    }
+
     private History saveHistory(History history) {
         List<Text> texts = history.getTexts();
         List<Video> videos = history.getVideos();
@@ -98,5 +104,4 @@ public class HistoryServiceImpl implements HistoryService {
         history.setTexts(textRepository.saveAll(texts.stream().peek(text -> text.setHistory(savedHistory)).toList()));
         return history;
     }
-
 }

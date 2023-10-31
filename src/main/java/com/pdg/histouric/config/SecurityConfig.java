@@ -62,6 +62,7 @@ public class SecurityConfig {
         configureEndpointsForBicApi(introspector, managerBuilder);
         configureEndpointsForHistoryApi(introspector, managerBuilder);
         configureEndpointsForFirebaseStorageApi(introspector, managerBuilder);
+        configureEndpointsForRouteApi(introspector, managerBuilder);
 
         AuthorizationManager<HttpServletRequest> manager = managerBuilder.build();
         return (authentication, object) -> manager.check(authentication, object.getRequest());
@@ -84,13 +85,17 @@ public class SecurityConfig {
         getBicById.setMethod(HttpMethod.GET);
         managerBuilder.add(getBicById, (authentication, object) -> new AuthorizationDecision(true));
 
-        MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, "/api/v1/firebase");
-        getHistories.setMethod(HttpMethod.POST);
-        managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
-
         MvcRequestMatcher getHistoryById = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/{historyId}");
         getHistoryById.setMethod(HttpMethod.GET);
         managerBuilder.add(getHistoryById, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getBicsByNameOrNickname = new MvcRequestMatcher(introspector, BicAPI.ROOT_PATH + "/name/{nameOrNickname}");
+        getBicsByNameOrNickname.setMethod(HttpMethod.GET);
+        managerBuilder.add(getBicsByNameOrNickname, (authentication, object) -> new AuthorizationDecision(true));
+        
+        MvcRequestMatcher getHistoriesByTitle = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH + "/title/{historyTitle}");
+        getHistoriesByTitle.setMethod(HttpMethod.GET);
+        managerBuilder.add(getHistoriesByTitle, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
@@ -159,6 +164,13 @@ public class SecurityConfig {
         MvcRequestMatcher uploadAudios = new MvcRequestMatcher(introspector, FirebaseStorageAPI.ROOT_PATH + "/audios");
         uploadAudios.setMethod(HttpMethod.POST);
         managerBuilder.add(uploadAudios, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "RESEARCHER"));
+    }
+
+    private void configureEndpointsForRouteApi(HandlerMappingIntrospector introspector,
+                                               RequestMatcherDelegatingAuthorizationManager.Builder managerBuilder) {
+        MvcRequestMatcher createRoute = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH);
+        createRoute.setMethod(HttpMethod.POST);
+        managerBuilder.add(createRoute, AuthorityAuthorizationManager.hasAnyAuthority("ADMIN", "TOURISM_MANAGER"));
     }
 
     @Bean

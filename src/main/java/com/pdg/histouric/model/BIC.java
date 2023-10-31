@@ -42,4 +42,8 @@ public class BIC {
 
     @OneToMany(mappedBy = "bic")
     private List<BICImage> images;
+
+    @OneToMany(mappedBy = "bic")
+    private List<BICHistory> bicHistories;
+
 }

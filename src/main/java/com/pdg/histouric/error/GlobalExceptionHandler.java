@@ -39,6 +39,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<HistoryError> handleHistoryException(HistoryException historyException) {
+        return new ResponseEntity<>(historyException.getError(), historyException.getHttpStatus());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<RouteThemeError> handleRouteThemeException(RouteThemeException routeThemeException) {
+        return new ResponseEntity<>(routeThemeException.getError(), routeThemeException.getHttpStatus());
+    }
+
+    @ExceptionHandler
     public ResponseEntity<JPAError> handlePersistenceException(PersistenceException persistenceException) {
         JPAError jpaError = new JPAError(HttpStatus.BAD_REQUEST, persistenceException.getMessage());
         return new ResponseEntity<>(jpaError, HttpStatus.BAD_REQUEST);
