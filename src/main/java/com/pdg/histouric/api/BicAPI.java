@@ -21,6 +21,9 @@ public interface BicAPI {
     @GetMapping("/{id}")
     ResponseBicDTO getBicById(@PathVariable UUID id);
 
+    @GetMapping("/name/{nameOrNickname}")
+    List<ResponseBicDTO> getBicByNameOrNickname(@PathVariable String nameOrNickname);
+
     @PutMapping("/{bicId}")
     ResponseBicDTO updateBicById(@PathVariable UUID bicId, @RequestBody CreateBicDTO createBicDTO);
 

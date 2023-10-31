@@ -34,6 +34,7 @@ public class HistouricApplication {
 										HistoryImageRepository historyImageRepository,
 										VideoRepository videoRepository,
 										BICHistoryRepository bicHistoryRepository,
+										RouteThemeRepository routeThemeRepository,
 										PasswordEncoder encoder) {
 		Role tourismManagerRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
@@ -74,13 +75,13 @@ public class HistouricApplication {
 		HistouricUser tourismManagerUser = HistouricUser.builder()
 				.id(UUID.fromString("d052bbc3-4cf8-4add-977a-aee0734e353b"))
 				.nickname("Juan Pablo")
-				.email("tourism_manager@gmail.com")
+				.email("t_manager@gmail.com")
 				.password(encoder.encode("password"))
 				.roles(tourismManagerUserRoles)
 				.build();
 
 		ArrayList<Role> researcherUserRoles = new ArrayList<>();
-		HistouricUser reasearcherUser = HistouricUser.builder()
+		HistouricUser researcherUser = HistouricUser.builder()
 				.id(UUID.fromString("20ffef18-7d49-40f2-97f1-98bc6cb199a2"))
 				.nickname("Andres Felipe")
 				.email("researcher@gmail.com")
@@ -90,13 +91,13 @@ public class HistouricApplication {
 
 		BIC ermita = BIC.builder()
 				.name("La Ermita")
-				.latitude(3.4578385679577623)
-				.longitude(-76.53064306373778)
+				.latitude(3.454214005186966)
+				.longitude(-76.53206008465833)
 				.description("La iglesia La Ermita es un templo católico ubicada en Santiago de Cali, Colombia. Originalmente fue una construcción pajiza de comienzos del siglo XVII, establecida en las cercanías del río Cali y dedicada a Nuestra Señora de la Soledad y al Señor de la Caña.")
 				.existss(true)
 				.build();
 		Nickname nicknameErmita = Nickname.builder()
-				.nickname("La Ermita")
+				.nickname("Ermitita")
 				.build();
 
 		BIC antiguoMatadero = BIC.builder()
@@ -219,6 +220,10 @@ public class HistouricApplication {
 				.audio(audioForHistory2)
 				.build();
 
+		RouteTheme routeThemeOfMiedo = RouteTheme.builder()
+				.name("Miedo")
+				.build();
+
 		return args -> {
 			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
 			tourismManagerUserRoles.add(tourismManagerRoleCreated);
@@ -231,7 +236,7 @@ public class HistouricApplication {
 
 			Role researcherRoleCreated = roleRepository.save(researcher);
 			researcherUserRoles.add(researcherRoleCreated);
-			HistouricUser researcherInDB = userRepository.save(reasearcherUser);
+			HistouricUser researcherInDB = userRepository.save(researcherUser);
 
 			BIC ermitaInDB = bicRepository.save(ermita);
 			BIC antiguoMataderoInDB = bicRepository.save(antiguoMatadero);
@@ -254,7 +259,7 @@ public class HistouricApplication {
 					videoRepository, audioForHistory1, text1ForHistory1, text2ForHistory1, historyImage1ForHistory1,
 					historyImage2ForHistory1, videoForHistory1, history1, researcherInDB);
 
-			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
+			History history2InDB = saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
 					videoRepository, audioForHistory2, text1ForHistory2, text2ForHistory2, historyImage1ForHistory2,
 					historyImage2ForHistory2, videoForHistory2, history2, researcherInDB);
 
@@ -264,11 +269,53 @@ public class HistouricApplication {
 					.build();
 			BICHistory bicHistory1 = BICHistory.builder()
 					.id(bicHistoryPK1)
-					.history(history1InDB)
 					.build();
-			var temp = bicHistoryRepository.save(bicHistory1);
-			ermitaInDB.setBicHistories(List.of(temp));
+			bicHistoryRepository.save(bicHistory1);
 
+			BICHistoryPK bicHistoryPK2 = BICHistoryPK.builder()
+					.bicId(antiguoMataderoInDB.getId())
+					.historyId(history1InDB.getId())
+					.build();
+			BICHistory bicHistory2 = BICHistory.builder()
+					.id(bicHistoryPK2)
+					.build();
+			bicHistoryRepository.save(bicHistory2);
+
+			BICHistoryPK bicHistoryPK3 = BICHistoryPK.builder()
+					.bicId(edifioOteroInDB.getId())
+					.historyId(history1InDB.getId())
+					.build();
+			BICHistoryPK bicHistoryPK4 = BICHistoryPK.builder()
+					.bicId(edifioOteroInDB.getId())
+					.historyId(history2InDB.getId())
+					.build();
+			BICHistory bicHistory3 = BICHistory.builder()
+					.id(bicHistoryPK3)
+					.build();
+			BICHistory bicHistory4 = BICHistory.builder()
+					.id(bicHistoryPK4)
+					.build();
+			bicHistoryRepository.save(bicHistory3);
+			bicHistoryRepository.save(bicHistory4);
+
+			BICHistoryPK bicHistoryPK5 = BICHistoryPK.builder()
+					.bicId(iglesiaSanFranciscoInDB.getId())
+					.historyId(history1InDB.getId())
+					.build();
+			BICHistory bicHistory5 = BICHistory.builder()
+					.id(bicHistoryPK5)
+					.build();
+			BICHistoryPK bicHistoryPK6 = BICHistoryPK.builder()
+					.bicId(iglesiaSanFranciscoInDB.getId())
+					.historyId(history2InDB.getId())
+					.build();
+			BICHistory bicHistory6 = BICHistory.builder()
+					.id(bicHistoryPK6)
+					.build();
+			bicHistoryRepository.save(bicHistory5);
+			bicHistoryRepository.save(bicHistory6);
+
+			routeThemeRepository.save(routeThemeOfMiedo);
 		};
 	}
 

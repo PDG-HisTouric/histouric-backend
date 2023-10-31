@@ -45,4 +45,5 @@ public class BIC {
 
     @OneToMany(mappedBy = "bic")
     private List<BICHistory> bicHistories;
+
 }

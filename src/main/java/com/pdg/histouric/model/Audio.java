@@ -28,4 +28,13 @@ public class Audio {
 
     @OneToOne(mappedBy = "audio")
     private History history;
+
+    public Audio cloneAudio() {
+        return Audio.builder()
+                .id(this.id)
+                .audioUri(this.audioUri)
+                .needsUrlGen(this.needsUrlGen)
+                .history(this.history)
+                .build();
+    }
 }

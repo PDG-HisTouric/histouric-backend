@@ -57,4 +57,18 @@ public class BicController implements BicAPI {
     public void deleteBicById(UUID bicId) {
         bicService.deleteBicById(bicId);
     }
+
+    @Override
+    public List<ResponseBicDTO> getBicByNameOrNickname(String nameOrNickname) {
+        List<BIC> bics = bicService.getBicByNameOrNickname(nameOrNickname);
+        List<ResponseBicDTO> responseBicDTOS = bics.stream().map(bicMapper::fromBIC).toList();
+        for (int i = 0; i < bics.size(); i++) {
+            List<ResponseHistoryDTO> responseHistoryDTOS = bics.get(i).getBicHistories().stream()
+                    .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
+                    .map(historyMapper::fromHistoryToDTO)
+                    .toList();
+            responseBicDTOS.get(i).setHistories(responseHistoryDTOS);
+        }
+        return responseBicDTOS;
+    }
 }
