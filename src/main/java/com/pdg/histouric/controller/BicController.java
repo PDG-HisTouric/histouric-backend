@@ -45,7 +45,14 @@ public class BicController implements BicAPI {
 
     @Override
     public ResponseBicDTO getBicById(UUID id) {
-        return bicMapper.fromBIC(bicService.getBicById(id));
+        BIC bic = bicService.getBicById(id);
+        List<ResponseHistoryDTO> histories = bic.getBicHistories().stream()
+                .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
+                .map(historyMapper::fromHistoryToDTO)
+                .toList();
+        ResponseBicDTO responseBicDTO = bicMapper.fromBIC(bic);
+        responseBicDTO.setHistories(histories);
+        return responseBicDTO;
     }
 
     @Override
