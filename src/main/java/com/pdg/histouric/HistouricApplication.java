@@ -36,6 +36,8 @@ public class HistouricApplication {
 										VideoRepository videoRepository,
 										BICHistoryRepository bicHistoryRepository,
 										RouteThemeRepository routeThemeRepository,
+										RouteRepository routeRepository,
+										RouteBICHistoryRepository routeBICHistoryRepository,
 										PasswordEncoder encoder) {
 		Role tourismManagerRole = Role.builder()
 				.id(UUID.fromString("12952e84-63c3-461d-91bd-72a09d584919"))
@@ -513,7 +515,7 @@ public class HistouricApplication {
 		return args -> {
 			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
 			tourismManagerUserRoles.add(tourismManagerRoleCreated);
-			userRepository.save(tourismManagerUser);
+			HistouricUser tourismManagerUserInDB = userRepository.save(tourismManagerUser);
 
 			Role adminRoleCreated = roleRepository.save(adminRole);
 			adminUserRoles.add(adminRoleCreated);
@@ -633,15 +635,43 @@ public class HistouricApplication {
 			bicHistoryRepository.save(bicHistory5);
 			bicHistoryRepository.save(bicHistory6);
 
-			associateHistoryAndBIC(bicHistoryRepository, elMonstruoDeLosMangones, rioAguacatal);
-			associateHistoryAndBIC(bicHistoryRepository, laManoNegra, parqueArtesanalLomaDeLaCruz);
-			associateHistoryAndBIC(bicHistoryRepository, tiemposDeBuziraco, elCerroDeLasTresCruces);
+			BICHistory rioAguatalAndElMonstruoDeLosMangones = associateHistoryAndBIC(bicHistoryRepository, elMonstruoDeLosMangones, rioAguacatal);
+			BICHistory parqueArtesanalLomaDeLaCruzAndLaManoNegra = associateHistoryAndBIC(bicHistoryRepository, laManoNegra, parqueArtesanalLomaDeLaCruz);
+			BICHistory elCerroDeLasTresCrucesAndTiemposDeBuziraco = associateHistoryAndBIC(bicHistoryRepository, tiemposDeBuziraco, elCerroDeLasTresCruces);
 
 			routeThemeRepository.save(routeThemeOfMiedo);
+			createRoute(routeRepository, routeBICHistoryRepository, "Historias aterradoras", "Historias de situaciones paranormales y de un crimen sin resolver", tourismManagerUserInDB, routeThemeOfMiedo,
+					List.of(rioAguatalAndElMonstruoDeLosMangones, parqueArtesanalLomaDeLaCruzAndLaManoNegra, elCerroDeLasTresCrucesAndTiemposDeBuziraco));
+
 		};
 	}
 
-	private static void associateHistoryAndBIC (BICHistoryRepository bicHistoryRepository, History history, BIC bic) {
+	private static void createRoute(RouteRepository routeRepository, RouteBICHistoryRepository routeBICHistoryRepository,
+									 String name, String description, HistouricUser owner, RouteTheme theme,
+									 List<BICHistory> bicHistoryList) {
+		Route route = Route.builder()
+				.name(name)
+				.description(description)
+				.owner(owner)
+				.theme(theme)
+				.build();
+		routeRepository.save(route);
+		int order = 0;
+		for (BICHistory bicHistory : bicHistoryList) {
+			order++;
+			RouteBICHistoryPK routeBICHistoryPK = RouteBICHistoryPK.builder()
+					.bicHistoryPK(bicHistory.getId())
+					.routeId(route.getId())
+					.build();
+			RouteBICHistory routeBICHistory = RouteBICHistory.builder()
+					.id(routeBICHistoryPK)
+					.bicOrder(order)
+					.build();
+			routeBICHistoryRepository.save(routeBICHistory);
+		}
+	}
+
+	private static BICHistory associateHistoryAndBIC (BICHistoryRepository bicHistoryRepository, History history, BIC bic) {
 		BICHistoryPK bicHistoryPK = BICHistoryPK.builder()
 				.bicId(bic.getId())
 				.historyId(history.getId())
@@ -649,7 +679,7 @@ public class HistouricApplication {
 		BICHistory bicHistory = BICHistory.builder()
 				.id(bicHistoryPK)
 				.build();
-		bicHistoryRepository.save(bicHistory);
+		return bicHistoryRepository.save(bicHistory);
 	}
 
 	private static History saveHistory(HistoryRepository historyRepository,
