@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -31,6 +32,14 @@ public class RouteController implements RouteAPI {
     @Override
     public ResponseRouteDTO createRoute(CreateRouteDTO createRouteDTO) {
         Route route = routeService.createRoute(routeMapper.fromDTOToRoute(createRouteDTO));
+        ResponseRouteDTO responseRouteDTO = routeMapper.fromRouteToDTO(route);
+        responseRouteDTO.setBics(getBicsAndHistoriesOfARoute(route));
+        return responseRouteDTO;
+    }
+
+    @Override
+    public ResponseRouteDTO getRouteById(UUID id) {
+        Route route = routeService.findRouteById(id);
         ResponseRouteDTO responseRouteDTO = routeMapper.fromRouteToDTO(route);
         responseRouteDTO.setBics(getBicsAndHistoriesOfARoute(route));
         return responseRouteDTO;

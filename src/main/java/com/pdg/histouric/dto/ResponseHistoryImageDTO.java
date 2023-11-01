@@ -31,9 +31,6 @@ public class ResponseHistoryImageDTO {
     @Min(value = 0, message = "Start time must be greater than or equal to 0")
     private int startTime;
 
-    @NotNull(message = "needsUrlGen cannot be null")
-    private boolean needsUrlGen;
-
     @NotNull(message = "History id cannot be null")
     private UUID historyId;
 }

@@ -2,9 +2,9 @@ package com.pdg.histouric.api;
 
 import com.pdg.histouric.dto.CreateRouteDTO;
 import com.pdg.histouric.dto.ResponseRouteDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RequestMapping("/api/v1/routes")
 public interface RouteAPI {
@@ -12,4 +12,7 @@ public interface RouteAPI {
 
     @PostMapping
     ResponseRouteDTO createRoute(@RequestBody CreateRouteDTO createRouteDTO);
+
+    @GetMapping("/{id}")
+    ResponseRouteDTO getRouteById(@PathVariable UUID id);
 }

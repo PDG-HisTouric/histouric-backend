@@ -47,6 +47,11 @@ public class RouteServiceImpl implements RouteService {
         return createdRoute;
     }
 
+    @Override
+    public Route findRouteById(UUID id) {
+        return routeRepository.findById(id).orElseThrow(); //TODO: Create exception for route
+    }
+
     private BICHistory findBicHistoryById(BICHistoryPK id) {
         return bicHistoryRepository.findById(id).orElseThrow(
                 () -> new RouteThemeException(HttpStatus.BAD_REQUEST, new RouteThemeError(RouteThemeErrorCode.CODE_02, RouteThemeErrorCode.CODE_02.getMessage()))

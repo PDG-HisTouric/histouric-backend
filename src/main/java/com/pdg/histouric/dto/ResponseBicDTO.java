@@ -48,6 +48,6 @@ public class ResponseBicDTO {
 
     private List<BICImageDTO> imagesUris;
 
-    private List<ResponseHistoryDTO> histories;
+    private List<ResponseHistoryDetailDTO> histories;
 
 }

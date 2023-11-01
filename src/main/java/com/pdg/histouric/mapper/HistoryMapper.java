@@ -12,7 +12,7 @@ public interface HistoryMapper {
 
     History fromDTOToHistory(CreateHistoryDTO createHistoryDTO);
     @Mapping(target = "owner", source = "owner.id")
-    ResponseHistoryDTO fromHistoryToDTO(History history);
+    ResponseHistoryDetailDTO fromHistoryToDTO(History history);
     @Mapping(target = "historyId", source = "history.id")
     ResponseAudioDTO fromAudioToDTO(Audio audio);
     Video fromDTOToVideo(CreateVideoDTO createVideoDTO);

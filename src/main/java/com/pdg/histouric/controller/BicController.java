@@ -3,7 +3,7 @@ package com.pdg.histouric.controller;
 import com.pdg.histouric.api.BicAPI;
 import com.pdg.histouric.dto.CreateBicDTO;
 import com.pdg.histouric.dto.ResponseBicDTO;
-import com.pdg.histouric.dto.ResponseHistoryDTO;
+import com.pdg.histouric.dto.ResponseHistoryDetailDTO;
 import com.pdg.histouric.mapper.BicMapper;
 import com.pdg.histouric.mapper.HistoryMapper;
 import com.pdg.histouric.model.BIC;
@@ -29,7 +29,7 @@ public class BicController implements BicAPI {
     public ResponseBicDTO createBIC(@Valid CreateBicDTO createBicDTO) {
         BIC bic = bicMapper.fromDTO(createBicDTO);
         bic = bicService.createBIC(bic);
-        List<ResponseHistoryDTO> histories = bic.getBicHistories().stream()
+        List<ResponseHistoryDetailDTO> histories = bic.getBicHistories().stream()
                 .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
                 .map(historyMapper::fromHistoryToDTO)
                 .toList();
@@ -45,7 +45,14 @@ public class BicController implements BicAPI {
 
     @Override
     public ResponseBicDTO getBicById(UUID id) {
-        return bicMapper.fromBIC(bicService.getBicById(id));
+        BIC bic = bicService.getBicById(id);
+        List<ResponseHistoryDetailDTO> histories = bic.getBicHistories().stream()
+                .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
+                .map(historyMapper::fromHistoryToDTO)
+                .toList();
+        ResponseBicDTO responseBicDTO = bicMapper.fromBIC(bic);
+        responseBicDTO.setHistories(histories);
+        return responseBicDTO;
     }
 
     @Override
@@ -63,11 +70,11 @@ public class BicController implements BicAPI {
         List<BIC> bics = bicService.getBicByNameOrNickname(nameOrNickname);
         List<ResponseBicDTO> responseBicDTOS = bics.stream().map(bicMapper::fromBIC).toList();
         for (int i = 0; i < bics.size(); i++) {
-            List<ResponseHistoryDTO> responseHistoryDTOS = bics.get(i).getBicHistories().stream()
+            List<ResponseHistoryDetailDTO> responseHistoryDetailDTOS = bics.get(i).getBicHistories().stream()
                     .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
                     .map(historyMapper::fromHistoryToDTO)
                     .toList();
-            responseBicDTOS.get(i).setHistories(responseHistoryDTOS);
+            responseBicDTOS.get(i).setHistories(responseHistoryDetailDTOS);
         }
         return responseBicDTOS;
     }
