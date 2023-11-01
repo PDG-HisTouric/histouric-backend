@@ -2,7 +2,7 @@ package com.pdg.histouric.controller;
 
 import com.pdg.histouric.api.HistoryAPI;
 import com.pdg.histouric.dto.CreateHistoryDTO;
-import com.pdg.histouric.dto.ResponseHistoryDTO;
+import com.pdg.histouric.dto.ResponseHistoryDetailDTO;
 import com.pdg.histouric.mapper.HistoryMapper;
 import com.pdg.histouric.model.History;
 import com.pdg.histouric.service.FirebaseStorageService;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class HistoryController implements HistoryAPI {
     private final HistoryMapper historyMapper;
 
     @Override
-    public ResponseHistoryDTO createHistory(@Valid CreateHistoryDTO createHistoryDTO) throws IOException {
+    public ResponseHistoryDetailDTO createHistory(@Valid CreateHistoryDTO createHistoryDTO) throws IOException {
         return historyMapper.fromHistoryToDTO(historyService.createHistory(historyMapper.fromDTOToHistory(createHistoryDTO)));
     }
 
@@ -37,28 +36,28 @@ public class HistoryController implements HistoryAPI {
     }
 
     @Override
-    public List<ResponseHistoryDTO> getHistoriesByImageUri(String imageUri) {
+    public List<ResponseHistoryDetailDTO> getHistoriesByImageUri(String imageUri) {
         return historyService.getHistoriesByImageUri(imageUri).stream().map(historyMapper::fromHistoryToDTO).toList();
     }
 
     @Override
-    public List<ResponseHistoryDTO> getHistoriesByVideoUri(String videoUrl) {
+    public List<ResponseHistoryDetailDTO> getHistoriesByVideoUri(String videoUrl) {
         return historyService.getHistoriesByVideoUri(videoUrl).stream().map(historyMapper::fromHistoryToDTO).toList();
     }
 
     @Override
-    public ResponseHistoryDTO updateHistory(CreateHistoryDTO createHistoryDTO) {
+    public ResponseHistoryDetailDTO updateHistory(CreateHistoryDTO createHistoryDTO) {
         return historyMapper.fromHistoryToDTO(historyService.updateHistory(historyMapper.fromDTOToHistory(createHistoryDTO)));
     }
 
     @Override
-    public ResponseHistoryDTO getHistoryById(UUID historyId) {
+    public ResponseHistoryDetailDTO getHistoryById(UUID historyId) {
         History history = historyService.getHistoryById(historyId);
         return historyMapper.fromHistoryToDTO(firebaseStorageService.putUrlsToHistory(history));
     }
 
     @Override
-    public List<ResponseHistoryDTO> getHistoriesByTitle(@NotNull @NotEmpty String historyTitle) {
+    public List<ResponseHistoryDetailDTO> getHistoriesByTitle(@NotNull @NotEmpty String historyTitle) {
         return historyService.getHistoriesByTitle(historyTitle).stream()
                 .map(firebaseStorageService::putUrlsToHistory)
                 .map(historyMapper::fromHistoryToDTO).toList();
