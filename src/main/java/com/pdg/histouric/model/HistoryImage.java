@@ -20,7 +20,7 @@ public class HistoryImage {
     @Column(name = "image_id", nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "image_uri", nullable = false, unique = true, length = 500)
+    @Column(name = "image_uri", nullable = false, length = 500)
     private String imageUri;
 
     @Column(name = "start_time", nullable = false)

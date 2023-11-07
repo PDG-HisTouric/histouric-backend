@@ -20,7 +20,7 @@ public class Audio {
     @Column(name = "audio_id", nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "audio_uri", nullable = false, unique = true, length = 1000)
+    @Column(name = "audio_uri", nullable = false, length = 1000)
     private String audioUri;
 
     @Column(name = "needs_url_gen", nullable = false)
