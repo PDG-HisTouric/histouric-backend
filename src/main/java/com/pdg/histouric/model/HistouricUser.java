@@ -43,10 +43,10 @@ public class HistouricUser implements UserDetails {
     )
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<History> histories;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Route> routes;
 
     @Override

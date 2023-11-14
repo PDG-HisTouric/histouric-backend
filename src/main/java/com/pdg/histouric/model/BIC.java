@@ -37,13 +37,13 @@ public class BIC {
     @Column(name = "bic_exists", nullable = false)
     private boolean existss;
 
-    @OneToMany(mappedBy = "bic")
+    @OneToMany(mappedBy = "bic", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Nickname> nicknames;
 
-    @OneToMany(mappedBy = "bic")
+    @OneToMany(mappedBy = "bic", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BICImage> images;
 
-    @OneToMany(mappedBy = "bic")
+    @OneToMany(mappedBy = "bic", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BICHistory> bicHistories;
 
 }

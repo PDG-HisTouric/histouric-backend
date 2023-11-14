@@ -28,20 +28,20 @@ public class History {
     @JoinColumn(name = "user_id")
     private HistouricUser owner;
 
-    @OneToMany(mappedBy = "history")
+    @OneToMany(mappedBy = "history", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Video> videos;
 
-    @OneToMany(mappedBy = "history")
+    @OneToMany(mappedBy = "history", orphanRemoval = true, cascade = CascadeType.ALL)
     private  List<Text> texts;
 
-    @OneToMany(mappedBy = "history")
+    @OneToMany(mappedBy = "history", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<HistoryImage> images;
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "audio_id")
     private Audio audio;
 
-    @OneToMany(mappedBy = "history")
+    @OneToMany(mappedBy = "history", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<BICHistory> bicHistories;
 
     public History cloneHistory() {

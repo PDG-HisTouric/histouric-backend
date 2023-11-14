@@ -24,6 +24,6 @@ public class BICHistory {
     @JoinColumn(name = "history_id", insertable = false, updatable = false)
     private History history;
 
-    @OneToMany(mappedBy = "bicHistory")
+    @OneToMany(mappedBy = "bicHistory", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<RouteBICHistory> routeBICHistories;
 }

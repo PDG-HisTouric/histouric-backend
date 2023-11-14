@@ -31,6 +31,6 @@ public class Route {
     @JoinColumn(name = "user_id")
     private HistouricUser owner;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<RouteBICHistory> routeBICHistories;
 }
