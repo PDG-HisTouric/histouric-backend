@@ -44,8 +44,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<RouteThemeError> handleRouteThemeException(RouteThemeException routeThemeException) {
-        return new ResponseEntity<>(routeThemeException.getError(), routeThemeException.getHttpStatus());
+    public ResponseEntity<RouteError> handleRouteException(RouteException routeException) {
+        return new ResponseEntity<>(routeException.getError(), routeException.getHttpStatus());
     }
 
     @ExceptionHandler

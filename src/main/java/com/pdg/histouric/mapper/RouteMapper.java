@@ -3,6 +3,7 @@ package com.pdg.histouric.mapper;
 import com.pdg.histouric.dto.CreateBICForRouteDTO;
 import com.pdg.histouric.dto.CreateRouteDTO;
 import com.pdg.histouric.dto.ResponseRouteDTO;
+import com.pdg.histouric.dto.ResponseSimpleRouteDTO;
 import com.pdg.histouric.model.Route;
 import com.pdg.histouric.model.RouteBICHistory;
 import org.mapstruct.Mapper;
@@ -17,4 +18,5 @@ public interface RouteMapper {
     @Mapping(target = "id.bicHistoryPK.historyId", source = "historyId")
     RouteBICHistory fromCreateBICForRouteDTOToRouteBICHistory(CreateBICForRouteDTO bicList);
     ResponseRouteDTO fromRouteToDTO(Route route);
+    ResponseSimpleRouteDTO fromRouteToSimpleDTO(Route route);
 }

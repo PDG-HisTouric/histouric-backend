@@ -1,9 +1,9 @@
 package com.pdg.histouric.service.impl;
 
-import com.pdg.histouric.constant.RouteThemeErrorCode;
+import com.pdg.histouric.constant.RouteErrorCode;
 import com.pdg.histouric.constant.UserErrorCode;
-import com.pdg.histouric.error.exception.RouteThemeError;
-import com.pdg.histouric.error.exception.RouteThemeException;
+import com.pdg.histouric.error.exception.RouteError;
+import com.pdg.histouric.error.exception.RouteException;
 import com.pdg.histouric.error.exception.UserError;
 import com.pdg.histouric.error.exception.UserException;
 import com.pdg.histouric.model.*;
@@ -47,12 +47,19 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Route findRouteById(UUID id) {
-        return routeRepository.findById(id).orElseThrow(); //TODO: Create exception for route
+        return routeRepository.findById(id).orElseThrow(
+                () -> new RouteException(HttpStatus.NOT_FOUND, new RouteError(RouteErrorCode.CODE_01, RouteErrorCode.CODE_01.getMessage()))
+        );
+    }
+
+    @Override
+    public List<Route> findAllRoutes() {
+        return routeRepository.findAll();
     }
 
     private BICHistory findBicHistoryById(BICHistoryPK id) {
         return bicHistoryRepository.findById(id).orElseThrow(
-                () -> new RouteThemeException(HttpStatus.BAD_REQUEST, new RouteThemeError(RouteThemeErrorCode.CODE_02, RouteThemeErrorCode.CODE_02.getMessage()))
+                () -> new RouteException(HttpStatus.BAD_REQUEST, new RouteError(RouteErrorCode.CODE_02, RouteErrorCode.CODE_02.getMessage()))
         );
     }
 

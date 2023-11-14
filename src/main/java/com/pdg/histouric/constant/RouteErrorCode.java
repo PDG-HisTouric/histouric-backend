@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum RouteThemeErrorCode {
-    CODE_01("Route theme not found"),
-    CODE_02("History and bic are not associated"),
+public enum RouteErrorCode {
+    CODE_01("No se encontró la ruta"),
+    CODE_02("La historia y el BIC no están asociados"),
 
     UNIVERSAL_ANNOTATION_CODE("Method argument not valid.");
 

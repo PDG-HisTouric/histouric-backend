@@ -100,6 +100,10 @@ public class SecurityConfig {
         MvcRequestMatcher getRouteById = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH + "/{id}");
         getRouteById.setMethod(HttpMethod.GET);
         managerBuilder.add(getRouteById, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getRoutes = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH);
+        getRoutes.setMethod(HttpMethod.GET);
+        managerBuilder.add(getRoutes, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,
