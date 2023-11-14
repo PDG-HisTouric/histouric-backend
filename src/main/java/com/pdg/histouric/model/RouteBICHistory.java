@@ -15,12 +15,12 @@ public class RouteBICHistory {
     @EmbeddedId
     private RouteBICHistoryPK id;
 
+    @Column(name = "bic_order")
+    private int bicOrder;
+
     @ManyToOne
     @JoinColumn(name = "route_id", insertable = false, updatable = false)
     private Route route;
-
-    @Column(name = "bic_order")
-    private int bicOrder;
 
     @ManyToOne
     @JoinColumn(name = "bic_id", insertable = false, updatable = false)

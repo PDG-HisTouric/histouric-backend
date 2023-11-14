@@ -11,6 +11,5 @@ import java.util.UUID;
 
 @Repository
 public interface HistoryImageRepository extends JpaRepository<HistoryImage, UUID> {
-    @Query("SELECT historyImage.history FROM HistoryImage historyImage WHERE historyImage.imageUri = ?1")
-    List<History> findHistoriesByImageUri(String imageUri);
+
 }

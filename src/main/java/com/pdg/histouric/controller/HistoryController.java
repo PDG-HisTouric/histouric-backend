@@ -36,16 +36,6 @@ public class HistoryController implements HistoryAPI {
     }
 
     @Override
-    public List<ResponseHistoryDetailDTO> getHistoriesByImageUri(String imageUri) {
-        return historyService.getHistoriesByImageUri(imageUri).stream().map(historyMapper::fromHistoryToDTO).toList();
-    }
-
-    @Override
-    public List<ResponseHistoryDetailDTO> getHistoriesByVideoUri(String videoUrl) {
-        return historyService.getHistoriesByVideoUri(videoUrl).stream().map(historyMapper::fromHistoryToDTO).toList();
-    }
-
-    @Override
     public ResponseHistoryDetailDTO updateHistory(CreateHistoryDTO createHistoryDTO) {
         return historyMapper.fromHistoryToDTO(historyService.updateHistory(historyMapper.fromDTOToHistory(createHistoryDTO)));
     }

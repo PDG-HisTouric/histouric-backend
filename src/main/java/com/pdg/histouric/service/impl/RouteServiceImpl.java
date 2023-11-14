@@ -22,7 +22,6 @@ public class RouteServiceImpl implements RouteService {
 
     private final RouteRepository routeRepository;
     private final UserRepository histouricUserRepository;
-    private final RouteThemeRepository routeThemeRepository;
     private final BICHistoryRepository bicHistoryRepository;
     private final RouteBICHistoryRepository routeBICHistoryRepository;
 
@@ -31,7 +30,6 @@ public class RouteServiceImpl implements RouteService {
         List<RouteBICHistory> routeBICHistories = route.getRouteBICHistories();
         route.setRouteBICHistories(null);
         route.setOwner(findUserById(route.getOwner().getId()));
-        route.setTheme(findRouteThemeByName(route.getTheme().getName()));
         Route createdRoute = routeRepository.save(route);
         int order = 0;
         for (RouteBICHistory routeBICHistory : routeBICHistories) {
@@ -61,12 +59,6 @@ public class RouteServiceImpl implements RouteService {
     private HistouricUser findUserById(UUID id) {
         return histouricUserRepository.findById(id).orElseThrow(
                 () -> new UserException(HttpStatus.NOT_FOUND, new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage()))
-        );
-    }
-
-    private RouteTheme findRouteThemeByName(String name) {
-        return routeThemeRepository.findByName(name).orElseThrow(
-                () -> new RouteThemeException(HttpStatus.NOT_FOUND, new RouteThemeError(RouteThemeErrorCode.CODE_01, RouteThemeErrorCode.CODE_01.getMessage()))
         );
     }
 

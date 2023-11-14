@@ -18,12 +18,6 @@ public interface HistoryAPI {
     @DeleteMapping("/{historyId}")
     void deleteHistory(@PathVariable UUID historyId);
 
-    @GetMapping("/image/{imageUri}")
-    List<ResponseHistoryDetailDTO> getHistoriesByImageUri(@PathVariable String imageUri);
-
-    @GetMapping("/video/{videoUrl}")
-    List<ResponseHistoryDetailDTO> getHistoriesByVideoUri(@PathVariable String videoUrl);
-
     @PutMapping
     ResponseHistoryDetailDTO updateHistory(@RequestBody CreateHistoryDTO createHistoryDTO);
 

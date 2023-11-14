@@ -35,7 +35,6 @@ public class HistouricApplication {
 										HistoryImageRepository historyImageRepository,
 										VideoRepository videoRepository,
 										BICHistoryRepository bicHistoryRepository,
-										RouteThemeRepository routeThemeRepository,
 										RouteRepository routeRepository,
 										RouteBICHistoryRepository routeBICHistoryRepository,
 										PasswordEncoder encoder) {
@@ -641,10 +640,6 @@ public class HistouricApplication {
 				.audio(audioForTristeNavidad)
 				.build();
 
-		RouteTheme routeThemeOfMiedo = RouteTheme.builder()
-				.name("Miedo")
-				.build();
-
 		return args -> {
 			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
 			tourismManagerUserRoles.add(tourismManagerRoleCreated);
@@ -723,21 +718,19 @@ public class HistouricApplication {
 			associateHistoryAndBIC(bicHistoryRepository, elTerremotoDe1925, ermita);
 			associateHistoryAndBIC(bicHistoryRepository, tristeNavidad, plazaCayzedo);
 
-			routeThemeRepository.save(routeThemeOfMiedo);
-			createRoute(routeRepository, routeBICHistoryRepository, "Historias aterradoras", "Historias de situaciones paranormales y de un crimen sin resolver", tourismManagerUserInDB, routeThemeOfMiedo,
+			createRoute(routeRepository, routeBICHistoryRepository, "Historias aterradoras", "Historias de situaciones paranormales y de un crimen sin resolver", tourismManagerUserInDB,
 					List.of(rioAguatalAndElMonstruoDeLosMangones, parqueArtesanalLomaDeLaCruzAndLaManoNegra, elCerroDeLasTresCrucesAndTiemposDeBuziraco));
 
 		};
 	}
 
 	private static void createRoute(RouteRepository routeRepository, RouteBICHistoryRepository routeBICHistoryRepository,
-									 String name, String description, HistouricUser owner, RouteTheme theme,
+									 String name, String description, HistouricUser owner,
 									 List<BICHistory> bicHistoryList) {
 		Route route = Route.builder()
 				.name(name)
 				.description(description)
 				.owner(owner)
-				.theme(theme)
 				.build();
 		routeRepository.save(route);
 		int order = 0;

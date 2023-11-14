@@ -35,9 +35,6 @@ public class ResponseRouteDTO {
     @NotNull(message = "Owner id cannot be null")
     private ResponseUserDTO owner;
 
-    @NotNull(message = "Theme name cannot be null")
-    private String themeName; //TODO: Change when the functionality of creating a theme is implemented
-
     @NotNull(message = "BIC list cannot be null")
     @NotEmpty(message = "BIC list cannot be empty")
     private List<ResponseBicDTO> bics;
