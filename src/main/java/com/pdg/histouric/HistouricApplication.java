@@ -245,7 +245,7 @@ public class HistouricApplication {
 
 		Audio audioForTiemposDeBuziraco = Audio.builder()
 				.needsUrlGen(false)
-				.audioUri("https://drive.google.com/uc?export=view&id=1p9ZrRYyTSHzpqtZQ7yBtTh8QIbHd6aFR")
+				.audioUri("https://drive.google.com/uc?export=view&id=1myfyDIgk6y0vuL0nXoGfaFj2uBSXkL3_")
 				.build();
 
 		List<HistoryImage> historyImagesForTiemposDeBuziraco = new ArrayList<>();
