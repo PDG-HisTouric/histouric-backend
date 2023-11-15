@@ -11,4 +11,5 @@ public interface HistoryService {
     History updateHistory(History history);
     History getHistoryById(UUID historyId);
     List<History> getHistoriesByTitle(String historyTitle);
+    List<History> getAllHistories();
 }

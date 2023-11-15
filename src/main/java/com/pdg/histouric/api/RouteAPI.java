@@ -20,5 +20,5 @@ public interface RouteAPI {
 
     @GetMapping("/search")
     //Get the routes without the BICs
-    List<ResponseSimpleRouteDTO> getSimplifiedRoutes();
+    List<ResponseSimpleRouteDTO> getSimplifiedRoutes(); //TODO: add pagination
 }

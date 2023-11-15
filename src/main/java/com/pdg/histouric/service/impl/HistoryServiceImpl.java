@@ -78,6 +78,11 @@ public class HistoryServiceImpl implements HistoryService {
         return historyRepository.findAllByTitleContainsIgnoreCase(historyTitle);
     }
 
+    @Override
+    public List<History> getAllHistories() {
+        return historyRepository.findAll();
+    }
+
     private History saveHistory(History history) {
         List<Text> texts = history.getTexts();
         List<Video> videos = history.getVideos();

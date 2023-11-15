@@ -52,4 +52,11 @@ public class HistoryController implements HistoryAPI {
                 .map(firebaseStorageService::putUrlsToHistory)
                 .map(historyMapper::fromHistoryToDTO).toList();
     }
+
+    @Override
+    public List<ResponseHistoryDetailDTO> getAllHistories() {
+        return historyService.getAllHistories().stream()
+                .map(firebaseStorageService::putUrlsToHistory)
+                .map(historyMapper::fromHistoryToDTO).toList();
+    }
 }

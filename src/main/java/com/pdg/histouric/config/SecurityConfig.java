@@ -104,6 +104,14 @@ public class SecurityConfig {
         MvcRequestMatcher getRoutes = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH);
         getRoutes.setMethod(HttpMethod.GET);
         managerBuilder.add(getRoutes, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getSimplifiedRoutes = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH + "/search");
+        getSimplifiedRoutes.setMethod(HttpMethod.GET);
+        managerBuilder.add(getSimplifiedRoutes, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+        getHistories.setMethod(HttpMethod.GET);
+        managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,

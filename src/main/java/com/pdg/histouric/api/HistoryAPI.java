@@ -24,6 +24,9 @@ public interface HistoryAPI {
     @GetMapping("/{historyId}")
     ResponseHistoryDetailDTO getHistoryById(@PathVariable UUID historyId);
     
-    @GetMapping("/title/{historyTitle}")
+    @GetMapping("/title/{historyTitle}") //TODO: add pagination
     List<ResponseHistoryDetailDTO> getHistoriesByTitle(@PathVariable String historyTitle);
+
+    @GetMapping
+    List<ResponseHistoryDetailDTO> getAllHistories(); //TODO: add pagination
 }
