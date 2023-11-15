@@ -35,7 +35,6 @@ public class HistouricApplication {
 										HistoryImageRepository historyImageRepository,
 										VideoRepository videoRepository,
 										BICHistoryRepository bicHistoryRepository,
-										RouteThemeRepository routeThemeRepository,
 										RouteRepository routeRepository,
 										RouteBICHistoryRepository routeBICHistoryRepository,
 										PasswordEncoder encoder) {
@@ -101,20 +100,6 @@ public class HistouricApplication {
 				.build();
 		BICImage image1ForCementerioCentral = BICImage.builder()
 				.imageUri("https://drive.google.com/uc?export=view&id=13q82A7M2stAtLr0dO4G111WYoxWD-evO")
-				.build();
-
-		BIC rioAguacatal = BIC.builder()
-				.name("Río Aguacatal")
-				.latitude(3.4716058487791432)
-				.longitude(-76.58505182751173)
-				.description("El río Aguacatal es un río colombiano que nace en el Alto aguacatal, a 1.800 metros sobre el nivel del mar, en los límites de los municipios Dagua, La Cumbre, Yumbo y Cali.")
-				.existss(true)
-				.build();
-		BICImage image1ForAguacatal = BICImage.builder()
-				.imageUri("https://drive.google.com/uc?export=view&id=1DtqguEdwnpfygh4KFib3fh6wqc_4VDXY")
-				.build();
-		BICImage image2ForAguacatal = BICImage.builder()
-				.imageUri("https://drive.google.com/uc?export=view&id=1hVRp6gwwC9ztp0W2lABJZWuJZAKdUGoJ")
 				.build();
 
 		BIC parqueArtesanalLomaDeLaCruz = BIC.builder()
@@ -260,7 +245,7 @@ public class HistouricApplication {
 
 		Audio audioForTiemposDeBuziraco = Audio.builder()
 				.needsUrlGen(false)
-				.audioUri("https://drive.google.com/uc?export=view&id=1p9ZrRYyTSHzpqtZQ7yBtTh8QIbHd6aFR")
+				.audioUri("https://drive.google.com/uc?export=view&id=1myfyDIgk6y0vuL0nXoGfaFj2uBSXkL3_")
 				.build();
 
 		List<HistoryImage> historyImagesForTiemposDeBuziraco = new ArrayList<>();
@@ -329,98 +314,6 @@ public class HistouricApplication {
 		History tiemposDeBuziraco = History.builder()
 				.title("Tiempos de Buziraco")
 				.audio(audioForTiemposDeBuziraco)
-				.build();
-
-		Audio audioForElMonstruoDeLosMangones = Audio.builder()
-				.needsUrlGen(false)
-				.audioUri("https://drive.google.com/uc?export=view&id=1K_iH-OVAaDxecAA6ZIqfRcApKJM81UQ5")
-				.build();
-
-		HistoryImage historyImage1ForElMonstruoDeLosMangones = HistoryImage.builder()
-				.needsUrlGen(false)
-				.startTime(0)
-				.imageUri("https://drive.google.com/uc?export=view&id=1X5SRqA5qNNVToKnf2vuUCy_xLxniMwXP")
-				.build();
-
-		List<Text> textsForElMonstruoDeLosMangones = new ArrayList<>();
-
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(0)
-				.content("En enero de 1964, la frase “éntrese que se lo lleva el Coco” quedó en desuso, el mito sucumbió ante una amenaza real: el Monstruo de los Mangones. Y no es que ese mes hubiera hecho su aparición, sino que a partir de ahí tuvo nombre propio, así lo bautizó la prensa.")
-				.build());
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(26)
-				.content("Un par de meses antes, el seis de noviembre, una noticia había escandalizado a los caleños: el día anterior, por los lados del Bosque Municipal, en un mangón, se había encontrado el cadáver de un menor desnudo. Lo poco que quedaba de su cuerpo dejaba en evidencia que había sido torturado y abusado.")
-				.build());
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(41)
-				.content("Por la ropa que se encontró cerca del lugar, su madre lo reconoció. Se supo entonces que era un niño de diez años, un hijo ejemplar que a su corta edad compartía con su madre la responsabilidad de generar el dinero para mantener a sus seis hermanos. Uno de esos niños que ante la vista de todos, sin que se le llamara trabajo infantil, sin que se mirara mal, sin que las autoridades se pronunciaran, se ganaba la vida recorriendo las calles de los barrios residenciales, vendiendo periódicos. Llevaba veinte días desaparecido.")
-				.build());
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(69)
-				.content("Con el correr de los días, la cosa empeoró: un segundo niño apareció muerto el 4 de diciembre en un mangón de Prados del Norte, había sido violado; y ocho días después, se encontró uno más por los lados del río Aguacatal, estaba además desfigurado. Y las malas noticias del año no habían terminado: dos niños más aparecieron muertos, uno en vísperas de la Navidad, en Versalles, otro la semana siguiente, en Prados del Norte.")
-				.build());
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(93)
-				.content("""
-                        Y aunque el nombre se volvió común para los caleños, no había consenso sobre su aspecto: para unos se trataba de un degenerado, un asesino en serie, un sádico; para otros, de una pandilla. En lo que sí había acuerdo era en su modus operandi: sorprendía niños menores de doce años, los tiraba a un potrero, los desnudaba, los golpeaba, abusaba de ellos y les chuzaba el pecho con una aguja de acero.
-                        
-                        Ese último detalle hizo que se especulara con que su intención era obtener su sangre, así surgió su segundo nombre; “el vampiro humano”.
-                        """)
-				.build());
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(125)
-				.content("""
-                        Antes de cerrar el mes, se hallaron otros tres niños en similares circunstancias. El monstruo, persona o pandilla, era una realidad. Los lotes enmalezados, los mangones —como se llamaban en esa época—, fueron considerados los lugares más peligrosos de Cali. Por eso, en los barrios populares, por definición lo más organizados, los más solidarios, los vecinos realizaron jornadas de limpieza. No había que dejarle ningún espacio disponible al monstruo.
-                        
-                        El pánico era evidente, si en el camino a la tienda o al colegio o a la iglesia o a donde fuera había un lote de por medio, la instrucción era clarísima “pásese al otro andén”. Y si había que escoger quién iba a la tienda, mejor si era una niña, al monstruo solo le gustaban los muchachos.
-                        """)
-				.build());
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(165)
-				.content("""
-                        ¡No había para qué correr riesgos!
-                        
-                        El primero de abril se completarían trece casos. Cali no aguantaba más, las autoridades debían dar resultados, su inacción era evidente.
-                        
-                        Ese tres de abril, la Policía caleña tuvo una memorable salida en falso, en un comunicado de prensa anunció: que no había tal monstruo; que se trataba de “asesinos imaginarios”; que de los trece cadáveres hallados, solo cuatro eran reales y no tenían nada de especial, que eran casos “de común ocurrencia”.
-                        
-                        Y como si eso fuera poco, explicó que los otros nueve cadáveres, los de los niños no identificados, los que se sepultaron sin nombre en el cementerio de Siloé, eran muertos robados del cementerio y de la morgue que, en un acto de terrorismo, enemigos del Gobierno tiraban por ahí, en mangones, para confundir a la población, para generar zozobra. La respuesta de la realidad fue contundente, en la prensa, al lado de la imagen de la cumbre de autoridades que había llegado a esas conclusiones aparecía la fotografía de un niño asesinado el día anterior, tenía una aguja clavada en el pecho.
-                        """)
-				.build());
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(225)
-				.content("""
-                        En la búsqueda de explicaciones, se llegó incluso a darle nombre y apellido al autor intelectual de estos crímenes. Se decía que no había un monstruo sino personas que trabajaban para el monstruo; que se trataba de un poderoso y reconocido empresario paisa, una especie de vampiro moderno que tenía una “enfermedad de la sangre”; que él, para aliviarse debía someterse a recurrentes transfusiones; que la sangre se la llevaban a su casa ubicada en las lomas de Santa Isabel; que ahí tenía médicos y enfermeras que se encargaban del proceso.
-                        
-                        —Pero si necesita sangre y tiene plata ¿Por qué tiene que matar niños? ¿Por qué no va a una clínica a que lo traten?
-                        
-                        —Porque la sangre debe estar fresca, se explicaba.
-                        
-                        —Además, no puede ser cualquier sangre, debe ser de niños porque es más pura.
-                        
-                        Y pronto se le fueron agregando detalles de corte racial.
-                        
-                        —Mejor si son niños de piel oscura, decían unos, son más fuertes.
-                        
-                        —No pueden ser de color, le contaminan la sangre, ripostaba la versión racista.
-                        """)
-				.build());
-
-		textsForElMonstruoDeLosMangones.add(Text.builder()
-				.startTime(279)
-				.content("""
-                        Y aunque esta explicación forma parte del imaginario caleño, a pesar de que aún hay quienes la repiten y la dan por cierta, lo único real, lo constatable, es que el empresario en cuestión murió en diciembre de 1963, un mes después del primer crimen del Monstruo de los Mangones, cuya estela de asesinatos, torturas y violaciones se extendería por una década.
-                        
-                        En 1974, el monstruo desapareció de repente, sin dejar rastro, en medio de la más terrible impunidad. Nunca se supo siquiera si se trató de uno o de varios asesinos ni si sus más de tres docenas de víctimas realmente fueron suyas. Las mamás respiraron aliviadas ¡El inocente Coco estaba de vuelta!
-                        
-                        Como si se tratara de una catarsis colectiva, poco a poco se dejó de hablar de mangones, en adelante serían potreros o lotes, toda una generación había aprendido que mangón eran sinónimo de peligro.
-                        """)
-				.build());
-
-		History elMonstruoDeLosMangones = History.builder()
-				.title("El monstruo de los mangones")
-				.audio(audioForElMonstruoDeLosMangones)
 				.build();
 
 		Audio audioForEnAtomosVolando = Audio.builder()
@@ -641,10 +534,6 @@ public class HistouricApplication {
 				.audio(audioForTristeNavidad)
 				.build();
 
-		RouteTheme routeThemeOfMiedo = RouteTheme.builder()
-				.name("Miedo")
-				.build();
-
 		return args -> {
 			Role tourismManagerRoleCreated = roleRepository.save(tourismManagerRole);
 			tourismManagerUserRoles.add(tourismManagerRoleCreated);
@@ -663,15 +552,10 @@ public class HistouricApplication {
 			BIC antiguoMataderoInDB = bicRepository.save(antiguoMatadero);
 			BIC iglesiaSanFranciscoInDB = bicRepository.save(iglesiaSanFrancisco);
 			BIC plazaCayzedoInDB = bicRepository.save(plazaCayzedo);
-			BIC rioAguacatalInDB = bicRepository.save(rioAguacatal);
 			BIC cementerioCentralDB = bicRepository.save(cementerioCentral);
 			bicRepository.save(parqueArtesanalLomaDeLaCruz);
 			bicRepository.save(elCerroDeLasTresCruces);
 
-			image1ForAguacatal.setBic(rioAguacatalInDB);
-			bicImageRepository.save(image1ForAguacatal);
-			image2ForAguacatal.setBic(rioAguacatalInDB);
-			bicImageRepository.save(image2ForAguacatal);
 			image1ForparqueArtesanalLomaDeLaCruz.setBic(parqueArtesanalLomaDeLaCruz);
 			bicImageRepository.save(image1ForparqueArtesanalLomaDeLaCruz);
 			image2ForparqueArtesanalLomaDeLaCruz.setBic(parqueArtesanalLomaDeLaCruz);
@@ -693,10 +577,6 @@ public class HistouricApplication {
 			nicknameRepository.save(nicknamePlazaCayzedo);
 
 			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
-					videoRepository, audioForElMonstruoDeLosMangones, textsForElMonstruoDeLosMangones, List.of(historyImage1ForElMonstruoDeLosMangones),
-					List.of(), elMonstruoDeLosMangones, researcherInDB);
-
-			saveHistory(historyRepository, audioRepository, textRepository, historyImageRepository,
 					videoRepository, audioForLaManoNegra, textsForLaManoNegra, historyImagesForLaManoNegra,
 					List.of(), laManoNegra, researcherInDB);
 
@@ -716,28 +596,25 @@ public class HistouricApplication {
 					videoRepository, audioForTristeNavidad, textsForTristeNavidad, historyImagesForTristeNavidad,
 					List.of(), tristeNavidad, researcherInDB);
 
-			BICHistory rioAguatalAndElMonstruoDeLosMangones = associateHistoryAndBIC(bicHistoryRepository, elMonstruoDeLosMangones, rioAguacatal);
 			BICHistory parqueArtesanalLomaDeLaCruzAndLaManoNegra = associateHistoryAndBIC(bicHistoryRepository, laManoNegra, parqueArtesanalLomaDeLaCruz);
 			BICHistory elCerroDeLasTresCrucesAndTiemposDeBuziraco = associateHistoryAndBIC(bicHistoryRepository, tiemposDeBuziraco, elCerroDeLasTresCruces);
 			associateHistoryAndBIC(bicHistoryRepository, enAtomosVolando, cementerioCentral);
 			associateHistoryAndBIC(bicHistoryRepository, elTerremotoDe1925, ermita);
 			associateHistoryAndBIC(bicHistoryRepository, tristeNavidad, plazaCayzedo);
 
-			routeThemeRepository.save(routeThemeOfMiedo);
-			createRoute(routeRepository, routeBICHistoryRepository, "Historias aterradoras", "Historias de situaciones paranormales y de un crimen sin resolver", tourismManagerUserInDB, routeThemeOfMiedo,
-					List.of(rioAguatalAndElMonstruoDeLosMangones, parqueArtesanalLomaDeLaCruzAndLaManoNegra, elCerroDeLasTresCrucesAndTiemposDeBuziraco));
+			createRoute(routeRepository, routeBICHistoryRepository, "Historias aterradoras", "Historias de situaciones paranormales y de un crimen sin resolver", tourismManagerUserInDB,
+					List.of(parqueArtesanalLomaDeLaCruzAndLaManoNegra, elCerroDeLasTresCrucesAndTiemposDeBuziraco));
 
 		};
 	}
 
 	private static void createRoute(RouteRepository routeRepository, RouteBICHistoryRepository routeBICHistoryRepository,
-									 String name, String description, HistouricUser owner, RouteTheme theme,
+									 String name, String description, HistouricUser owner,
 									 List<BICHistory> bicHistoryList) {
 		Route route = Route.builder()
 				.name(name)
 				.description(description)
 				.owner(owner)
-				.theme(theme)
 				.build();
 		routeRepository.save(route);
 		int order = 0;

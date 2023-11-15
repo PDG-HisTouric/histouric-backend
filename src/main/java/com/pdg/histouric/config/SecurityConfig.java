@@ -97,17 +97,21 @@ public class SecurityConfig {
         getHistoriesByTitle.setMethod(HttpMethod.GET);
         managerBuilder.add(getHistoriesByTitle, (authentication, object) -> new AuthorizationDecision(true));
 
-        MvcRequestMatcher getAllRouteThemes = new MvcRequestMatcher(introspector, RouteThemeAPI.ROOT_PATH);
-        getAllRouteThemes.setMethod(HttpMethod.GET);
-        managerBuilder.add(getAllRouteThemes, (authentication, object) -> new AuthorizationDecision(true));
-
-        MvcRequestMatcher getRouteThemeById = new MvcRequestMatcher(introspector, RouteThemeAPI.ROOT_PATH + "/{id}");
-        getRouteThemeById.setMethod(HttpMethod.GET);
-        managerBuilder.add(getRouteThemeById, (authentication, object) -> new AuthorizationDecision(true));
-
         MvcRequestMatcher getRouteById = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH + "/{id}");
         getRouteById.setMethod(HttpMethod.GET);
         managerBuilder.add(getRouteById, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getRoutes = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH);
+        getRoutes.setMethod(HttpMethod.GET);
+        managerBuilder.add(getRoutes, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getSimplifiedRoutes = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH + "/search");
+        getSimplifiedRoutes.setMethod(HttpMethod.GET);
+        managerBuilder.add(getSimplifiedRoutes, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
+        getHistories.setMethod(HttpMethod.GET);
+        managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,

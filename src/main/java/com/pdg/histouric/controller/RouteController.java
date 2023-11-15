@@ -4,6 +4,7 @@ import com.pdg.histouric.api.RouteAPI;
 import com.pdg.histouric.dto.CreateRouteDTO;
 import com.pdg.histouric.dto.ResponseBicDTO;
 import com.pdg.histouric.dto.ResponseRouteDTO;
+import com.pdg.histouric.dto.ResponseSimpleRouteDTO;
 import com.pdg.histouric.mapper.BicMapper;
 import com.pdg.histouric.mapper.HistoryMapper;
 import com.pdg.histouric.mapper.RouteMapper;
@@ -43,6 +44,13 @@ public class RouteController implements RouteAPI {
         ResponseRouteDTO responseRouteDTO = routeMapper.fromRouteToDTO(route);
         responseRouteDTO.setBics(getBicsAndHistoriesOfARoute(route));
         return responseRouteDTO;
+    }
+
+    @Override
+    public List<ResponseSimpleRouteDTO> getSimplifiedRoutes() {
+        return routeService.findAllRoutes().stream()
+                .map(routeMapper::fromRouteToSimpleDTO)
+                .toList();
     }
 
     private List<ResponseBicDTO> getBicsAndHistoriesOfARoute(Route route) {

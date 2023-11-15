@@ -22,7 +22,7 @@ public class BICImage {
     @Column(name = "image_id", nullable = false, unique = true)
     private UUID imageId;
 
-    @Column(name = "image_uri", nullable = false, unique = true)
+    @Column(name = "image_uri", nullable = false)
     private String imageUri;
 
     @ManyToOne

@@ -68,16 +68,6 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public List<History> getHistoriesByImageUri(String imageUri) {
-        return historyImageRepository.findHistoriesByImageUri(imageUri);
-    }
-
-    @Override
-    public List<History> getHistoriesByVideoUri(String videoUrl) {
-        return videoRepository.findHistoriesByVideoUri(videoUrl);
-    }
-
-    @Override
     public History updateHistory(History history) {
         deleteVideosImagesAndTexts(getHistoryById(history.getId()));
         return saveHistory(history);
@@ -86,6 +76,11 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<History> getHistoriesByTitle(String historyTitle) {
         return historyRepository.findAllByTitleContainsIgnoreCase(historyTitle);
+    }
+
+    @Override
+    public List<History> getAllHistories() {
+        return historyRepository.findAll();
     }
 
     private History saveHistory(History history) {

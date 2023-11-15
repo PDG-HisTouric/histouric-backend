@@ -14,5 +14,4 @@ public interface AuthAPI {
     @PostMapping("/login")
     TokenDTO login(@RequestBody UserForLoginDTO userForLoginDTO);
 
-
 }

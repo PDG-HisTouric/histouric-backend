@@ -33,9 +33,6 @@ public class CreateRouteDTO {
     @NotNull(message = "Owner id cannot be null")
     private UUID ownerId;
 
-    @NotNull(message = "Theme name cannot be null")
-    private String themeName;
-
     @NotNull(message = "BIC list cannot be null")
     @NotEmpty(message = "BIC list cannot be empty")
     private List<CreateBICForRouteDTO> bicList;

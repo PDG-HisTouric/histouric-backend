@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public class RouteThemeException extends RuntimeException {
+public class RouteException extends RuntimeException {
     private HttpStatus httpStatus;
-    private RouteThemeError error;
+    private RouteError error;
 }

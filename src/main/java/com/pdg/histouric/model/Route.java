@@ -31,10 +31,6 @@ public class Route {
     @JoinColumn(name = "user_id")
     private HistouricUser owner;
 
-    @ManyToOne
-    @JoinColumn(name = "route_theme_id")
-    private RouteTheme theme;
-
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<RouteBICHistory> routeBICHistories;
 }

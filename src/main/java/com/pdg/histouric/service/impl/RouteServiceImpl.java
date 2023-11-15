@@ -1,9 +1,9 @@
 package com.pdg.histouric.service.impl;
 
-import com.pdg.histouric.constant.RouteThemeErrorCode;
+import com.pdg.histouric.constant.RouteErrorCode;
 import com.pdg.histouric.constant.UserErrorCode;
-import com.pdg.histouric.error.exception.RouteThemeError;
-import com.pdg.histouric.error.exception.RouteThemeException;
+import com.pdg.histouric.error.exception.RouteError;
+import com.pdg.histouric.error.exception.RouteException;
 import com.pdg.histouric.error.exception.UserError;
 import com.pdg.histouric.error.exception.UserException;
 import com.pdg.histouric.model.*;
@@ -22,7 +22,6 @@ public class RouteServiceImpl implements RouteService {
 
     private final RouteRepository routeRepository;
     private final UserRepository histouricUserRepository;
-    private final RouteThemeRepository routeThemeRepository;
     private final BICHistoryRepository bicHistoryRepository;
     private final RouteBICHistoryRepository routeBICHistoryRepository;
 
@@ -31,7 +30,6 @@ public class RouteServiceImpl implements RouteService {
         List<RouteBICHistory> routeBICHistories = route.getRouteBICHistories();
         route.setRouteBICHistories(null);
         route.setOwner(findUserById(route.getOwner().getId()));
-        route.setTheme(findRouteThemeByName(route.getTheme().getName()));
         Route createdRoute = routeRepository.save(route);
         int order = 0;
         for (RouteBICHistory routeBICHistory : routeBICHistories) {
@@ -49,24 +47,25 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Route findRouteById(UUID id) {
-        return routeRepository.findById(id).orElseThrow(); //TODO: Create exception for route
+        return routeRepository.findById(id).orElseThrow(
+                () -> new RouteException(HttpStatus.NOT_FOUND, new RouteError(RouteErrorCode.CODE_01, RouteErrorCode.CODE_01.getMessage()))
+        );
+    }
+
+    @Override
+    public List<Route> findAllRoutes() {
+        return routeRepository.findAll();
     }
 
     private BICHistory findBicHistoryById(BICHistoryPK id) {
         return bicHistoryRepository.findById(id).orElseThrow(
-                () -> new RouteThemeException(HttpStatus.BAD_REQUEST, new RouteThemeError(RouteThemeErrorCode.CODE_02, RouteThemeErrorCode.CODE_02.getMessage()))
+                () -> new RouteException(HttpStatus.BAD_REQUEST, new RouteError(RouteErrorCode.CODE_02, RouteErrorCode.CODE_02.getMessage()))
         );
     }
 
     private HistouricUser findUserById(UUID id) {
         return histouricUserRepository.findById(id).orElseThrow(
                 () -> new UserException(HttpStatus.NOT_FOUND, new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage()))
-        );
-    }
-
-    private RouteTheme findRouteThemeByName(String name) {
-        return routeThemeRepository.findByName(name).orElseThrow(
-                () -> new RouteThemeException(HttpStatus.NOT_FOUND, new RouteThemeError(RouteThemeErrorCode.CODE_01, RouteThemeErrorCode.CODE_01.getMessage()))
         );
     }
 
