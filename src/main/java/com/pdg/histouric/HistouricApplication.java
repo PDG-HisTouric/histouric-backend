@@ -91,6 +91,22 @@ public class HistouricApplication {
 				.roles(researcherUserRoles)
 				.build();
 
+		ArrayList<Role> test2Roles = new ArrayList<>();
+		HistouricUser test2User = HistouricUser.builder()
+				.nickname("Pepito Perez")
+				.email("test2@gmail.com")
+				.password(encoder.encode("password"))
+				.roles(test2Roles)
+				.build();
+
+		ArrayList<Role> test3Roles = new ArrayList<>();
+		HistouricUser test3User = HistouricUser.builder()
+				.nickname("Pepita Perez")
+				.email("test3@gmail.com")
+				.password(encoder.encode("password"))
+				.roles(test3Roles)
+				.build();
+
 		BIC cementerioCentral = BIC.builder()
 				.name("Cementerio Central")
 				.latitude(3.461022788059019)
@@ -547,6 +563,12 @@ public class HistouricApplication {
 			Role researcherRoleCreated = roleRepository.save(researcher);
 			researcherUserRoles.add(researcherRoleCreated);
 			HistouricUser researcherInDB = userRepository.save(researcherUser);
+
+			test2Roles.add(tourismManagerRoleCreated);
+			userRepository.save(test2User);
+
+			test3Roles.add(researcherRoleCreated);
+			userRepository.save(test3User);
 
 			BIC ermitaInDB = bicRepository.save(ermita);
 			BIC antiguoMataderoInDB = bicRepository.save(antiguoMatadero);

@@ -13,6 +13,7 @@ import com.pdg.histouric.model.Route;
 import com.pdg.histouric.model.RouteBICHistory;
 import com.pdg.histouric.service.FirebaseStorageService;
 import com.pdg.histouric.service.RouteService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class RouteController implements RouteAPI {
     private final BicMapper bicMapper;
 
     @Override
-    public ResponseRouteDTO createRoute(CreateRouteDTO createRouteDTO) {
+    public ResponseRouteDTO createRoute(@Valid CreateRouteDTO createRouteDTO) {
         Route route = routeService.createRoute(routeMapper.fromDTOToRoute(createRouteDTO));
         ResponseRouteDTO responseRouteDTO = routeMapper.fromRouteToDTO(route);
         responseRouteDTO.setBics(getBicsAndHistoriesOfARoute(route));
