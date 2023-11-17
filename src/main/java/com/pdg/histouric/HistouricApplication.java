@@ -624,7 +624,7 @@ public class HistouricApplication {
 			associateHistoryAndBIC(bicHistoryRepository, elTerremotoDe1925, ermita);
 			associateHistoryAndBIC(bicHistoryRepository, tristeNavidad, plazaCayzedo);
 
-			createRoute(routeRepository, routeBICHistoryRepository, "Historias aterradoras", "Historias de situaciones paranormales y de un crimen sin resolver", tourismManagerUserInDB,
+			createRoute(routeRepository, routeBICHistoryRepository, "Historias aterradoras", "Historias de situaciones paranormales", tourismManagerUserInDB,
 					List.of(parqueArtesanalLomaDeLaCruzAndLaManoNegra, elCerroDeLasTresCrucesAndTiemposDeBuziraco));
 
 		};
