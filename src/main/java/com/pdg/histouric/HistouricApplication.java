@@ -1,8 +1,11 @@
 package com.pdg.histouric;
 
+import com.google.maps.GeoApiContext;
 import com.pdg.histouric.model.*;
 import com.pdg.histouric.repository.*;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +18,9 @@ import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
-public class HistouricApplication {
+@AllArgsConstructor
+public class HistouricApplication implements DisposableBean {
+	private final GeoApiContext geoApiContext;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HistouricApplication.class, args);
@@ -701,4 +706,8 @@ public class HistouricApplication {
 		history.setVideos(videosForHistory);
 	}
 
+	@Override
+	public void destroy() throws Exception {
+		geoApiContext.shutdown();
+	}
 }

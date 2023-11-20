@@ -112,6 +112,14 @@ public class SecurityConfig {
         MvcRequestMatcher getHistories = new MvcRequestMatcher(introspector, HistoryAPI.ROOT_PATH);
         getHistories.setMethod(HttpMethod.GET);
         managerBuilder.add(getHistories, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getDirection = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH + "/directions/origin/{originCoordinates}/destination/{destinationCoordinates}");
+        getDirection.setMethod(HttpMethod.GET);
+        managerBuilder.add(getDirection, (authentication, object) -> new AuthorizationDecision(true));
+
+        MvcRequestMatcher getDirectionWithWaypoints = new MvcRequestMatcher(introspector, RouteAPI.ROOT_PATH + "/directions/origin/{originCoordinates}/destination/{destinationCoordinates}/waypoints/{waypointsCoordinates}");
+        getDirectionWithWaypoints.setMethod(HttpMethod.GET);
+        managerBuilder.add(getDirectionWithWaypoints, (authentication, object) -> new AuthorizationDecision(true));
     }
 
     private void configureEndpointsForUserApi(HandlerMappingIntrospector introspector,

@@ -1,5 +1,11 @@
 package com.pdg.histouric.controller;
 
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
 import com.pdg.histouric.api.RouteAPI;
 import com.pdg.histouric.dto.CreateRouteDTO;
 import com.pdg.histouric.dto.ResponseBicDTO;
@@ -17,6 +23,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +33,7 @@ public class RouteController implements RouteAPI {
 
     private final RouteService routeService;
     private final FirebaseStorageService firebaseStorageService;
+    private final GeoApiContext geoApiContext;
 
     private final HistoryMapper historyMapper;
     private final RouteMapper routeMapper;
@@ -54,6 +62,23 @@ public class RouteController implements RouteAPI {
                 .toList();
     }
 
+    @Override
+    public DirectionsResult getDirection(String origin, String destination) throws IOException, InterruptedException, ApiException {
+        String[] origins = origin.split(",");
+        String[] destinations = destination.split(",");
+        DirectionsResult directionsResult = DirectionsApi.newRequest(geoApiContext)
+                .origin(new LatLng(Double.parseDouble(origins[0]), Double.parseDouble(origins[1])))
+                .destination(new LatLng(Double.parseDouble(destinations[0]), Double.parseDouble(destinations[1])))
+                .mode(TravelMode.WALKING)
+                .await();
+        return directionsResult;
+    }
+
+    @Override
+    public DirectionsResult getDirectionWithWaypoints(String origin, String destination, String waypoints) {
+        return null;
+    }
+
     private List<ResponseBicDTO> getBicsAndHistoriesOfARoute(Route route) {
         List<RouteBICHistory> routeBICHistories = route.getRouteBICHistories();
 
@@ -70,5 +95,6 @@ public class RouteController implements RouteAPI {
 
         return responseBicDTOS;
     }
+
 
 }
