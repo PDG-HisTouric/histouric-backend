@@ -29,12 +29,14 @@ public class BicController implements BicAPI {
     public ResponseBicDTO createBIC(@Valid CreateBicDTO createBicDTO) {
         BIC bic = bicMapper.fromDTO(createBicDTO);
         bic = bicService.createBIC(bic);
-        List<ResponseHistoryDetailDTO> histories = bic.getBicHistories().stream()
-                .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
-                .map(historyMapper::fromHistoryToDTO)
-                .toList();
         ResponseBicDTO responseBicDTO = bicMapper.fromBIC(bic);
-        responseBicDTO.setHistories(histories);
+        if (bic.getBicHistories() != null) {
+            List<ResponseHistoryDetailDTO> histories = bic.getBicHistories().stream()
+                    .map(bicHistory -> firebaseStorageService.putUrlsToHistory(bicHistory.getHistory()))
+                    .map(historyMapper::fromHistoryToDTO)
+                    .toList();
+            responseBicDTO.setHistories(histories);
+        }
         return responseBicDTO;
     }
 
