@@ -5,6 +5,7 @@ import com.pdg.histouric.constant.HistoryErrorCode;
 import com.pdg.histouric.constant.UserErrorCode;
 import com.pdg.histouric.error.exception.*;
 import com.pdg.histouric.model.BIC;
+import com.pdg.histouric.model.BICHistory;
 import com.pdg.histouric.model.BICHistoryPK;
 import com.pdg.histouric.model.History;
 import com.pdg.histouric.repository.*;
@@ -33,6 +34,8 @@ public class BicServiceImpl implements BicService {
             if (verifyBicExists(bic)) {
                 throw new BicException(HttpStatus.BAD_REQUEST, new BicError(BicErrorCode.CODE_02, BicErrorCode.CODE_02.getMessage()));
             }
+            List<BICHistory> bicHistories = bic.getBicHistories();
+            bic.setBicHistories(null);
             BIC createdBIC = bicRepository.save(bic);
             if (bic.getImages() != null) {
                 bic.getImages().forEach(image -> {
@@ -46,17 +49,31 @@ public class BicServiceImpl implements BicService {
                     nicknameRepository.save(nickname);
                 });
             }
-            if (bic.getBicHistories() != null) {
-                bic.getBicHistories().forEach(bicHistory -> {
-                    bicHistory.setHistory(getHistoryById(bicHistory.getId().getHistoryId()));
-                    bicHistory.setBic(createdBIC);
-                    bicHistory.getId().setBicId(createdBIC.getId());
-                    bicHistoryRepository.save(bicHistory);
-                });
-            }
+            bicHistories.forEach(bicHistory -> associateHistoryAndBIC(createdBIC.getId(), bicHistory.getId().getHistoryId()));
+            fillHistoriesOfBic(createdBIC, bicHistories);
             return createdBIC;
         }
         throw new UserException(HttpStatus.FORBIDDEN, new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage()));
+    }
+
+    private void fillHistoriesOfBic(BIC bic, List<BICHistory> bicHistories) {
+        bicHistories.forEach(bicHistory -> {
+            History history = getHistoryById(bicHistory.getId().getHistoryId());
+            bicHistory.setHistory(history);
+            bicHistory.setBic(bic);
+        });
+        bic.setBicHistories(bicHistories);
+    }
+
+    private void associateHistoryAndBIC(UUID bicId, UUID historyId) {
+        BICHistoryPK bicHistoryPK = BICHistoryPK.builder()
+                .bicId(bicId)
+                .historyId(historyId)
+                .build();
+        BICHistory bicHistory = BICHistory.builder()
+                .id(bicHistoryPK)
+                .build();
+        bicHistoryRepository.save(bicHistory);
     }
 
     private History getHistoryById(UUID historyId) {
@@ -109,12 +126,8 @@ public class BicServiceImpl implements BicService {
         Optional<List<BIC>> bics = bicRepository.findByNameContainsIgnoreCase(nameOrNickname);
         Optional<List<BIC>> bicsByNickname = nicknameRepository.findByNicknameContainsIgnoreCase(nameOrNickname);
         Set<BIC> bicsFound = new HashSet<>();
-        if (bics.isPresent()) {
-            bicsFound.addAll(bics.get());
-        }
-        if (bicsByNickname.isPresent()) {
-            bicsFound.addAll(bicsByNickname.get());
-        }
+        bics.ifPresent(bicsFound::addAll);
+        bicsByNickname.ifPresent(bicsFound::addAll);
         return bicsFound.stream().toList();
     }
 
