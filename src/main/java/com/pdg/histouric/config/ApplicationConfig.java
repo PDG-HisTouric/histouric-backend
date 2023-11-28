@@ -1,5 +1,6 @@
 package com.pdg.histouric.config;
 
+import com.google.maps.GeoApiContext;
 import com.pdg.histouric.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 //Adapted from https://github.com/irojascorsico/spring-boot-jwt-authentication/tree/v1.0
 public class ApplicationConfig {
-
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -37,5 +37,4 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

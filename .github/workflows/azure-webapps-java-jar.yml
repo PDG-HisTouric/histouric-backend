@@ -20,6 +20,7 @@ env:
   FB_SDK_TOKEN_URI: ${{ secrets.FB_SDK_TOKEN_URI }}
   FB_SDK_TYPE: ${{ secrets.FB_SDK_TYPE }}
   FB_SDK_UNIVERSE_DOMAIN: ${{ secrets.FB_SDK_UNIVERSE_DOMAIN }}
+  DIRECTIONS_API_KEY: ${{ secrets.DIRECTIONS_API_KEY }}
 
 on:
   push:
