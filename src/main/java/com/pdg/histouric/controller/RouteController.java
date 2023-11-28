@@ -1,16 +1,14 @@
 package com.pdg.histouric.controller;
 
 import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import com.pdg.histouric.api.RouteAPI;
-import com.pdg.histouric.dto.CreateRouteDTO;
-import com.pdg.histouric.dto.ResponseBicDTO;
-import com.pdg.histouric.dto.ResponseRouteDTO;
-import com.pdg.histouric.dto.ResponseSimpleRouteDTO;
+import com.pdg.histouric.dto.*;
 import com.pdg.histouric.mapper.BicMapper;
 import com.pdg.histouric.mapper.HistoryMapper;
 import com.pdg.histouric.mapper.RouteMapper;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @AllArgsConstructor
@@ -63,20 +62,29 @@ public class RouteController implements RouteAPI {
     }
 
     @Override
-    public DirectionsResult getDirection(String origin, String destination) throws IOException, InterruptedException, ApiException {
+    public PolylineDTO getPolyline(String origin, String destination, String waypoints) {
         String[] origins = origin.split(",");
         String[] destinations = destination.split(",");
-        DirectionsResult directionsResult = DirectionsApi.newRequest(geoApiContext)
+        DirectionsApiRequest directionsApiRequest = DirectionsApi.newRequest(geoApiContext)
                 .origin(new LatLng(Double.parseDouble(origins[0]), Double.parseDouble(origins[1])))
                 .destination(new LatLng(Double.parseDouble(destinations[0]), Double.parseDouble(destinations[1])))
-                .mode(TravelMode.WALKING)
-                .await();
-        return directionsResult;
-    }
+                .mode(TravelMode.WALKING);
 
-    @Override
-    public DirectionsResult getDirectionWithWaypoints(String origin, String destination, String waypoints) {
-        return null;
+        if (waypoints != null) {
+            String[] waypointsArray = waypoints.split("\\|");
+            LatLng[] waypointsList = Stream.of(waypointsArray)
+                    .map(waypoint -> {
+                        String[] waypointCoordinates = waypoint.split(",");
+                        return new LatLng(Double.parseDouble(waypointCoordinates[0]), Double.parseDouble(waypointCoordinates[1]));
+                    })
+                    .toArray(LatLng[]::new);
+            directionsApiRequest.waypoints(waypointsList);
+        }
+
+        DirectionsResult directionsResult = directionsApiRequest.awaitIgnoreError();
+        return PolylineDTO.builder()
+                .encodedPath(directionsResult.routes[0].overviewPolyline.getEncodedPath())
+                .build();
     }
 
     private List<ResponseBicDTO> getBicsAndHistoriesOfARoute(Route route) {
